@@ -1,0 +1,169 @@
+/* Start Global Rules */
+* {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+  a {
+    text-decoration: none;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Small */
+  @media (min-width: 768px) {
+    .container {
+      width: 750px;
+    }
+  }
+  /* Medium */
+  @media (min-width: 992px) {
+    .container {
+      width: 970px;
+    }
+  }
+  /* Large */
+  @media (min-width: 1200px) {
+    .container {
+      width: 1170px;
+    }
+  }
+
+  @font-face {
+    font-family: 'Pixel Game';
+    src: url('../fonts/Pixel Game.otf') format('opentype'); 
+    }
+  /* End Global Rules */
+  
+  /* Start Landing Page */
+  .landing-page header {
+    min-height: 80px;
+    display: flex;
+  }
+
+  .landing-page header .logo img {
+    height: 60px;  
+    width: auto;   
+  }
+  
+  @media (max-width: 767px) {
+    .landing-page header {
+      min-height: auto;
+      display: initial;
+    }
+  }
+  .landing-page header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  @media (max-width: 767px) {
+    .landing-page header .container {
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .landing-page header .logo {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+  }
+  .landing-page header .links {
+    display: flex;
+    align-items: center;
+  }
+  @media (max-width: 767px) {
+    .landing-page header .links {
+      text-align: center;
+      gap: 10px;
+    }
+  }
+  .landing-page header .links li {
+    margin-left: 30px;
+    color: #5d5d5d;
+    cursor: pointer;
+    transition: .3s;
+  }
+  @media (max-width: 767px) {
+    .landing-page header .links li {
+      margin-left: auto;
+    }
+  }
+  .landing-page .content .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 140px;
+    min-height: calc(100vh - 80px);
+  }
+  @media (max-width: 767px) {
+    .landing-page .content .container {
+      gap: 0;
+      min-height: calc(100vh - 101px);
+      justify-content: center;
+      flex-direction: column-reverse;
+    }
+  }
+  .landing-page .content .container {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    text-align: center;
+    min-height: calc(100vh - 80px); 
+}
+
+.landing-page .content .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+    margin-bottom: 15px; 
+}
+
+.landing-page .content .info h1 {
+    font-family: 'Pixel Game', sans-serif;
+    color: #5d5d5d;
+    font-size: 90px;
+    margin-bottom: 10px;
+}
+
+.landing-page .content .info p {
+    margin: 0;
+    line-height: 1;
+    font-size: 15px;
+    color: #5d5d5d;
+}
+
+.landing-page .content .info .buttons {
+    display: flex;
+    gap: 15px; /* Keeps buttons side by side */
+    margin-top: 20px;
+}
+
+.landing-page .content .info .buttons button {
+    border: 0;
+    border-radius: 20px;
+    padding: 12px 30px;
+    cursor: pointer;
+    color: #FFF;
+    background-color: #ee6b05;
+}
+
+.landing-page .content .image img {
+    max-width: 100%;
+}
+
+  /* End Landing Page */
+  
