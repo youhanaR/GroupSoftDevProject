@@ -72,4 +72,4 @@ def user_logout(request):
     # Redirect to the landing page after logout
     return redirect('landing')
 
- 
+
