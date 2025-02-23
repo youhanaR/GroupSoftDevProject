@@ -14,7 +14,9 @@
         <div class="logo">
             <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
         </div>
-        <div class="logout-container">
+        <div class="nav-links">
+            <a href="#" class="nav-button">Profile</a>
+            <a href="#" class="nav-button">Leaderboard</a>
             <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
         </div>
     </nav>
@@ -27,7 +29,7 @@
             <a href="javascript:void(0);" class="location-marker" 
                style="left: {{ location.x_coordinate }}%; top: {{ location.y_coordinate }}%;" 
                title="{{ location.name }}" 
-               onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}')">
+               onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
             </a>
         {% endfor %}
     </div>
@@ -37,8 +39,9 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Enter Access Code</h2>
-            <input type="text" id="accessCode" placeholder="Enter Code">
-            <button id="submitCode">Submit</button>
+            <input type="text" id="modalAccessCode" placeholder="Enter Code">
+            <div id="error-message" style="color: red; display: none;"></div> <!-- Error message div -->
+            <button id="submitCode" onclick="validateCode()">Submit</button>
         </div>
     </div>
 
@@ -46,26 +49,48 @@
         // JavaScript to handle the modal and access code validation
         var modal = document.getElementById("codeModal");
         var currentGameUrl = '';
+        var correctAccessCode = ''; // Variable to store the correct access code
 
-        function openModal(accessCode, gameUrl) {
+        function openModal(accessCode, gameUrl, locationName) {
             currentGameUrl = gameUrl; // Store the current game URL
+            correctAccessCode = accessCode; // Store the current access code
             modal.style.display = "block";
-            document.getElementById("submitCode").onclick = function() {
-                validateCode(accessCode);
-            };
+            
+            // Update modal content to include location name and prompt
+            var modalContent = `
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p>You are at</p>
+                <h1>${locationName}</h1>
+                <p>Enter access code to play</p>
+                <input type="text" id="modalAccessCode" placeholder="Code">
+                <div id="error-message" style="color: red; display: none;"></div> <!-- Error message div -->
+                <button id="submitCode" onclick="validateCode()">Submit</button>
+            `;
+            
+            // Set the modal content
+            document.querySelector(".modal-content").innerHTML = modalContent;
         }
 
         function closeModal() {
             modal.style.display = "none";
-            document.getElementById("accessCode").value = ''; // Clear input
+            document.getElementById("modalAccessCode").value = ''; // Clear input
+            document.getElementById("error-message").style.display = 'none'; // Hide error message
         }
 
-        function validateCode(correctCode) {
-            var userInput = document.getElementById("accessCode").value;
-            if (userInput === correctCode) {
+        function validateCode() {
+            var userInput = document.getElementById("modalAccessCode").value; // Get input value
+            var errorMessage = document.getElementById("error-message"); // Get error message element
+
+            // Clear previous error message
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+
+            if (userInput === correctAccessCode) {
                 window.location.href = currentGameUrl; // Redirect to the game URL
             } else {
-                alert("Incorrect code. Please try again.");
+                errorMessage.textContent = "Incorrect code. Please try again."; // Set the error message
+                errorMessage.style.display = 'block'; // Show the error message
+                document.getElementById("modalAccessCode").value = ''; // Clear input field for another try
             }
         }
 
