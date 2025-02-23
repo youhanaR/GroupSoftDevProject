@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import CreateUserForm, LoginForm
+from .forms import CreateUserForm, LoginForm, UserUpdateForm, UserDeleteForm
 from .models import Location
+from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 from django.db import IntegrityError
@@ -57,4 +58,40 @@ def dashboard(request):
 # Log Out View
 def user_logout(request):
     auth.logout(request)
-    return redirect('landing')
+    return render(request, 'user-logout.html')
+
+
+
+# update user profile
+@login_required(login_url='my-login')
+def user_profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        if u_form.is_valid():
+            u_form.save()
+
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+
+    context = {'u_form': u_form,}
+    return render(request, 'user-profile.html', context=context)
+
+
+@login_required(login_url='my-login')
+def deleteAccount(request):
+    if request.method == 'POST':
+        
+        delete_form = UserDeleteForm(request.POST, instance=request.user)
+        user = request.user
+        user.delete()
+        messages.info(request, 'Your account has been deleted.')
+        return redirect('landing')
+    
+    else:
+        delete_form = UserDeleteForm(instance=request.user)
+
+    context = {'delete_form': delete_form}
+
+    return render(request, 'delete-account.html', context=context)
+
+

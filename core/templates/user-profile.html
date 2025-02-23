@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+
+</head>
+
+<body>
+
+
+  
+            
+
+            <form method="POST">
+                {% csrf_token %}
+                {{ u_form.as_p }}
+                  <!-- User form -->
+                  <button class="btn btn-outline-info" type="submit">Update</button>
+              </form>
+
+              <br>
+              <br>
+
+              <a href="{% url 'delete-account'%}">  Delete your account </a>
+
+</body>
+
+</html>

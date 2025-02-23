@@ -26,5 +26,19 @@ class LoginForm(AuthenticationForm):
     
 
 
+# Update user profile
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+    
+
+# Delete user profile
+class UserDeleteForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = []
     
     
