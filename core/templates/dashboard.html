@@ -1,9 +1,80 @@
-<html>
-    
-    <h2> This is the main page </h2>
-    <a href="{% url 'user-logout' %}"> Logout here </a>
+{% load static %}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
+        </div>
+    </nav>
 
+    <div class="image-container">
+        <img src="{% static 'images/map_draft.png' %}" alt="Map Draft" class="centered-image">
+        
+        <!-- Adding location markers -->
+        {% for location in locations %}
+            <a href="javascript:void(0);" class="location-marker" 
+               style="left: {{ location.x_coordinate }}%; top: {{ location.y_coordinate }}%;" 
+               title="{{ location.name }}" 
+               onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}')">
+            </a>
+        {% endfor %}
+    </div>
 
+    <!-- The Modal -->
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Enter Access Code</h2>
+            <input type="text" id="accessCode" placeholder="Enter Code">
+            <button id="submitCode">Submit</button>
+        </div>
+    </div>
 
+    <script>
+        // JavaScript to handle the modal and access code validation
+        var modal = document.getElementById("codeModal");
+        var currentGameUrl = '';
+
+        function openModal(accessCode, gameUrl) {
+            currentGameUrl = gameUrl; // Store the current game URL
+            modal.style.display = "block";
+            document.getElementById("submitCode").onclick = function() {
+                validateCode(accessCode);
+            };
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+            document.getElementById("accessCode").value = ''; // Clear input
+        }
+
+        function validateCode(correctCode) {
+            var userInput = document.getElementById("accessCode").value;
+            if (userInput === correctCode) {
+                window.location.href = currentGameUrl; // Redirect to the game URL
+            } else {
+                alert("Incorrect code. Please try again.");
+            }
+        }
+
+        // Close the modal if the user clicks anywhere outside of it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
 </html>

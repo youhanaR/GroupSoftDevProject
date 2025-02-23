@@ -1,16 +1,53 @@
-<html>
-    
-    <h2> Sign Up Here!</h2>
-    
-      <form method="POST" autocomplete="off">
-         {% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <title>Register</title>
+</head>
+<body>
+    <div class="register-page">
+        <div class="form"> 
+            <h2>Sign Up</h2>
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                
+                <input type="text" placeholder="Username" name="username" required />
+                <span class="description" id="username-description">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+                
+                <input type="email" placeholder="Email address" name="email" required />
+                
+                <input type="password" placeholder="Password" name="password" required />
+                <span class="description" id="password-description">Your password can’t be too similar to your other personal information.<br>Your password must contain at least 8 characters.<br>Your password can’t be a commonly used password.<br>Your password can’t be entirely numeric.</span>
+                
+                <input type="password" placeholder="Confirm Password" name="confirm_password" required />
+                <span class="description" id="confirm-password-description">Enter the same password as before, for verification.</span>
+                
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
 
-         {{registerform.as_p}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery -->
+    <script>
+        $(document).ready(function() {
+            // Hide all descriptions initially
+            $('.description').hide();
 
-         <input type="submit" value="Sign Up"/>
+            // Show description on focus
+            $('input[type="text"], input[type="password"], input[type="email"]').focus(function() {
+                const descriptionId = '#' + $(this).attr('name') + '-description';
+                $(descriptionId).show();
+            });
 
-      </form>
-
-
-
+            // Hide description on blur
+            $('input[type="text"], input[type="password"], input[type="email"]').blur(function() {
+                const descriptionId = '#' + $(this).attr('name') + '-description';
+                $(descriptionId).hide();
+            });
+        });
+    </script>
+</body>
 </html>
