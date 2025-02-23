@@ -1,29 +1,26 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/landing.css' %}">
 <!DOCTYPE html>
-      <div class="landing-page">
-        <header>
-          <div class="container">
-            <a href="#" class="logo">
-                <img src="{% static 'images/paw_logo.png' %}" alt="Website Logo">
-            </a>
-            <ul class="links">
-              <li>Home</li>
-              <li>About</li>
-            </ul>
-          </div>
-        </header>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Napoleon's Adventure</title>
+</head>
+<body>
+    <div class="landing-page">
         <div class="content">
-          <div class="container">
-            <div class="info">
-              <h1>Napoleon's Adventure</h1>
-              <p>To-do: Add description of game here</p>
-              <div class="buttons">
-                <button onclick="window.location.href='{% url 'my-login' %}'">Login</button>
-                <button onclick="window.location.href='{% url 'register' %}'">Sign Up</button>
-              </div>
+            <div class="container">
+                <div class="info">
+                    <!-- Replace the heading with an image -->
+                    <img src="{% static 'images/primary_logo.png' %}" alt="Game Logo" class="game-logo">
+                    <div class="buttons">
+                        <button onclick="window.location.href='{% url 'my-login' %}'">Login</button>
+                        <button onclick="window.location.href='{% url 'register' %}'">Sign Up</button>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-</html>s
+    </div>
+</body>
+</html>

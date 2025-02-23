@@ -132,12 +132,13 @@
     margin-bottom: 15px; 
 }
 
-.landing-page .content .info h1 {
-    font-family: 'Pixel Game', sans-serif;
-    color: #5d5d5d;
-    font-size: 90px;
-    margin-bottom: 10px;
+.landing-page .content .info .game-logo {
+  max-width: 65%;
+  height: auto; 
+  margin: 5px; 
+  display: block; 
 }
+
 
 .landing-page .content .info p {
     margin: 0;
@@ -147,18 +148,19 @@
 }
 
 .landing-page .content .info .buttons {
-    display: flex;
-    gap: 15px; /* Keeps buttons side by side */
-    margin-top: 20px;
+  display: flex;
+  gap: 50px; 
+  margin-top: 10px;
 }
 
 .landing-page .content .info .buttons button {
     border: 0;
-    border-radius: 20px;
-    padding: 12px 30px;
+    border-radius: 10px;
+    padding: 12px 35px;
     cursor: pointer;
     color: #FFF;
     background-color: #ee6b05;
+    font-size: 18px;
 }
 
 .landing-page .content .image img {
