@@ -1,0 +1,35 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+
+</head>
+
+<body>
+
+    {% if messages %}
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+  {% endif %}
+  
+            {{ user.username }}
+            <br>
+            {{ user.email }}
+
+            <form method="POST">
+                {% csrf_token %}
+                {{ u_form.as_p }}
+                  <!-- User form -->
+                  <button class="btn btn-outline-info" type="submit">Update</button>
+              </form>
+
+              <a href="{% url 'user-logout' %}"> Logout here </a>
+              <br>
+              <br>
+
+              <a href="{% url 'delete-account'%}">  Delete your account </a>
+</body>
+
+</html>

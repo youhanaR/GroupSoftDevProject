@@ -1,9 +1,22 @@
+
+<html>
+<head>
+    <title>DashBoard page</title>
+
+</head>
 <html>
     
-    <h2> This is the main page </h2>
-    <a href="{% url 'user-logout' %}"> Logout here </a>
+     <h2> This is the main page </h2>
 
+    <form action="/action_page.php">
+        <label for="fname">	QR Code: </label>
+        <input type="text" id="QRcode" name="QRcode"><br><br>
+    </form>
+     <br>
+    <br>
+    <a href="{% url 'user-profile'%}">  User Profile </a>
 
+    
 
 
 </html>
