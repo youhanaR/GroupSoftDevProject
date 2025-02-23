@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm, LoginForm
-from .models import Location  # Import the Location model
+from .models import Location
 
-# Import Django authenticate models and functions
+from django.contrib import messages
+from django.db import IntegrityError
+
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login, logout
 
@@ -19,8 +21,12 @@ def register(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('my-login')
+            try:
+                form.save()
+                messages.success(request, "Registration successful! You can now log in.")
+                return redirect('my-login')  # Redirect to login page
+            except IntegrityError:
+                messages.error(request, "Username already exists. Please choose another one.")
     
     context = {'registerform': form}  
     return render(request, 'register.html', context=context)
