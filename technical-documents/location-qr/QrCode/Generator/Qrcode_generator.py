@@ -19,6 +19,7 @@ Dependencies:
 - pyzbar
 - Pillow
 
+@author Jood Alrubian
 """
 
 
