@@ -1,3 +1,5 @@
+
+
 """
 Django settings for napoleons_adventure project.
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -129,11 +132,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # For development (in settings.py)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+
+# Load the variables from the .env file 
 load_dotenv()
 
+# Emailc onfiguration settings for Django to send email to users (to reset password) 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.gmail.com' # Using gmail's smpt server address to send emails
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('User_Email')
-EMAIL_HOST_PASSWORD = os.environ.get('User_Password')
+EMAIL_HOST_USER = os.environ.get('User_Email') # Retrieves the app app developers' email address from .env file to avoid coding sensitive data
+EMAIL_HOST_PASSWORD = os.environ.get('User_Password') # Retrieves app developers' password from.env file to avoid coding sensitive data

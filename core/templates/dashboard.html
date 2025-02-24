@@ -10,8 +10,9 @@
     <title>Dashboard</title>
 </head>
 <body>
+<!--Nav bar linking to user profile, logout page, and the leaderboard-->
     <nav class="navbar">
-        <div class="logo">
+        <a href="{% url 'dashboard'%}" class="logo">
             <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
         </div>
         <div class="nav-links">
