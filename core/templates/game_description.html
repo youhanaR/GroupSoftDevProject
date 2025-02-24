@@ -1,0 +1,48 @@
+{% load static %}
+<!-- Author: Ameera Abdullah -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/minigame.css' %}">
+    <title>{{ game_title }}</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'dashboard' %}"> 
+                <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
+            <a href="#" class="nav-button">Leaderboard</a>
+            <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
+        </div>
+    </nav>
+
+    <div class ='form'>
+        <div class="game-description">
+            <h2>{{ game_title }}</h2>
+            <p>{{ game_description }}</p>
+            
+            <h3>How to Play</h3>
+            <p>{{ how_to_play }}</p>
+            
+            <h3>Why It Matters</h3>
+            <p>{{ sustainability_theme }}</p>
+            
+            <!-- Button to Start the Game -->
+            <a href="#">
+                <button type="button">Start Game</button>
+            </a>        
+    
+            <!-- Button to Return to Map -->
+            <a href="{% url 'dashboard' %}"> 
+                <button type="button">Back to Map</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
