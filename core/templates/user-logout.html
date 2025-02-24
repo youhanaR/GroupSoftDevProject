@@ -1,13 +1,23 @@
-<html>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title> Log out </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/log-out.css' %}">
+    <title>Logout</title>
 </head>
 
-
 <body>
-    <h2>Logged out!</h2>
 
-    <a href="{% url 'dashboard' %}"><h3>Login again</h3></a>
+<div class="logout">
+    <h3>Logged out!</h3>
+    <hr>
 
+    <a href="{% url 'landing' %}" class="logout-btn link"><h5>Login again</h5></a>
+</div>
 </body>
 </html>

@@ -84,7 +84,6 @@ def deleteAccount(request):
         delete_form = UserDeleteForm(request.POST, instance=request.user)
         user = request.user
         user.delete()
-        messages.info(request, 'Your account has been deleted.')
         return redirect('landing')
     
     else:
