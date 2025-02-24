@@ -1,3 +1,23 @@
+"""
+This module defines the views for the Django web application. For this prototype, 
+it handles user authentication, game descriptions, and dashboard navigation.
+
+Views:
+--------
+1. **Landing Page** (`landing_page`) - Displays the main landing page of the website.
+2. **User Authentication**:
+   - `register` - Handles user registration.
+   - `my_login` - Manages user login authentication.
+   - `user_logout` - Logs out the user and redirects to a logout page.
+3. **Dashboard & User Management**:
+   - `dashboard` - Displays an interactive map with game locations.
+   - `user_profile` - Allows users to update their profile details.
+   - `deleteAccount` - Enables users to delete their account.
+4. **Game Descriptions** (`game_description`) - Displays an overview of the game based on the selected location.
+
+Author: Juri Khushayl, Surin Wi Sut, Ameera Abdullah
+"""
+
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm, LoginForm, UserUpdateForm, UserDeleteForm
 from .models import Location
@@ -58,7 +78,7 @@ def user_logout(request):
 
 
 
-# update user profile
+# Update user profile
 @login_required(login_url='my-login')
 def user_profile(request):
     if request.method == 'POST':

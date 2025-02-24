@@ -1,3 +1,13 @@
+"""
+urls.py
+
+This module defines the URL patterns for the Django application. For the prototype, it includes 
+routes for user authentication, dashboard access, password reset functionality, and game 
+descriptions based on location.
+
+Author: Juri Khushayl, Surin Wi Sut, Ameera Abdullah
+"""
+
 
 from django.contrib.auth import views as auth_views
 from django.urls import path
@@ -5,19 +15,20 @@ from . import views
 
 
 urlpatterns = [
+    #Default Page
+    path("", views.landing_page, name="landing"), 
     
-    path("", views.landing_page, name="landing"), #Default page
-    
+
     path("register/", views.register, name="register"),
     path('my-login/', views.my_login, name="my-login"),
     path('dashboard/', views.dashboard, name="dashboard"),
    
+    #User-Related Paths
     path('user-logout/', views.user_logout, name='user-logout'),
-    
-     path('user-profile', views.user_profile, name="user-profile"), # you can acess the user profile by username
+    path('user-profile', views.user_profile, name="user-profile"), # you can acess the user profile by username
     path('delete-account', views.deleteAccount, name="delete-account"),
     
-    
+    #Password Reset Related Paths
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='password_reset.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), name='password_reset_confirm'),
