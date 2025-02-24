@@ -1,0 +1,29 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/landing.css' %}">
+<!DOCTYPE html>
+      <div class="landing-page">
+        <header>
+          <div class="container">
+            <a href="#" class="logo">
+                <img src="{% static 'images/paw_logo.png' %}" alt="Website Logo">
+            </a>
+            <ul class="links">
+              <li>Home</li>
+              <li>About</li>
+            </ul>
+          </div>
+        </header>
+        <div class="content">
+          <div class="container">
+            <div class="info">
+              <h1>Napoleon's Adventure</h1>
+              <p>To-do: Add description of game here</p>
+              <div class="buttons">
+                <button onclick="window.location.href='{% url 'my-login' %}'">Login</button>
+                <button onclick="window.location.href='{% url 'register' %}'">Sign Up</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</html>s``
