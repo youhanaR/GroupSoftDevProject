@@ -91,8 +91,22 @@
 }
 
 body {
-    background: #f6f4f3;
-    font-family: "Roboto", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;      
+  background: #f6f4f3;
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Full viewport height */
+  margin: 0; /* Remove default margin */      
+}
+
+.description {
+  color: #4a4a4a; 
+  font-size: 12px; 
+  display: none;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: left;
 }

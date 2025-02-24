@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box; 
+    background-color:#9bc4e2;
+}
+
+* {
+    box-sizing: inherit; 
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    background-color: white; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    padding: 10px 15px; 
+    padding-bottom: 3px; 
+    width: 100%; 
+    z-index: 1000; 
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px; 
+    margin-left: auto; 
+}
+
+.nav-links a {
+    color: #fa8336 !important; 
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: rgb(173, 76, 24) !important; 
+}
+
+
+.logo img {
+    height: 60px; 
+    max-height: 80px; 
+}
+
+.logout-container {
+    margin-left: auto; 
+}
+
+.nav-links .logout-button {
+    background-color: #fa8336; 
+    color: white !important;  /* Force white text */
+    padding: 8px 12px;
+    border: none; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    transition: background-color 0.3s; 
+    white-space: nowrap; 
+}
+
+
+.logout-button:hover {
+    background-color: #e76a26; 
+    color: white !important;
+}
+
+.logout-button:focus {
+    outline: none; 
+}
+
+.form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 500px; 
+    margin: 50px auto;
+    padding: 45px;
+    text-align: center;
+    border: 10px solid #619b8a; 
+    border-radius: 15px; 
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+p {
+    color: #4a4a4a;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+a button {
+    border: none;
+    margin: 0 15px;
+}
+
+button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #619b8a;
+    border: 0;
+    padding: 15px 25px;
+    color: #FFFFFF;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover,
+button:active,
+button:focus {
+    background: #538576;
+}
+

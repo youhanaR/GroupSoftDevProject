@@ -1,3 +1,23 @@
+"""
+This module defines the views for the Django web application. For this prototype, 
+it handles user authentication, game descriptions, and dashboard navigation.
+
+Views:
+--------
+1. **Landing Page** (`landing_page`) - Displays the main landing page of the website.
+2. **User Authentication**:
+   - `register` - Handles user registration.
+   - `my_login` - Manages user login authentication.
+   - `user_logout` - Logs out the user and redirects to a logout page.
+3. **Dashboard & User Management**:
+   - `dashboard` - Displays an interactive map with game locations.
+   - `user_profile` - Allows users to update their profile details.
+   - `deleteAccount` - Enables users to delete their account.
+4. **Game Descriptions** (`game_description`) - Displays an overview of the game based on the selected location.
+
+Author: Juri Khushayl, Surin Wi Sut, Ameera Abdullah
+"""
+
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm, LoginForm, UserUpdateForm, UserDeleteForm
 from .models import Location
@@ -8,6 +28,7 @@ from django.db import IntegrityError
 
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseNotFound
 
 # Create your views here.
 
@@ -62,7 +83,7 @@ def user_logout(request):
 
 
 
-# update user profile
+# Update user profile
 @login_required(login_url='my-login')
 def user_profile(request):
     if request.method == 'POST':
@@ -93,4 +114,46 @@ def deleteAccount(request):
 
     return render(request, 'delete-account.html', context=context)
 
+#Renders a game description page based on the selected location.
+def game_description(request, location):
+    # Normalize the location string to match dictionary keys
+    normalized_location = location.lower().replace(" ", "-")
+
+    # Hardcoded game data
+    game_data = {
+    'into-building': {
+        'title': 'Match 3',
+        'description': 'Match different types of waste to learn how to properly dispose of them.',
+        'how_to_play': 'Click on matching waste items to clear them from the board. Try to reach the highest score before the time runs out!',
+        'sustainability_theme': 'Proper waste management reduces landfill waste and pollution, promoting a cleaner environment.',
+    },
+    'cornwall-house': {
+        'title': 'Recycle Rush',
+        'description': 'Sort recyclable materials as fast as you can before time runs out!',
+        'how_to_play': 'Drag and drop each item into the correct recycling bin. The faster you sort, the higher your score!',
+        'sustainability_theme': 'Recycling reduces waste and conserves natural resources, making a positive impact on the environment.',
+    },
+    'sports-park': {
+        'title': 'Under Construction',
+        'description': '',
+        'how_to_play': '',
+        'sustainability_theme': '',
+    },
+}
+
+
+    # Retrieve the data for the given location
+    game_info = game_data.get(normalized_location)
+
+    # If location is invalid, return a 404 page
+    if not game_info:
+        return HttpResponseNotFound("<h1>Game description not found</h1>")
+
+    return render(request, 'game_description.html', {
+        'game_title': game_info['title'],
+        'game_description': game_info['description'],
+        'how_to_play': game_info['how_to_play'],
+        'sustainability_theme': game_info['sustainability_theme'],
+        'location': normalized_location  # Use the normalized version
+    })
 

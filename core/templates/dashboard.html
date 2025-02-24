@@ -1,5 +1,5 @@
 {% load static %}
-
+<!-- Author: Ameera Abdullah -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +12,9 @@
 <body>
     <nav class="navbar">
         <div class="logo">
-            <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
+            </a>
         </div>
         <div class="nav-links">
             <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
@@ -20,7 +22,7 @@
             <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
         </div>
     </nav>
-
+    
     <div class="image-container">
         <img src="{% static 'images/map_draft.png' %}" alt="Map Draft" class="centered-image">
         
@@ -49,14 +51,15 @@
         // JavaScript to handle the modal and access code validation
         var modal = document.getElementById("codeModal");
         var currentGameUrl = '';
-        var correctAccessCode = ''; // Variable to store the correct access code
+        var currentLocationName = '';
+        var correctAccessCode = '';
 
         function openModal(accessCode, gameUrl, locationName) {
-            currentGameUrl = gameUrl; // Store the current game URL
-            correctAccessCode = accessCode; // Store the current access code
+            currentGameUrl = gameUrl; 
+            correctAccessCode = accessCode; 
+            currentLocationName = locationName; 
             modal.style.display = "block";
-            
-            // Update modal content to include location name and prompt
+
             var modalContent = `
                 <span class="close" onclick="closeModal()">&times;</span>
                 <p>You are at</p>
@@ -66,40 +69,33 @@
                 <div id="error-message" style="color: red; display: none;"></div> <!-- Error message div -->
                 <button id="submitCode" onclick="validateCode()">Submit</button>
             `;
-            
+
             // Set the modal content
             document.querySelector(".modal-content").innerHTML = modalContent;
         }
 
         function closeModal() {
             modal.style.display = "none";
-            document.getElementById("modalAccessCode").value = ''; // Clear input
-            document.getElementById("error-message").style.display = 'none'; // Hide error message
+            document.getElementById("modalAccessCode").value = ''; 
+            document.getElementById("error-message").style.display = 'none'; 
         }
 
         function validateCode() {
-            var userInput = document.getElementById("modalAccessCode").value; // Get input value
-            var errorMessage = document.getElementById("error-message"); // Get error message element
+            var userInput = document.getElementById("modalAccessCode").value;
+            var errorMessage = document.getElementById("error-message");
 
-            // Clear previous error message
             errorMessage.style.display = 'none';
             errorMessage.textContent = '';
 
             if (userInput === correctAccessCode) {
-                window.location.href = currentGameUrl; // Redirect to the game URL
+                window.location.href = `/game/description/${encodeURIComponent(currentLocationName)}/`;
             } else {
-                errorMessage.textContent = "Incorrect code. Please try again."; // Set the error message
-                errorMessage.style.display = 'block'; // Show the error message
-                document.getElementById("modalAccessCode").value = ''; // Clear input field for another try
+                errorMessage.textContent = "Incorrect code. Please try again.";
+                errorMessage.style.display = 'block';
+                document.getElementById("modalAccessCode").value = '';
             }
         }
 
-        // Close the modal if the user clicks anywhere outside of it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
     </script>
 </body>
 </html>
