@@ -1,0 +1,15 @@
+The images: 
+"Recycle_Battery.png"
+"Recycle_Paper.png"
+"Recycle_Can.png"
+"Recycle_PBottle.png"
+"DifferentRecycleBins.png"
+
+Have been used, and credited to the artist @pixeleart
+
+"DifferentRecycleBins.png" has been used and edited with @pixeleart's other images on top,
+in order to create:
+"Recycle_Bin_Battery.PNG"
+"Recycle_Bin_Can.PNG"
+"Recycle_Bin_Paper.PNG"
+"Recycle_Bin_Plastic.png"
