@@ -1,28 +1,103 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profile Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Profile</title>
 </head>
 
 <body>
 
+    <nav class="navbar">
+        <a href="{% url 'dashboard'%}" class="logo">
+            <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
+            <a href="#" class="nav-button">Leaderboard</a>
+            <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
+        </div>
+    </nav>
 
-  
-            
+<div class="user-profile"> 
+    <header class="profile-header">
+        <h1>{{ u_form.username.value }}</h1>
+      </header>
+    
+    <div class="profile-content">
+         <div class="profile-pic">
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile image">      
+         </div>
 
-            <form method="POST">
-                {% csrf_token %}
-                {{ u_form.as_p }}
-                  <!-- User form -->
-                  <button class="btn btn-outline-info" type="submit">Update</button>
-              </form>
 
-              <br>
-              <br>
+       <form method="POST">
+        {% csrf_token %}
+       <div class="profile-detail">
+        <div class="field">
+            <label>Username:</label>
+            <span class="display-text" data-target="id_username">{{ u_form.username.value }}</span>
+            {{ u_form.username }}
+            <i class="fa fa-edit"></i>
+        </div>
+        
+        <div class="field">
+            <label>Email:</label>
+            <span class="display-text" data-target="id_email">{{ u_form.email.value }}</span>
+            {{ u_form.email }}
+            <i class="fa fa-edit"></i>
+        </div>
 
-              <a href="{% url 'delete-account'%}">  Delete your account </a>
+        </div>
+   
+   
+        <div class="button">
+        <button type="submit" class="save-btn">Save Changes</button>
+        <a href="{% url 'delete-account' %}" class="delete delete-btn ">Delete account</a>
+
+          
+        </div>
+    </form>
+   </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        // Handle edit button click
+        $(function () {
+            $('.fa-edit').click(function () {
+              var field = $(this).closest('.field');
+              var span = field.find('.display-text');
+              var input = $('#' + span.data('target'));
+          
+              span.hide();
+              input.val(span.text()).show().focus();
+            });
+          
+            $('input').blur(function () {
+              var input = $(this);
+              var span = input.closest('.field').find('.display-text');
+          
+              span.text(input.val()).show();
+              input.hide();
+            });
+          });
+                                                         
+        });
+    
+
+         document.getElementById('deleteaccount').onclick = function() {
+          window.location.href = "{% url 'delete-account' %}";
+         };
+    
+
+</script>
 
 </body>
-
 </html>

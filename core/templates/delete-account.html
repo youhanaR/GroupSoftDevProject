@@ -1,34 +1,39 @@
-<html>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title> Delete account </title>
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/delete-account.css' %}">
+    <title>Delete Account</title>
 </head>
 
 <body>
 
+
+
+<div class="delete-account">
     <h3> Delete account </h3>
      <hr>
-     <br>
+    <br>
      <form method ="POST" autocomplete>
         {% csrf_token %}
-
-        <p> Are you sure you want to delete this account </p>
-
+        <p> Are you sure you want to delete this account? </p>
         <br>
-
-        <input class="btn btn-primary navbar-btn" type="submit" value="Delete account">
-
+        <input class="btn" type="submit" value="Delete account">
         <br>
         <br>
-
-        <a href="{% url 'user-profile'%}">  Go back </a>
+        <a href="{% url 'user-profile'%}" class="back-link link">  Go back </a>
 
      </form>
 
-    </body>
-    </html>
+    </div>
 
+</body>
+</html>
 
 
 
