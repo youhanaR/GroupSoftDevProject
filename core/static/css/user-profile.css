@@ -223,7 +223,7 @@ a.delete {
         flex-direction: column;
     }
 
-    .save-btn, .delete-btn {
+    .save-btn {
         width: 30%;
         margin-bottom: 10px;
     }
