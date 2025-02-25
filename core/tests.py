@@ -1,3 +1,2 @@
-from django.test import TestCase
+# Author: Surin Chai
 
-# Create your tests here.
