@@ -17,6 +17,7 @@ This is a submission for Sprint 1. In this folder you will find the privacy poli
 ## Process documents:
 - Our process documents take the form of screenshots of our Kanban board, and meeting notes.
 - Trello project link - [https://trello.com/b/z8cFvnT7/jarse-group-software-engineering-project]
+- GitHub repository link - [https://github.com/youhanaR/GroupSoftDevProject]
 
 ## Product documents:
 - Our product documents consist of a UI document and a requirements analysis document.
