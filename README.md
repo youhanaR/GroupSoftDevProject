@@ -4,13 +4,13 @@
 ___
 
 ## Group Members:
-- Jem Challis
-- Elliot Leong
-- Juri Khushayl
-- Ameera Arfa Binti Abdullah
-- Jood Alrubian
-- Rami Youhana
-- Surin Chaisuvarn Wi Sut
+- Jem Challis jc1590@exeter.ac.uk
+- Elliot Leong el593@exeter.ac.uk
+- Juri Khushayl jk697@exeter.ac.uk
+- Ameera Arfa Binti Abdullah aab231@exeter.ac.uk
+- Jood Alrubian ja733@exeter.ac.uk
+- Rami Youhana rjay201@exeter.ac.uk
+- Surin Chaisuvarn Wi Sut scw225@exeter.ac.uk
 
 This is a submission for Sprint 1. In this folder you will find the privacy policy, and three other folders: process, product, and technical documents.
 
