@@ -133,14 +133,14 @@ body {
 
 .field {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
   }
   
   .field label {
     font-weight: bold;
     width: 70px;
-    
   }
   
   .field .display-text,
@@ -150,10 +150,38 @@ body {
     font-size: 14px;
   }
   
+
+  .field .display-text {
+    display: inline;
+  }
+  
+
   .field input {
     display: none;
   }
   
+
+  .field input.active-input {
+    display: inline-block;
+  }
+
+  .field input.hidden-input {
+    display: none;
+  }
+  
+
+  .field input.error-input {
+    border: 2px solid red;
+    display: inline-block; 
+  }
+  
+  .error {
+    color: red;
+    margin: 5px 0 0;
+    font-size: 14px;
+  }
+  
+
 .fa-edit {
     font-size: 15px;
     color: orange;
@@ -172,8 +200,8 @@ body {
 }
 
 .save-btn {
-    width: 30%;
-    height: 20%;
+    width: 100%;
+    height: 100%;
     font-size: 15px;
     border-radius: 8px;
     border: none;
@@ -198,7 +226,7 @@ a.delete {
     text-align: center;         
     border-radius: 8px;        
     cursor: pointer;  
-    padding: 11px 7px;            
+    padding: 2px 4px;            
   }
 
 
@@ -210,19 +238,3 @@ a.delete {
   a.delete-btn:hover {
     background-color: #c0392b;  
   }
-
-
-@media (max-width: 650px) {
-    .user-profile {
-        width: 50%;
-    }
-
-    .button {
-        flex-direction: column;
-    }
-
-    .save-btn {
-        width: 30%;
-        margin-bottom: 10px;
-    }
-}

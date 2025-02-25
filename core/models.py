@@ -1,6 +1,8 @@
+# Author: Ameera Abdullah, Juri Khushayl
 from django.db import models
 from django.contrib.auth.models import User
 
+# Create a location table in the database ~ Ameera
 class Location(models.Model):
     name = models.CharField(max_length=100)
     x_coordinate = models.FloatField()  # Position on the map
@@ -11,6 +13,7 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+# Create a user progress table in the database ~ Ameera
 class UserProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
@@ -20,6 +23,7 @@ class UserProgress(models.Model):
         return f"{self.user.username} - {self.location.name} - {'Completed' if self.completed else 'Incomplete'}"
     
 
+# Create a profile table in the database ~ Juri
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     
