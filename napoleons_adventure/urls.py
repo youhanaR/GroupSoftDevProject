@@ -1,3 +1,5 @@
+# Author: Ameera Abdullah
+
 """
 URL configuration for napoleons_adventure project.
 
@@ -23,5 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('email/', include(email_urls), name='email-verification'),
-
+    
 ]
+
+

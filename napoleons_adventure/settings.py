@@ -1,3 +1,5 @@
+# Author: Ameera Abdullah, Juri Kushayi, Surin Chai
+
 """
 Django settings for napoleons_adventure project.
 
@@ -11,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os 
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'django_email_verification',
-
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -119,7 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'core' /'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -129,26 +132,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # For development (in settings.py)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-def verified_callback(user):
-    user.is_active = True
 
+# Load the variables from the .env file 
+load_dotenv()
 
-EMAIL_VERIFIED_CALLBACK = verified_callback
-EMAIL_FROM_ADDRESS = 'napoleonsadventureofficial@gmail.com'
-EMAIL_MAIL_SUBJECT = 'Confirm your email {{ user.username }}'
-EMAIL_MAIL_HTML = 'templates/mail_body.html'
-EMAIL_MAIL_PLAIN = 'templates/mail_body.txt'
-EMAIL_MAIL_TOKEN_LIFE = 60 * 60
-EMAIL_MAIL_PAGE_TEMPLATE = 'templates/email_confirmed.html'
-EMAIL_PAGE_DOMAIN = 'http://127.0.0.1:8000/' # Host
-# EMAIL_MULTI_USER = True  # optional (defaults to False)
-
-# For Django Email Backend
+# Emailc onfiguration settings for Django to send email to users (to reset password) 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.gmail.com' # Using gmail's smpt server address to send emails
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'napoleonsadventureofficial@gmail.com'
-EMAIL_HOST_PASSWORD = 'jvnocpflqhrriibl'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'napoleonsadventureofficial@gmail.com'
-SERVER_EMAIL = 'napoleonsadventureofficial@gmail.com'
+EMAIL_HOST_USER = os.environ.get('User_Email') # Retrieves the app app developers' email address from .env file to avoid coding sensitive data
+EMAIL_HOST_PASSWORD = os.environ.get('User_Password') # Retrieves app developers' password from.env file to avoid coding sensitive data

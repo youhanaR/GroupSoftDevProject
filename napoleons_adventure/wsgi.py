@@ -1,3 +1,5 @@
+
+
 """
 WSGI config for napoleons_adventure project.
 
