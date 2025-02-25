@@ -125,13 +125,13 @@ def game_description(request, location):
         'title': 'Match 3',
         'description': 'Match different types of waste to learn how to properly dispose of them.',
         'how_to_play': 'Click on matching waste items to clear them from the board. Try to reach the highest score before the time runs out!',
-        'sustainability_theme': 'Proper waste management reduces landfill waste and pollution, promoting a cleaner environment.',
+        'sustainability_theme': 'Reducing landfill waste starts with small actions—<a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">each one adds up to a cleaner world!</a>',
     },
     'cornwall-house': {
         'title': 'Recycle Rush',
         'description': 'Sort recyclable materials as fast as you can before time runs out!',
         'how_to_play': 'Drag and drop each item into the correct recycling bin. The faster you sort, the higher your score!',
-        'sustainability_theme': 'Recycling reduces waste and conserves natural resources, making a positive impact on the environment.',
+        'sustainability_theme': 'Toss it right for a greener sight<a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">—every action counts in saving our Earth!</a>',
     },
     'sports-park': {
         'title': 'Under Construction',
@@ -154,6 +154,6 @@ def game_description(request, location):
         'game_description': game_info['description'],
         'how_to_play': game_info['how_to_play'],
         'sustainability_theme': game_info['sustainability_theme'],
-        'location': normalized_location  # Use the normalized version
+        'location': normalized_location 
     })
 
