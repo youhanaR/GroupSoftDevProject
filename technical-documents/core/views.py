@@ -1,3 +1,5 @@
+# Author: Juri Kushayi, Surin Chai, Ameera Abdullah
+
 """
 This module defines the views for the Django web application. For this prototype, 
 it handles user authentication, game descriptions, and dashboard navigation.

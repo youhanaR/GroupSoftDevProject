@@ -1,4 +1,4 @@
-
+# Author: Ameera Abdullah, Juri Kushayi, Surin Chai
 
 """
 Django settings for napoleons_adventure project.
