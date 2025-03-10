@@ -150,3 +150,11 @@ def game_description(request, location):
         'location': normalized_location 
     })
 
+def str_intro(request):
+    return render(request, 'str_intro.html')
+
+def str_game(request):
+    return render(request, 'str_game.html')
+
+def str_end(request):
+    return render(request, 'str_end.html')
