@@ -14,8 +14,7 @@ body {
     padding: 20px; 
 }
 
-.login-page,
-.register-page {
+.auth-page {
     width: 100%;
     max-width: 400px;  
     margin: auto;
@@ -77,6 +76,13 @@ body {
     /* For form pages with two buttons (like password reset), adjust button spacing */
     .form form button {
         margin-bottom: 15px; /* Adds space between buttons when stacked */
+    }
+}
+
+/* New rule for adding space between buttons on desktop */
+@media (min-width: 768px) {
+    .form form button + button {
+        margin-top: 15px; /* Adds space between buttons on desktop */
     }
 }
 
