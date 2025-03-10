@@ -64,3 +64,27 @@ a.logout-btn {
   a.link {
     background-color: #f57c00;
   }
+
+
+  @media (max-width: 768px) {
+   
+    .logout {
+        width: 70%;  
+        padding: 20px;
+    }
+
+    
+    .logout h3 {
+        font-size: 24px; 
+    }
+
+ 
+    .logout hr {
+        width: 100%; 
+    }
+
+ 
+    a.logout-btn {
+        padding: 5px 20px; 
+    }
+}

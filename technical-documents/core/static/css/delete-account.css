@@ -95,3 +95,44 @@ a.back-link {
   a.link {
     background-color: #3ad771;  
   }
+
+
+  @media (max-width: 768px) {
+    .delete-account {
+        width: 90%;  
+        padding: 20px;
+    }
+
+    
+    .delete-account h3 {
+        font-size: 24px; 
+    }
+
+    
+    .delete-account hr {
+        width: 100%;  
+    }
+
+   
+    .delete-account p {
+        font-size: 18px;  
+    }
+
+   
+    .delete-account input {
+        width: 80%;  
+        height: 40px;  
+        font-size: 14px;  
+    }
+
+   
+    .btn {
+        width: 80%; 
+    }
+
+    
+    a.back-link {
+        font-size: 14px;
+        padding: 5px 20px;  
+    }
+}
