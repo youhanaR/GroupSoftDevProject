@@ -1,14 +1,23 @@
 {% load static %}
 <!-- Author: Surin Chai -->
 
-{% block title %}
-    <title>Email comfirmation</title>
-{% endblock title %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmation</title>
+</head>
+<body>
+    {% block title %}
+        <title>Email comfirmation</title>
+    {% endblock title %}
 
-{% block content %}
-    {% if success %}
-        {{ user.username }}, your account is confirmed!
-    {% else %}
-        Error, invalid token!
-    {% endif %}
-{% endblock content %}
+    {% block content %}
+        {% if success %}
+            {{ user.username }}, your account is confirmed!
+        {% else %}
+            Error, invalid token!
+        {% endif %}
+    {% endblock content %}  
+</body>

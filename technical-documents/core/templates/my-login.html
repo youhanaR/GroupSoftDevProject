@@ -6,12 +6,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <title>Login</title>
+    <style>
+        :root {
+          --auth-theme-color: #fa8336;
+        }
+      </style>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+      <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 </head>
 <body>
-    <div class="login-page">
+    <div class="auth-page">
         <div class="form">
             <h2>Login</h2> 
 
@@ -32,9 +36,10 @@
 
                 <input type="password" name="{{ loginform.password.name }}" placeholder="Password" required>
                 {{ loginform.password.errors }}
-
-                <button type="submit">Login</button>
+                
                 <p class="message">Forgot Password? <a href="{% url 'password_reset' %}">Reset Here</a></p>
+                <button type="submit">Login</button>
+                <p class="message">New User? <a href="{% url 'register' %}">Create an Account</a></p>
             </form>
         </div>
     </div>
