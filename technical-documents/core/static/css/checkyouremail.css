@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300');
+
+body {
+  background: #f6f4f3;
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  max-width: 360px;
+  background: #FFFFFF;
+  border: 10px solid #fe7f2d;
+  border-radius: 15px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 24px;
+  color: #1a1a1a;
+  font-weight: 300;
+  margin-bottom: 15px;
+}
+
+p {
+  font-size: 14px;
+  color: #4d4d4d;
+  margin-bottom: 20px;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 768px) {
+    .container {
+      max-width: 90%; /* Increase container width on smaller screens */
+      padding: 30px;  /* Adjust padding for smaller screens */
+    }
+  
+    h1 {
+      font-size: 22px; /* Make the title a bit smaller for mobile */
+    }
+  
+    p {
+      font-size: 12px; /* Smaller text size for mobile devices */
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .container {
+      max-width: 95%; /* Max width becomes even smaller */
+      padding: 20px; /* Decrease padding */
+    }
+  
+    h1 {
+      font-size: 20px; /* Further reduce the title size */
+    }
+  
+    p {
+      font-size: 12px; /* Adjust text size for readability on small screens */
+    }
+  }

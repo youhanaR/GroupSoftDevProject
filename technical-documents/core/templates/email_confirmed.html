@@ -1,16 +1,12 @@
-{% load static %}
-<!-- Author: Surin Chai -->
+
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Confirmed</title>
-</head>
+<html>
 <body>
-    <h2>Email successfully confirmed!</h2>
-    <p>You can now log in to your account.</p>
-    <a href="my-login">Go to Login</a> <!-- Link to login page -->
+    <h2>Activate Your Account</h2>
+    <p>Hi {{ user.username }},</p>
+    <p>Thanks for signing up! Please click the link below to activate your account:</p>
+    <a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}">Activate My Account</a>
+    <p>If you didn't sign up, you can ignore this email.</p>
 </body>
 </html>

@@ -36,6 +36,12 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name='password_reset_complete'),
 
+    #Registration Email Confirmation Related Paths
+    path('checkyouremail', views.check_your_email, name='check-your-email'),
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    path('activation-success/', views.activation_success, name='activation-success'),
+
+
     #Dynamic paths for the game description page
     path('game/description/<str:location>/', views.game_description, name='game_description'),
 

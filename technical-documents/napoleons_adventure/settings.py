@@ -43,7 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'widget_tweaks',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'napoleons_adventure.urls'
@@ -74,6 +81,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'napoleons_adventure.wsgi.application'
+
 
 
 # Database
@@ -143,3 +151,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('User_Email') # Retrieves the app app developers' email address from .env file to avoid coding sensitive data
 EMAIL_HOST_PASSWORD = os.environ.get('User_Password') # Retrieves app developers' password from.env file to avoid coding sensitive data
+
+# Email verification
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Requires email verification to activate account
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # Optional: Confirm email by clicking the link
+LOGIN_REDIRECT_URL = '/'  # Redirect after successful login
