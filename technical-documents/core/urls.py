@@ -41,6 +41,8 @@ urlpatterns = [
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('activation-success/', views.activation_success, name='activation-success'),
 
+    #Privacy Policy Page
+    path('privacy-policy/', views.privacy_policy, name='privacy-policy'),
 
     #Dynamic paths for the game description page
     path('game/description/<str:location>/', views.game_description, name='game_description'),

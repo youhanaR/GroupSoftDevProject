@@ -55,6 +55,7 @@ h2 {
     font-size: 14px;
     transition: all 0.3s ease;
     cursor: pointer;
+    margin-bottom: 20px;
 }
 
 .form button:hover,
@@ -72,3 +73,14 @@ h2 {
     margin-bottom: 2px;
     text-align: left;
 }
+
+.checkbox-container {
+    margin-top: 20px;  
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container input {
+    margin-right: 10px;  
+}
+

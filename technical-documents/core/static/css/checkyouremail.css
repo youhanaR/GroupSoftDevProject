@@ -35,33 +35,33 @@ p {
   margin-bottom: 20px;
 }
 
-/* Media Queries for Responsive Design */
+/* Mobile Implementation*/
 @media screen and (max-width: 768px) {
     .container {
-      max-width: 90%; /* Increase container width on smaller screens */
-      padding: 30px;  /* Adjust padding for smaller screens */
+      max-width: 90%; 
+      padding: 30px;  
     }
   
     h1 {
-      font-size: 22px; /* Make the title a bit smaller for mobile */
+      font-size: 22px; 
     }
   
     p {
-      font-size: 12px; /* Smaller text size for mobile devices */
+      font-size: 12px; 
     }
   }
   
   @media screen and (max-width: 480px) {
     .container {
-      max-width: 95%; /* Max width becomes even smaller */
-      padding: 20px; /* Decrease padding */
+      max-width: 95%; 
+      padding: 20px; 
     }
   
     h1 {
-      font-size: 20px; /* Further reduce the title size */
+      font-size: 20px; 
     }
   
     p {
-      font-size: 12px; /* Adjust text size for readability on small screens */
+      font-size: 12px; 
     }
   }

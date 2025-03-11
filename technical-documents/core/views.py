@@ -53,29 +53,31 @@ def register(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid(): # Validate the form 
-            try:
-                user = form.save(commit=False)
-                user.is_active = False  # Deactivate account until it is confirmed
-                user.save()
-                # Email confirmation
-                current_site = '127.0.0.1:8000/'
-                subject = 'Activate Your Account'
-                message = render_to_string('email_confirmed.html', {
-                    'user': user,
-                    'domain': current_site,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': default_token_generator.make_token(user),
-                })
-                send_mail(subject, message, 'nepoleonsadventure@gmail.com', [user.email], html_message = message)
+                try:
+                    user = form.save(commit=False)
+                    user.is_active = False  # Deactivate account until it is confirmed
+                    user.save()
+                    # Email confirmation
+                    current_site = '127.0.0.1:8000/'
+                    subject = 'Activate Your Account'
+                    message = render_to_string('email_confirmed.html', {
+                        'user': user,
+                        'domain': current_site,
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token': default_token_generator.make_token(user),
+                    })
+                    send_mail(subject, message, 'nepoleonsadventure@gmail.com', [user.email], html_message = message)
 
-                messages.success(request, "Registration successful! Check your email to activate your account.")
-                return redirect('check-your-email')
-            except IntegrityError:
-                messages.error(request, "Username already exists. Please choose another one.")
+                    messages.success(request, "Registration successful! Check your email to activate your account.")
+                    return redirect('check-your-email')
+                except IntegrityError:
+                    messages.error(request, "Username already exists. Please choose another one.")
     # Allows to access the form in the html file by {{ registerform }}
     context = {'registerform': form}  
     return render(request, 'register.html', context=context)
 
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
 
 # For email confirmation
 User = get_user_model()

@@ -47,6 +47,14 @@
                 {{ registerform.password2.errors }}
             
                 <button type="submit">Sign Up</button>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" name="agree" required>
+                    <label class="form-check-label" for="privacy_policy">
+                        I agree to the <a href="{% url 'privacy-policy' %}" target="_blank">privacy policy</a>
+                    </label>
+                </div>
+                
             </form>            
         </div>
     </div>

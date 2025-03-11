@@ -44,17 +44,17 @@ p {
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.3s ease;
-  text-decoration: none; /* Remove underline */
+  text-decoration: none; 
 }
 
 .btn:hover, .btn:active, .btn:focus {
   background: #e76c1d;
 }
 
-/* Media Queries for Responsive Design */
+/* Mobile Implementation*/
 @media screen and (max-width: 768px) {
   .container {
-    max-width: 90%; /* Increase container width on smaller screens */
+    max-width: 90%; 
     padding: 30px;
   }
 
