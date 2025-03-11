@@ -19,6 +19,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django_email_verification import urls as email_urls
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -26,6 +28,6 @@ urlpatterns = [
     path('', include('core.urls')),
     path('email/', include(email_urls), name='email-verification'),
     path('accounts/', include('allauth.urls')),  # Include allauth URLs
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

@@ -27,7 +27,7 @@ urlpatterns = [
    
     #User-Related Paths
     path('user-logout/', views.user_logout, name='user-logout'),
-    path('user-profile', views.user_profile, name="user-profile"), # you can acess the user profile by username
+    path('user-profile', views.user_profile, name="user-profile"), 
     path('delete-account', views.deleteAccount, name="delete-account"),
     
     #Password Reset Related Paths
