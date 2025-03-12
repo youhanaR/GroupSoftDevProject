@@ -1,0 +1,25 @@
+{% load static %}
+<!--Author: Juri Khushayl-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/log-out.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <title>Logout</title>
+</head>
+
+<body>
+<!--A logout page and a link to landing page-->
+<div class="logout">
+    <h3>Logged out!</h3>
+    <hr>
+
+    <a href="{% url 'landing' %}" class="logout-btn link"><h5>Login again</h5></a>
+</div>
+</body>
+</html>

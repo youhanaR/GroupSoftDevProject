@@ -1,0 +1,51 @@
+{% load static %}
+<!-- Author: Juri Kushayi, Ameera Abdullah -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <style>
+        :root {
+          --auth-theme-color: #fa8336;
+        }
+      </style>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+      <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+
+</head>
+<body>
+    <div class="auth-page">
+        <div class="form">
+            <h2>Login</h2> 
+
+            <!-- Display error messages -->
+            {% if loginform.non_field_errors %}
+                <div class="error-message">
+                    {% for error in loginform.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form class="login-form" method="POST" autocomplete="off">
+                {% csrf_token %}
+
+                <input type="text" name="{{ loginform.username.name }}" placeholder="Username" required>
+                {{ loginform.username.errors }}
+
+                <input type="password" name="{{ loginform.password.name }}" placeholder="Password" required>
+                {{ loginform.password.errors }}
+                
+                <p class="message">Forgot Password? <a href="{% url 'password_reset' %}">Reset Here</a></p>
+                <button type="submit">Login</button>
+                <p class="message">New User? <a href="{% url 'register' %}">Create an Account</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>
