@@ -67,12 +67,20 @@ body {
 }
 
 /* Checkbox Container */
-.checkbox-container input{
-    margin-top: 20px;  
+/* Checkbox Container */
+.checkbox-container {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;  /* Align checkbox to the left */
-    width: 100%;  /* Ensure container stretches across the form */
+    align-items: center;  /* Vertically align checkbox and label */
+    gap: 10px;  /* Adjust space between checkbox and text */
+    justify-content: center;  /* Center the checkbox-container horizontally */
+}
+
+/* Checkbox Input */
+.checkbox-container input {
+    margin-top: 0;  
+    vertical-align: middle;  
+    width: auto;  
+    height: auto;  
 }
 
 /* Styling the privacy policy link */
@@ -85,26 +93,32 @@ body {
     text-decoration: underline;
 }
 
+.checkbox-container label {
+    white-space: nowrap;  
+    font-size: 14px;  
+    vertical-align: middle;  
+    line-height: 1.2;  
+    margin-top: -14px; /* Fine-tune to vertically align label */
+}
+
 /* Media query for mobile responsiveness */
 @media (max-width: 767px) {
-    /* Ensure buttons stack vertically with space between them */
     .form button + .form button {
-        margin-top: 15px;  /* Adds space between stacked buttons */
+        margin-top: 15px;  
     }
 
-    /* For form pages with two buttons (like password reset), adjust button spacing */
     .form form button {
-        margin-bottom: 15px; /* Adds space between buttons when stacked */
+        margin-bottom: 15px; 
     }
 
-    /* Checkbox container adjustments for mobile */
     .checkbox-container {
-        flex-direction: row;  /* Align checkbox and label horizontally */
-        justify-content: flex-start;  /* Left-aligned */
+        flex-direction: row;
+        justify-content: center;  
     }
 }
 
-/* New rule for adding space between buttons on desktop */
+
+
 @media (min-width: 768px) {
     .form form button + button {
         margin-top: 15px; /* Adds space between buttons on desktop */
