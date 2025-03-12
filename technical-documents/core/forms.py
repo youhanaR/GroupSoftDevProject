@@ -7,6 +7,10 @@ from django.forms.widgets import PasswordInput, TextInput
 
 # Sign up form for the user 
 class CreateUserForm(UserCreationForm):
+    agree = forms.BooleanField(
+        required=True,
+        label="I agree to the privacy policy"
+    )
    
     class Meta:
         model = User

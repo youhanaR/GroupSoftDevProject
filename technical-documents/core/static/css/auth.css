@@ -67,12 +67,11 @@ body {
 }
 
 /* Checkbox Container */
-/* Checkbox Container */
 .checkbox-container {
     display: flex;
-    align-items: center;  /* Vertically align checkbox and label */
-    gap: 10px;  /* Adjust space between checkbox and text */
-    justify-content: center;  /* Center the checkbox-container horizontally */
+    align-items: center;  
+    gap: 10px; 
+    justify-content: center;  
 }
 
 /* Checkbox Input */
@@ -83,7 +82,6 @@ body {
     height: auto;  
 }
 
-/* Styling the privacy policy link */
 .checkbox-container a {
     color: var(--auth-theme-color);
     text-decoration: none;
@@ -98,7 +96,7 @@ body {
     font-size: 14px;  
     vertical-align: middle;  
     line-height: 1.2;  
-    margin-top: -14px; /* Fine-tune to vertically align label */
+    margin-top: -14px; 
 }
 
 /* Media query for mobile responsiveness */
