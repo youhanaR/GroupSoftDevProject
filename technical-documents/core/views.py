@@ -205,3 +205,6 @@ def game_description(request, location):
         'location': normalized_location 
     })
 
+#Renders overall leaderboard
+def leaderboard(request):
+    return render(request, 'leaderboard.html')

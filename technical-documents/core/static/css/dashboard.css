@@ -40,6 +40,44 @@ body {
     color: rgb(173, 76, 24) !important; 
 }
 
+/* Hamburger Menu (Hidden by Default) */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.hamburger-menu .line {
+    width: 25px;
+    height: 3px;
+    background-color: #fa8336;
+    margin: 5px 0;
+}
+
+/* Mobile Navbar Styles */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none; /* Hide the links by default */
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        background-color: white;
+        text-align: center;
+        padding: 10px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        display: flex; /* Show when toggled */
+    }
+
+    .hamburger-menu {
+        display: flex; /* Show on mobile */
+    }
+}
+
 
 .logo img {
     height: 60px; 
