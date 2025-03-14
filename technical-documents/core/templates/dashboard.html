@@ -33,7 +33,7 @@
             <a href="javascript:void(0);" class="location-marker" 
                style="left: {{ location.x_coordinate }}%; top: {{ location.y_coordinate }}%;" 
                title="{{ location.name }}" 
-               onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
+               onclick="openModal('{{ location.access_code }}', '{{ location.game.url }}', '{{ location.name }}')">
             </a>
         {% endfor %}
     </div>

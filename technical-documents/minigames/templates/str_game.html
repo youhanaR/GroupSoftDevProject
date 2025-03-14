@@ -1,3 +1,5 @@
+<!--Author: Jem Challis-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +34,12 @@
     <div id="grid" class="grid"></div>
 
     <div class="buttons">
-        <button onclick="window.location.href='{% url 'str_end' %}'">End Game</button>
+        <form id="endGameForm" method="POST" action="{% url 'str_end' %}">
+            {% csrf_token %}
+            <input type="hidden" id="score_input" name="score">
+            <input type="hidden" id="target_input" name="target">
+            <button type="submit">End Game</button>
+        </form>
     </div>
 
     <div id="task"></div>
@@ -56,13 +63,15 @@
         number_of_rubbish = 15
         turns = 15
         score_target = 50
+        document.getElementById('target_input').value = score_target
 
         task = types[random.randint(0,len(types)-1)]    #this variable stores the type of piece they must match in order to remove another piece of rubbish
         score = 0
+        document.getElementById('score_input').value = score
         piece_picked = False
         selected_piece = None                           #this variable stores the location(0 to number_of_spaces-1) of the selected piece
 
-        display(f"Current task: {task}", target = "task")
+        display(f"Current task: sort {task}", target = "task")
         display(f"Score: {score}", target = "score")
         display(f"Score target: {score_target}", target = "target")
         display(f"Turns remaining: {turns}", target = "turns")
@@ -239,6 +248,7 @@
                 for i in range(0, len(replaced)):
                     three_check(replaced[i])
                 score+=1                        #1 point for 3 in a row
+            document.getElementById('score_input').value = score
         
         
         #this function checks above and below the selected piece, to see if it is 3 in a row, or more
@@ -320,7 +330,13 @@
                 grid_container.appendChild(square)
                 square.onclick = lambda event, i=i: clicked(event, i)
             document.getElementById('task').innerHTML = ""
-            display(f"Current task: {task}", target = "task")
+            if turns != 0:
+                if task != None:
+                    display(f"Current task: sort {task}", target = "task")
+                else:
+                    display(f"Current task: {task}", target = "task")
+            else:
+                display(f"Game over: click End Game to see your results", target = "task")
             document.getElementById('score').innerHTML = ""
             display(f"Score: {score}", target = "score")
             document.getElementById('turns').innerHTML = ""
@@ -328,8 +344,6 @@
             document.getElementById('rubbish_message').innerHTML = ""
             if task == None:
                 display(f"Click on a piece of rubbish to remove", target = "rubbish_message")
-            elif turns == 0:
-                display(f"Game over: click End Game to see your results", target = "rubbish_message")
 
     </py-script>
 </body>

@@ -1,4 +1,4 @@
-# Author: Ameera Abdullah, Juri Kushayi, Surin Chai
+# Author: Ameera Abdullah, Juri Kushayi, Surin Chai, Jem Challis
 
 """
 Django settings for napoleons_adventure project.
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'minigames',
     'widget_tweaks',
 ]
 
@@ -122,7 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'core' /'static']
+STATICFILES_DIRS = [BASE_DIR / 'napoleons_adventure' /'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

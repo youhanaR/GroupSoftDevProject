@@ -1,4 +1,4 @@
-# Author: Juri Kushayi, Surin Chai, Ameera Abdullah
+# Author: Juri Kushayi, Surin Chai, Ameera Abdullah, Jem Challis
 
 """
 This module defines the views for the Django web application. For this prototype, 
@@ -17,7 +17,7 @@ Views:
    - `deleteAccount` - Enables users to delete their account.
 4. **Game Descriptions** (`game_description`) - Displays an overview of the game based on the selected location.
 
-Author: Juri Khushayl, Surin Wi Sut, Ameera Abdullah
+Author: Juri Khushayl, Surin Wi Sut, Ameera Abdullah, Jem Challis
 """
 
 from django.shortcuts import render, redirect
@@ -111,6 +111,7 @@ def deleteAccount(request):
 def game_description(request, location):
     # Normalize the location string to match dictionary keys
     normalized_location = location.lower().replace(" ", "-")
+    game_url = (Location.objects.get(name=location)).game.url
 
     # Hardcoded game data
     game_data = {
@@ -147,14 +148,6 @@ def game_description(request, location):
         'game_description': game_info['description'],
         'how_to_play': game_info['how_to_play'],
         'sustainability_theme': game_info['sustainability_theme'],
-        'location': normalized_location 
+        'location': normalized_location,
+        'game_url': game_url
     })
-
-def str_intro(request):
-    return render(request, 'str_intro.html')
-
-def str_game(request):
-    return render(request, 'str_game.html')
-
-def str_end(request):
-    return render(request, 'str_end.html')

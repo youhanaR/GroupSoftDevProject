@@ -1,4 +1,4 @@
-# Author: Ameera Abdullah
+# Author: Ameera Abdullah, Jem Challis
 
 """
 URL configuration for napoleons_adventure project.
@@ -24,6 +24,7 @@ from django_email_verification import urls as email_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
+    path('', include('minigames.urls')),
     path('email/', include(email_urls), name='email-verification'),
     
 ]
