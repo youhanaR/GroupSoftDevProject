@@ -26,6 +26,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
+    path('', include('minigames.urls')),
     path('email/', include(email_urls), name='email-verification'),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

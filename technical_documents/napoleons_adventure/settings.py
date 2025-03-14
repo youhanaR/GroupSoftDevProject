@@ -1,4 +1,4 @@
-# Author: Ameera Abdullah, Juri Kushayi, Surin Chai
+# Author: Ameera Abdullah, Juri Kushayi, Surin Chai, Jem Challis
 
 """
 Django settings for napoleons_adventure project.
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'minigames',
     'widget_tweaks',
 ]
 
