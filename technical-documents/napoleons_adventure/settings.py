@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 ]
 
-SITE_ID = 1
+SITE_ID = 4
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

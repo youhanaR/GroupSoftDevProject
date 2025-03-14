@@ -58,7 +58,7 @@ def register(request):
                     user.is_active = False  # Deactivate account until it is confirmed
                     user.save()
                     # Email confirmation
-                    current_site = '127.0.0.1:8000/'
+                    current_site = get_current_site(request)
                     subject = 'Activate Your Account'
                     message = render_to_string('email_confirmed.html', {
                         'user': user,
