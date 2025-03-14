@@ -1,0 +1,44 @@
+<!--Author: Jem Challis-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+    <title>Sort the Recycling</title>
+</head>
+
+
+<body>
+    <h1>Sort the Recycling</h1>
+
+    <div class="buttons">
+        <button onclick="window.location.href='{% url 'str_game' %}'">Replay Game</button>
+        <button onclick="window.location.href='{% url 'dashboard' %}'">Exit Game</button>
+    </div>
+
+    <div id="output"></div>
+
+    <span id="score" style="display: none;" >{{ score }}</span>
+    <span id="target" style="display: none;" >{{ target }}</span>
+
+    <py-script>
+        from pyscript import display
+        from js import document
+
+        score = int(document.getElementById("score").textContent)
+        target = int(document.getElementById("target").textContent)
+
+        if score >= target:
+            display(f"You scored {score} points.  You win.", target = "output")
+            display("You have beaten the game, but feel free to keep playing for a new high score.", target = "output")
+            display("Make sure to keep in mind the things you've learned here: recycling should be sorted, and rubbish should be seperated.", target = "output")
+        else:
+            display(f"You scored {score} points. You lose, try again.", target = "output")
+            display("Try completing the tasks in order to remove the rubbish.", target = "output")
+            display("You get more points for T and L shapes (5) and 4 and 5 in a rows (3).", target = "output")
+    </py-script>
+</body>
+</html>

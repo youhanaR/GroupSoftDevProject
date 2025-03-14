@@ -1,0 +1,34 @@
+<!--Author: Jem Challis-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+    <title>Sort the Recycling</title>
+</head>
+
+
+<body>
+    <h1>Sort the Recycling</h1>
+
+    <h3>Welcome to Sort the Recycling!</h3>
+
+    <div class="buttons">
+        <form id="endGameForm" method="POST" action="{% url 'str_game' %}">
+            {% csrf_token %}
+            <button type="submit">Play Game</button>
+        </form>
+    </div>
+
+    <p>Sort the Recycling is a match-three game where you sort groups of recycling into rows and columns (min 3).</p>
+    <p>3 in a row is 1 point, more than 3 is 3 points, and getting a vertical and horizontal combo is 5 points.</p>
+    <p>You must also deal with rubbish. Rubbish cannot be sorted, and must instead be removed from the grid.</p>
+    <p>You gain the ability to remove the rubbish by completing tasks. Your current task will display at the bottom of the screen.</p>
+    <p>You must reach the target of 50 points before your 15 turns run out.</p>
+    <p>Good luck.</p>
+
+</body>
+</html>

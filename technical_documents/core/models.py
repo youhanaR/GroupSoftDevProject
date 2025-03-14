@@ -1,6 +1,7 @@
-# Author: Ameera Abdullah, Juri Khushayl
+# Author: Ameera Abdullah, Juri Khushayl, Jem Challis
 from django.db import models
 from django.contrib.auth.models import User
+from minigames.models import Game
 
 # Create a location table in the database ~ Ameera
 class Location(models.Model):
@@ -8,7 +9,7 @@ class Location(models.Model):
     x_coordinate = models.FloatField()  # Position on the map
     y_coordinate = models.FloatField()
     access_code = models.CharField(max_length=20)
-    game_url = models.URLField()  # URL of the minigame page
+    game = models.OneToOneField(Game, on_delete=models.CASCADE, null=True)  #these should only be null until games are added for each location
 
     def __str__(self):
         return self.name

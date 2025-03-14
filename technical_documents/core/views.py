@@ -1,4 +1,4 @@
-# Author: Juri Kushayi, Surin Chai, Ameera Abdullah
+# Author: Juri Kushayi, Surin Chai, Ameera Abdullah, Jem Challis
 
 """
 This module defines the views for the Django web application. For this prototype, 
@@ -111,6 +111,7 @@ def deleteAccount(request):
 def game_description(request, location):
     # Normalize the location string to match dictionary keys
     normalized_location = location.lower().replace(" ", "-")
+    game_url = (Location.objects.get(name=location)).game.url
 
     # Hardcoded game data
     game_data = {
@@ -147,6 +148,7 @@ def game_description(request, location):
         'game_description': game_info['description'],
         'how_to_play': game_info['how_to_play'],
         'sustainability_theme': game_info['sustainability_theme'],
-        'location': normalized_location 
+        'location': normalized_location ,
+        'game_url': game_url
     })
 
