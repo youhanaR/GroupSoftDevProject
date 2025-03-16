@@ -1,6 +1,5 @@
 {% load static %}
-<!-- Author: Juri Kushayi, Ameera Abdullah -->
-
+<!-- Author: Juri Khushayl, Ameera Abdullah, Surin Chai -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,11 +8,113 @@
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <style>
         :root {
-          --auth-theme-color: #619b8a;
+            --auth-theme-color: #619b8a;
         }
-      </style>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-      <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+
+        /* Custom Modal Styles */
+        .custom-modal {
+            display: none; /* Keep the modal hidden initially */
+            position: fixed;
+            z-index: 1050; 
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .custom-modal-content {
+            background-color: white;
+            padding: 20px;
+            width: 50%;
+            max-height: 70vh;
+            max-width: 600px;
+            overflow-y: auto;
+            border-radius: 8px;
+            position: relative;
+        }
+
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #696868;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            color: rgb(28, 28, 28);
+        }
+
+        /* Grayed-out checkbox when disabled */
+        #agree-checkbox:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Tooltip for disabled checkbox */
+        #agree-checkbox[disabled] {
+            position: relative;
+        }
+
+        #agree-checkbox[disabled]:hover::after {
+            content: 'You must read through the privacy policy to tick this box.';
+            position: absolute;
+            top: -20px;
+            left: 100%;
+            padding: 5px;
+            background-color: #333;
+            color: #fff;
+            font-size: 12px;
+            white-space: nowrap;
+            border-radius: 4px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            gap: 10px; 
+            font-size: 14px; 
+            margin-bottom: 15px;
+            flex-wrap: wrap; 
+        }
+
+
+        .checkbox-container input[type="checkbox"] {
+            width: 16px; /* Standard checkbox size */
+            height: 16px;
+            margin: 0; /* Remove default margins */
+        }
+
+        .checkbox-container label {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .checkbox-container label a {
+        margin-left: 4px;
+    }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .custom-modal-content {
+                width: 90%;
+                max-width: 80%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Sign Up</title>
 </head>
 <body>
@@ -21,7 +122,6 @@
         <div class="form"> 
             <h2>Sign Up</h2>
 
-            <!-- Display error messages -->
             {% if messages %}
             <div class="messages">
                 {% for message in messages %}
@@ -29,60 +129,129 @@
                 {% endfor %}
             </div>
             {% endif %}
-
             <form method="POST" autocomplete="off">
                 {% csrf_token %}
-            
                 <input type="text" name="{{ registerform.username.name }}" placeholder="Username" required>
                 {{ registerform.username.errors }}
-                <span class="description" id="username-description">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
-            
                 <input type="email" name="{{ registerform.email.name }}" placeholder="Email address" required>
                 {{ registerform.email.errors }}
-            
                 <input type="password" name="{{ registerform.password1.name }}" placeholder="Password" required>
                 {{ registerform.password1.errors }}
-                <span class="description" id="password-description">
-                    Your password can’t be too similar to your other personal information.<br>
-                    Your password must contain at least 8 characters.<br>
-                    Your password can’t be a commonly used password.<br>
-                    Your password can’t be entirely numeric.
-                </span>
-            
                 <input type="password" name="{{ registerform.password2.name }}" placeholder="Confirm Password" required>
                 {{ registerform.password2.errors }}
             
+                <div class="checkbox-container">
+                    <input type="checkbox" name="agree" id="agree-checkbox" disabled title="You need to scroll and click 'I have read the policy' first.">
+                    <label for="agree-checkbox">
+                        I agree to the<a href="#" id="open-modal">privacy policy</a>
+                    </label>                    
+                </div>
+            
+                <div id="error-message" style="color: red; display: none; font-size: small;"></div>
+            
                 <button type="submit">Sign Up</button>
-            </form>            
+
+                <div style="display: flex; align-items: center; justify-content: center; margin: 20px 0;">
+                    <hr style="flex-grow: 1; border: 1px solid #ccc; margin: 0;">
+                    <span style="padding: 0 10px; color: #ccc;">OR</span>
+                    <hr style="flex-grow: 1; border: 1px solid #ccc; margin: 0;">
+                </div>
+
+                <p class="message">Already a user? <a href="{% url 'my-login' %}">Login</a></p>
+        </form>                       
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery -->
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Privacy Policy</h2>
+            <div id="policy-text" style="max-height: 300px; overflow-y: auto;"></div> <!-- Privacy policy text -->
+            <button id="agree-button" disabled>I've read the policy</button>
+        </div>
+    </div>
+
     <script>
-        $(document).ready(function() {
-            // Hide all descriptions initially
-            $('.description').hide();
+        document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const agreeCheckbox = document.getElementById("agree-checkbox");
+        const errorMessage = document.getElementById("error-message");
+        
+        const modal = document.getElementById("privacy-modal");
+        const openModal = document.getElementById("open-modal"); // trigger element
+        const closeModal = document.querySelector(".close-btn");
+        const policyText = document.getElementById("policy-text");
+        const agreeButton = document.getElementById("agree-button");
+        
+        // Open the modal when clicking on the 'privacy policy' link
+        openModal.onclick = function () {
+            modal.style.display = "flex"; 
+            agreeButton.disabled = true; // Disable the agree button until scrolled to bottom
+            fetch("{% url 'privacy-policy' %}")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch privacy policy');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    policyText.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error fetching the privacy policy:', error);
+                    policyText.innerHTML = "<p>Sorry, we couldn't load the privacy policy at the moment.</p>";
+                });
+        };
 
-            // Show description on focus
-            $('input[type="text"], input[type="password"], input[type="email"]').focus(function() {
-                const name = $(this).attr('name');
-                if (name === '{{ registerform.username.name }}') {
-                    $('#username-description').show();
-                } else if (name === '{{ registerform.password1.name }}') {
-                    $('#password-description').show();
-                }
-            });
+        // Close the modal when clicking the close button
+        closeModal.onclick = function () {
+            modal.style.display = "none";
+        };
 
-            // Hide description on blur
-            $('input[type="text"], input[type="password"], input[type="email"]').blur(function() {
-                const name = $(this).attr('name');
-                if (name === '{{ registerform.username.name }}') {
-                    $('#username-description').hide();
-                } else if (name === '{{ registerform.password1.name }}') {
-                    $('#password-description').hide();
-                }
-            });
+        // Close modal if clicked outside of modal-content
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        // Enable the agree button when the user scrolls to the bottom of the policy text
+        policyText.addEventListener("scroll", function () {
+            if (policyText.scrollTop + policyText.clientHeight >= policyText.scrollHeight) {
+                agreeButton.disabled = false;
+            }
         });
+
+        // When the user clicks the "I've read the policy" button
+        agreeButton.onclick = function () {
+            agreeCheckbox.disabled = false;  
+            agreeCheckbox.required = true; 
+            modal.style.display = "none"; 
+        };
+
+        // Form submission check for the checkbox agreement
+        form.addEventListener("submit", function (e) {
+            // Check if the checkbox is not checked
+            if (!agreeCheckbox.checked) {
+                e.preventDefault();  // Prevent form submission
+
+                // Display error message
+                errorMessage.style.display = "block";
+                errorMessage.textContent = "You must read through and agree to the privacy policy before registering.";
+            } else {
+                // Hide the error message if the checkbox is checked
+                errorMessage.style.display = "none";
+            }
+        });
+
+        // Hide error message when the checkbox is checked
+        agreeCheckbox.addEventListener("change", function () {
+            if (agreeCheckbox.checked) {
+                errorMessage.style.display = "none"; // Hide the error message
+            }
+        });
+    });
     </script>
 </body>
 </html>

@@ -12,9 +12,9 @@
           --auth-theme-color: #fa8336;
         }
       </style>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-      <link rel="stylesheet" href="{% static 'css/auth.css' %}">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <title>Login</title>
 </head>
 <body>
     <div class="auth-page">
@@ -39,8 +39,15 @@
                 <input type="password" name="{{ loginform.password.name }}" placeholder="Password" required>
                 {{ loginform.password.errors }}
                 
-                <p class="message">Forgot Password? <a href="{% url 'password_reset' %}">Reset Here</a></p>
+                <p class="message" style="text-align: right; width: 100%; margin-top: -3px; margin-bottom: 0;"> <a href="{% url 'password_reset' %}">Forgot Password</a></p>
                 <button type="submit">Login</button>
+
+                <div style="display: flex; align-items: center; justify-content: center; margin: 20px 0;">
+                    <hr style="flex-grow: 1; border: 1px solid #ccc; margin: 0;">
+                    <span style="padding: 0 10px; color: #ccc;">OR</span>
+                    <hr style="flex-grow: 1; border: 1px solid #ccc; margin: 0;">
+                </div>
+
                 <p class="message">New User? <a href="{% url 'register' %}">Create an Account</a></p>
             </form>
         </div>

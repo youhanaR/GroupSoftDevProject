@@ -11,6 +11,7 @@ Views:
    - `register` - Handles user registration.
    - `my_login` - Manages user login authentication.
    - `user_logout` - Logs out the user and redirects to a logout page.
+   - `privacy_policy` - Content of privacy policy that is dynamically accessed by the registration page.
 3. **Dashboard & User Management**:
    - `dashboard` - Displays an interactive map with game locations.
    - `user_profile` - Allows users to update their profile details.
@@ -67,6 +68,10 @@ def my_login(request):
     # Allows to access the form in the html file by {{ form }}
     context = {'loginform': form}
     return render(request, 'my-login.html', context=context)
+
+#Privacy Policy Pop-Up Content
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
 
 # Main Page View (Dashboard)
 def dashboard(request):
