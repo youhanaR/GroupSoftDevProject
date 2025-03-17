@@ -1,0 +1,220 @@
+<!--Author: Rami Youhana, Jem Challis-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+    <title>Sort the Recycling</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        #game-container {
+            width: 600px;
+            height: 600px;
+            border: 1px solid black;
+            position: relative;
+            overflow: hidden;
+            background-color: lightblue;
+        }
+        .falling-item {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+        }
+        .bin {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            bottom: 10px;
+            z-index: 20;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 600px;
+        }
+        #score, #lives {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .bin-selector button {
+            width: 60px;
+            height: 40px;
+            margin: 5px;
+        }
+        .large-button {
+            width: 100px;
+            height: 60px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+ 
+<body>
+    <h1>Recycle Rush</h1>
+    {% load static %}
+ 
+    <div id="output"></div>
+    <div id="game-container">
+        <img id="bin" class="bin" src="{%static 'images/RR_images/Recycle_Bin_Plastic.png'%}" style="left: 260px;">
+    </div>
+    <div class="controls">
+        <button id="left-btn" class="large-button">⬅</button>
+        <button id="right-btn" class="large-button">➡</button>
+    </div>
+    <div class="bin-selector">
+        <button id="plastic-bin-btn">Plastic</button>
+        <button id="battery-bin-btn">Battery</button>
+        <button id="can-bin-btn">Can</button>
+        <button id="paper-bin-btn">Paper</button>
+    </div>
+    <div id="score">Score: 0</div>
+    <div id="lives">Lives: 3</div>
+
+    <div class="buttons">
+        <form id="endGameForm" method="POST" action="{% url 'recycle_rush_end' %}">
+            {% csrf_token %}
+            <input type="hidden" id="score_input" name="score">
+            <input type="hidden" id="target_input" name="target">
+            <button type="submit">End Game</button>
+        </form>
+    </div>
+
+    <py-script>
+        from pyodide.ffi import create_proxy
+        from js import document, setInterval, requestAnimationFrame, clearInterval
+        import random
+
+        container = document.getElementById("game-container")
+        bin_element = document.getElementById("bin")
+        left_btn = document.getElementById("left-btn")
+        right_btn = document.getElementById("right-btn")
+        score_element = document.getElementById("score")
+        lives_element = document.getElementById("lives")
+        bin_position = 260
+        score = 0
+        document.getElementById('score_input').value = score
+        target = 10
+        document.getElementById('target_input').value = target
+        lives = 3
+        game_active = True
+        move_interval = None
+
+        trash_types = ["plastic", "can", "battery", "paper"]
+        bin_images = {
+            "plastic": "{% static 'images/RR_images/Recycle_Bin_Plastic.png' %}",
+            "can": "{% static 'images/RR_images/Recycle_Bin_Can.png' %}",
+            "battery": "{% static 'images/RR_images/Recycle_Bin_Battery.png' %}",
+            "paper": "{% static 'images/RR_images/Recycle_Bin_Paper.png' %}"
+        }
+        trash_images = {
+            "plastic": "{% static 'images/RR_images/Recycle_PBottle.png' %}",
+            "can": "{% static 'images/RR_images/Recycle_can.png' %}",
+            "battery": "{% static 'images/RR_images/Recycle_Battery.png' %}",
+            "paper": "{% static 'images/RR_images/Recycle_Paper.png' %}"
+        }
+        current_bin = "plastic"
+
+        def move_bin(direction):
+            global bin_position
+            if game_active:
+                bin_position = max(0, min(520, bin_position + direction))
+                bin_element.style.left = f"{bin_position}px"
+
+        def start_moving(direction):
+            global move_interval
+            if move_interval is None:
+                move_interval = setInterval(create_proxy(lambda: move_bin(direction)), 20)
+        
+        def stop_moving():
+            global move_interval
+            if move_interval is not None:
+                clearInterval(move_interval)
+                move_interval = None
+
+        left_btn.onmousedown = create_proxy(lambda e: start_moving(-8))
+        right_btn.onmousedown = create_proxy(lambda e: start_moving(8))
+        left_btn.onmouseup = right_btn.onmouseup = create_proxy(lambda e: stop_moving())
+        left_btn.onmouseleave = right_btn.onmouseleave = create_proxy(lambda e: stop_moving())
+
+        def change_bin(bin_type):
+            global current_bin
+            current_bin = bin_type
+            bin_element.src = bin_images[bin_type]
+
+        document.getElementById("plastic-bin-btn").onclick = create_proxy(lambda e: change_bin("plastic"))
+        document.getElementById("battery-bin-btn").onclick = create_proxy(lambda e: change_bin("battery"))
+        document.getElementById("can-bin-btn").onclick = create_proxy(lambda e: change_bin("can"))
+        document.getElementById("paper-bin-btn").onclick = create_proxy(lambda e: change_bin("paper"))
+
+        def check_collision(item):
+            global score, lives, game_active
+            item_left = int(item.style.left[:-2])
+            bin_left = int(bin_element.style.left[:-2])
+            if bin_left < item_left < bin_left + 80:
+                if item.dataset.type == current_bin:
+                    score += 1
+                    document.getElementById('score_input').value = score
+                else:
+                    lives -= 1
+            else:
+                lives -= 1
+            
+            score_element.innerText = f"Score: {score}"
+            lives_element.innerText = f"Lives: {lives}"
+            
+            if lives <= 0:
+                game_active = False
+                container.innerHTML = '<h2>Game Over!</h2>'
+
+        def drop_item():
+            if not game_active:
+                return
+            
+            item = document.createElement("img")
+            item.className = "falling-item"
+            item.style.left = f"{random.randint(0, 460)}px"
+            item.style.top = "0px"
+            item_type = random.choice(trash_types)
+            item.src = trash_images[item_type]
+            item.dataset.type = item_type
+            container.appendChild(item)
+            
+            position = 0
+            
+            def fall(_=None):
+                nonlocal position
+                if not game_active:
+                    return
+                
+                if position < 460:
+                    position += 2
+                    item.style.top = f"{position}px"
+                    requestAnimationFrame(fall_proxy)
+                else:
+                    check_collision(item)
+                    if item.parentNode:
+                        container.removeChild(item)
+            
+            fall_proxy = create_proxy(fall)
+            requestAnimationFrame(fall_proxy)
+
+        setInterval(create_proxy(drop_item), 2500)  
+        
+    </py-script>
+</body>
+</html>
