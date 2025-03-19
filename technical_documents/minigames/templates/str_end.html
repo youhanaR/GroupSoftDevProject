@@ -1,4 +1,6 @@
+{% load static %}
 <!--Author: Jem Challis-->
+<!--Styling: Juri Khushayl-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,23 +8,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <link rel="stylesheet" href="{% static 'css/str-game.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
     <title>Sort the Recycling</title>
 </head>
 
 
 <body>
+<div class ="game-card">
     <h1>Sort the Recycling</h1>
 
-    <div class="buttons">
-        <button onclick="window.location.href='{% url 'str_game' %}'">Replay Game</button>
-        <button onclick="window.location.href='{% url 'dashboard' %}'">Exit Game</button>
-    </div>
-
     <div id="output"></div>
-
     <span id="score" style="display: none;" >{{ score }}</span>
     <span id="target" style="display: none;" >{{ target }}</span>
+
+    <div class="buttons">
+        <button onclick="window.location.href='{% url 'str_game' %}'" class="play-end">Replay Game</button>
+        <button onclick="window.location.href='{% url 'dashboard' %}'" class="play-end">Exit Game</button>
+    </div>
 
     <py-script>
         from pyscript import display
@@ -40,5 +44,6 @@
             display("Try completing the tasks in order to remove the rubbish.", target = "output")
             display("You get more points for T and L shapes (5) and 4 and 5 in a rows (3).", target = "output")
     </py-script>
+</div>
 </body>
 </html>

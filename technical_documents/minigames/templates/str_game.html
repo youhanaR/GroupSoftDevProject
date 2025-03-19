@@ -1,56 +1,47 @@
+{% load static %}
 <!--Author: Jem Challis-->
+<!--Styling: Juri Khushayl-->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <link rel="stylesheet" href="{% static 'css/str-game.css' %}">
     <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
     <title>Sort the Recycling</title>
-
-    <style>
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(7, 70px);
-            grid-template-rows: repeat(7, 70px);
-            gap: 5px;
-            padding-bottom: 5px;
-        }
-        .square {
-            width: 70px;
-            height: 70px;
-            background-color: lightblue;
-            border: 1px solid black;
-            cursor: pointer;
-        }
-    </style>
 </head>
 
 
 <body>
+
+<div class="game-container">
     <h1>Sort the Recycling</h1>
 
     <div id="grid" class="grid"></div>
+
+  <div class="game-scores">
+    <div id="task"></div>
+    <div id="score"></div>
+    <div id="target"></div>
+    <div id="turns"></div>
+    <div id="rubbish_message"></div>
+  </div>
 
     <div class="buttons">
         <form id="endGameForm" method="POST" action="{% url 'str_end' %}">
             {% csrf_token %}
             <input type="hidden" id="score_input" name="score">
             <input type="hidden" id="target_input" name="target">
-            <button type="submit">End Game</button>
+            <button type="submit" class="play-game">End Game</button>
         </form>
     </div>
-
-    <div id="task"></div>
-    <div id="score"></div>
-    <div id="target"></div>
-    <div id="turns"></div>
-    <div id="rubbish_message"></div>
-
+</div>
     {% load static %}
 
-    <py-script>
+   <py-script>
         from pyscript import display
         from js import document
         import random
@@ -345,6 +336,7 @@
             if task == None:
                 display(f"Click on a piece of rubbish to remove", target = "rubbish_message")
 
-    </py-script>
+    </py-script> 
+
 </body>
 </html>
