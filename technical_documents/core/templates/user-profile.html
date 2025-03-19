@@ -16,128 +16,122 @@
 </head>
 
 <body>
-<!--Nav bar linking to user profile, logout page, and the leaderboard-->
-    <nav class="navbar">
-        <a href="{% url 'dashboard'%}" class="logo">
-            <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
-        </div>
-        <div class="nav-links">
-            <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
-            <a href="#" class="nav-button">Leaderboard</a>
-            <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
-        </div>
-    </nav>
-
+  <!--Nav bar linking to user profile, logout page, and the leaderboard-->
+  <nav class="navbar">
+    <a href="{% url 'dashboard'%}" class="logo">
+        <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
+    </div>
+    <div class="nav-links">
+        <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
+        <a href="#" class="nav-button">Leaderboard</a>
+        <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
+    </div>
+</nav>
+   
 <!--A container for the user profile containing the profile image and their data (username, email)-->
 <div class="user-profile"> 
-    <header class="profile-header">
-        <h1>{{ request.user.username }}</h1>
-      </header>
-    <!--Profile image-->
-    <div class="profile-content">
-         <div class="profile-pic">
-        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile image">      
-         </div>
+  <header class="profile-header">
+      <h1>{{ request.user.username }}</h1>
+    </header>
+  <!--Profile image-->
+  <div class="profile-content">
+       <div class="profile-pic">
+         <img src="{% static user.profile.profile_image %}" alt="Profile Image">
+       </div>
 
-        <!--User profile form-->
-       <form method="POST">
-        {% csrf_token %}
-       <div class="profile-detail">
-         <!-- User' username field with a pen button to update their username and error message for if the updated username already exist in the database -->
-        <div class="field">
-            <label>Username:</label>
-            {% if u_form.username.errors %}
-              <span class="display-text" data-target="id_username" style="display: none;">
-                {{ u_form.username.value }}
-              </span>
-              {{ u_form.username|add_class:"error-input active-input" }}
-            {% else %}
-              <span class="display-text" data-target="id_username">
-                {{ u_form.username.value }}
-              </span>
-              {{ u_form.username|add_class:"hidden-input" }}
-            {% endif %}
-          
-            <i class="fa fa-edit"></i>
-          </div>
-          
+      <!--User profile form-->
+     <form method="POST">
+      {% csrf_token %}
+     <div class="profile-detail">
+       <!-- User' username field with a pen button to update their username and error message for if the updated username already exist in the database -->
+      <div class="field">
+          <label>Username:</label>
           {% if u_form.username.errors %}
-            <div class="error">
-              {% for error in u_form.username.errors %}
-                <p>{{ error }}</p>
-              {% endfor %}
-            </div>
+            <span class="display-text" data-target="id_username" style="display: none;">
+              {{ u_form.username.value }}
+            </span>
+          
+            {{ u_form.username|add_class:"error-input active-input" }}
+          {% else %}
+            <span class="display-text" data-target="id_username">
+              {{ u_form.username.value }}
+            </span>
+            {{ u_form.username|add_class:"hidden-input" }}
           {% endif %}
-           <!-- User' email field with a pen button to update their email and error message for if the updated email already exist in the database -->
-          <div class="field">
-            <label>Email:</label>
-            {% if u_form.email.errors %}
-              <span class="display-text" data-target="id_email" style="display: none;">
-                {{ u_form.email.value }}
-              </span>
-              {{ u_form.email|add_class:"error-input active-input" }}
-            {% else %}
-              <span class="display-text" data-target="id_email">
-                {{ u_form.email.value }}
-              </span>
-              {{ u_form.email|add_class:"hidden-input" }}
-            {% endif %}
-            <i class="fa fa-edit"></i>
-          </div>
-
-          {% if u_form.email.errors %}
+          <i class="fa fa-edit"></i>
+        </div>
+        
+        {% if u_form.username.errors %}
           <div class="error">
-            {% for error in u_form.email.errors %}
+            {% for error in u_form.username.errors %}
               <p>{{ error }}</p>
             {% endfor %}
           </div>
         {% endif %}
-        
-        <!-- Buuton to save changes to update their profile -->
-        <div class="button">
-        <button type="submit" class="save-btn">Save Changes</button>
-        <!-- Link to user delete page -->
-        <a href="{% url 'delete-account' %}" class="delete delete-btn ">Delete account</a>
-
-          
+         <!-- User' email field with a pen button to update their email and error message for if the updated email already exist in the database -->
+        <div class="field">
+          <label>Email:</label>
+          {% if u_form.email.errors %}
+            <span class="display-text" data-target="id_email" style="display: none;">
+              {{ u_form.email.value }}
+            </span>
+            {{ u_form.email|add_class:"error-input active-input" }}
+          {% else %}
+            <span class="display-text" data-target="id_email">
+              {{ u_form.email.value }}
+            </span>
+            {{ u_form.email|add_class:"hidden-input" }}
+          {% endif %}
+          <i class="fa fa-edit"></i>
         </div>
-    </form>
-   </div>
+
+        {% if u_form.email.errors %}
+        <div class="error">
+          {% for error in u_form.email.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <!-- Buuton to save changes to update their profile -->
+      <div class="button">
+      <button type="submit" class="save-btn">Save Changes</button>
+      <!-- Link to user delete page -->
+      <a href="{% url 'delete-account' %}" class="delete delete-btn ">Delete account</a>
+    </div>
+  </form>
+ </div>
 </div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-// JavaScript code to handle the pen button functionality
-    $(document).ready(function () { 
-        $('input:not(.active-input)').hide();
-        // when the pen is clicked (hides the display text shows and focus on the input for editing)
-        $('.fa-edit').click(function () {
-          var field = $(this).closest('.field');
-          var span = field.find('.display-text');
-          var input = $('#' + span.data('target'));
-      
-          span.hide();                        
-          input.val(span.text())              
-               .removeClass('hidden-input')  
-               .addClass('active-input')      
-               .show()
-               .focus();                      
-        });
-        // when the input loses focus (it hides the input field and restores the display text) 
-        $('input').blur(function () {
-          var input = $(this);
-          var span = input.closest('.field').find('.display-text');
-      
-          input.removeClass('active-input')    
-               .addClass('hidden-input')       
-               .hide();                         
-               
-          span.show();                        
-        });
-      });
-    </script>
+$(document).ready(function () { 
+  // when the pen is clicked (hides the display text shows and focus on the input for editing)
+    $('.fa-edit').click(function () {
+        var field = $(this).closest('.field');
+        var span = field.find('.display-text');
+        var input = field.find('input');
+
+        span.hide();
+        input.addClass('active-input').removeClass('hidden-input').focus();
+    });
+     
+     // when the input loses focus (it hides the input field and restores the display text) 
+    $('input').blur(function () {
+        var input = $(this);
+        var field = input.closest('.field');
+        var span = field.find('.display-text');
+
+        if (input.val().trim() !== '') {
+            span.text(input.val().trim());
+        }
+        input.addClass('hidden-input').removeClass('active-input');
+        span.show();
+    });
+});
+</script>
 
 
 </body>

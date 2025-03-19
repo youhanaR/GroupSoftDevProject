@@ -31,6 +31,7 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseNotFound
 
+
 # Create your views here.
 
 # Landing Page View
@@ -96,7 +97,7 @@ def user_profile(request):
         u_form = UserUpdateForm(instance=request.user)
     # Allows to access the form in the html file by {{ u_form }}
     context = {'u_form': u_form,}
-    return render(request, 'user-profile.html', context=context)
+    return render(request, 'user-profile.html', context=context) 
 
 
 # User Update 
