@@ -128,6 +128,14 @@ ul {
   color: rgb(173, 76, 24) !important;
 }
 
+
+#sec-about,
+#sec-how-it-works,
+#sec-why-it-matters {
+  scroll-margin-top: 80px; 
+}
+
+
 /* End Navbar Rules*/
 
 /* Start Landing Page */
@@ -153,7 +161,7 @@ ul {
 }
 
 .landing-page .info .game-logo {
-  max-width: 60%;
+  max-width: 90%;
   height: auto;
   margin-bottom: 20px;
 }
@@ -168,18 +176,38 @@ ul {
   display: inline-block;
   border: 0;
   border-radius: 10px;
-  padding: 12px 35px;
+  padding: 1em 2.5em; 
   cursor: pointer;
   color: white;
   background-color: #ee6b05;
-  font-size: 18px;
+  font-size: clamp(14px, 2vw, 18px); 
   text-align: center;
   transition: 0.3s ease;
 }
 
-.landing-page .info .buttons a:hover {
-  background-color: #ff7f23;
+
+@media (max-width: 768px) {
+  .landing-page .info .buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .landing-page .info .buttons a {
+    padding: 0.8em 2em; 
+    font-size: 16px; 
+  }
 }
+
+
+@media (max-width: 480px) {
+  .landing-page .info .buttons a {
+    padding: 0.7em 1.8em;
+    font-size: 14px;
+  }
+}
+
+
 
 /* Responsive Header */
 @media (max-width: 767px) {
@@ -196,36 +224,61 @@ ul {
 }
 
 /* About Section */
-.about-section .about-content {
-  max-width: 800px;
-  margin: auto;
+.about-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 50px 0;
+  background-color: #619b8a;
+  color: #fff;
 }
 
-.about-section h2 {
-  font-size: 2rem;
-  font-weight: bold;
+.about-section .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
 }
 
-.about-section p {
-  font-size: 1.1rem;
-  margin-top: 20px;
-  line-height: 1.6;
+.about-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
-/* Responsive About Section */
-@media (max-width: 767px) {
-  .about-section {
-    padding: 30px 15px;
+.about-image img {
+  max-width: 90%;
+  max-height: 200px;
+  height: auto;
+  display: block;
+}
+
+/* Text Content Styling */
+.about-content {
+  flex: 1;
+  text-align: left;
+  max-width: 50%;
+  padding-left: 40px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .about-section .container {
+      flex-direction: column;
+      text-align: center;
   }
 
-  .about-section h2 {
-    font-size: 1.8rem;
+  .about-content {
+      max-width: 100%;
+      padding-left: 0;
   }
 
-  .about-section p {
-    font-size: 1rem;
+  .about-image {
+      margin-bottom: 20px;
   }
 }
+
 
 /* 'How it Works' Section */
 .sec-how-it-works .container {
