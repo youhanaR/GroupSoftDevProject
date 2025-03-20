@@ -1,6 +1,6 @@
 {% load static %}
 <!-- Author: Ameera Abdullah -->
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,16 +28,19 @@
     </nav>
     
     <div class="image-container">
-        <img src="{% static 'images/map_draft.png' %}" alt="Map Draft" class="centered-image">
+        <!-- Map Image -->
+        <img src="{% static 'images/map/map_layout.jpeg' %}" alt="Map Layout" class="centered-image">
         
-        <!-- Adding location markers -->
+        <!-- Adding location markers dynamically using x_percentage and y_percentage -->
         {% for location in locations %}
-            <a href="javascript:void(0);" class="location-marker" 
-               style="left: {{ location.x_coordinate }}%; top: {{ location.y_coordinate }}%;" 
-               title="{{ location.name }}" 
-               onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
-            </a>
+            <img 
+                src="{% static 'images/map/'|add:location.image_name %}" 
+                alt="{{ location.name }}"
+                class="building-image"
+                style="left: {{ location.x_percentage }}%; top: {{ location.y_percentage }}%;" 
+                onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
         {% endfor %}
+
     </div>
 
     <!-- The Modal -->
@@ -99,7 +102,6 @@
                 document.getElementById("modalAccessCode").value = '';
             }
         }
-
     </script>
 </body>
 </html>

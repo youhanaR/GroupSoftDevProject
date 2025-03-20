@@ -1,5 +1,5 @@
 {% load static %}
-<!--Author: Jem Challis, Juri Khushayl-->
+<!--Author: Ameera Abdullah-->
 
 
 <!DOCTYPE html>
@@ -14,28 +14,25 @@
     <title>Sort the Recycling</title>
 </head>
 
-
 <body>
 
 <div class="game-card">
-    <h1>Sort the Recycling</h1>
+    <h1>Whack-A-Waste</h1>
 
-    <h3>Welcome to Sort the Recycling!</h3>
-
-
+    <h3>Welcome to Whack-A-Waste!</h3>
 
     <ul>
-        <li>Sort the Recycling is a match-three game where you sort groups of recycling into rows and columns (min 3).</li>
-        <li>3 in a row is 1 point, more than 3 is 3 points, and getting a vertical and horizontal combo is 5 points.</li>
-        <li>You must also deal with rubbish. Rubbish cannot be sorted, and must instead be removed from the grid.</li>
-        <li>You gain the ability to remove the rubbish by completing tasks. Your current task will display at the bottom of the screen.</li>
-        <li>You must reach the target of 50 points before your 15 turns run out.</li>
+        <li>In this game, you manage food items to minimize waste by making quick decisions on how to handle each one.</li>
+        <li>Food items appear at various stages of their shelf life, and you must decide what action to take before they spoil.</li>
+        <li>As the game progresses, more food items appear, and the time to make decisions shortens, increasing the challenge.</li>
+        <li>Make good decisions to earn rewards; make wasteful choices and face penalties.</li>
+        <li>The game ends when you interact wrongly with a set number of food items.</li>
     </ul>
     
     <p>Good luck.</p>
 
     <div class="buttons">
-        <form id="endGameForm" method="POST" action="{% url 'str_game' %}">
+        <form id="endGameForm" method="POST" action="{% url 'whack_a_waste_game' %}">
             {% csrf_token %}
             <button type="submit" class="play-game">Play Game</button>
         </form>

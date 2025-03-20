@@ -4,6 +4,7 @@ from django.shortcuts import render
 from .forms import NewGameScore
 from .models import GameScore, Game
 
+### STR VIEWS START ###
 def str_intro(request):
     return render(request, 'str_intro.html')
 
@@ -31,7 +32,10 @@ def str_end(request):
             form.save()
 
     return render(request, 'str_end.html', {'score': score, 'target': target})
+### STR VIEWS END ###
 
+
+### RR VIEWS START ###
 def recycle_rush_intro(request):
     return render(request, 'recycle_rush_intro.html')
 
@@ -59,3 +63,30 @@ def recycle_rush_end(request):
             form.save()
 
     return render(request, 'recycle_rush_end.html', {'score': score, 'target': target})
+### RR VIEWS END ###
+
+
+### SS VIEWS START ###
+def sea_sweepers_intro(request):
+    return render(request, 'sea_sweepers_intro.html')
+
+def sea_sweepers_game(request):
+    return render(request, 'sea_sweepers_game.html')
+
+def sea_sweepers_end(request):
+    return render (request, 'sea_sweepers_end.html' )
+
+### SS VIEWS END ###
+
+
+### WAW VIEWS START ###
+def whack_a_waste_intro(request):
+    return render(request, 'whack_a_waste_intro.html')
+
+def whack_a_waste_game(request):
+    return render(request, 'whack_a_waste_game.html')
+
+def whack_a_waste_end(request):
+    return render (request, 'whack_a_waste_end.html' )
+
+### WAW VIEWS END

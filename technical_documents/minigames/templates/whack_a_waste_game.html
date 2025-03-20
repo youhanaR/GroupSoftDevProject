@@ -1,0 +1,607 @@
+{% load static %}
+<!--Author: Jood Alrubian, Ameera Abdullah-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack-A-Waste Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8e6;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #4a7c59;
+        }
+        
+        #game-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        #game-stats {
+            display: flex;
+            justify-content: space-between;
+            background-color: #e8f5e9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-item {
+            font-weight: bold;
+        }
+        
+        #legend {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .food-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .fresh-color {
+            background-color: #81c784;
+        }
+        
+        .expiring-color {
+            background-color: #fff176;
+        }
+        
+        .rotten-color {
+            background-color: #e57373;
+        }
+        
+        .trash-color {
+            background-color: #757575;
+        }
+        
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .hole {
+            width: 100px;
+            height: 100px;
+            background-color: #8B4513;
+            border-radius: 50%;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .food-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -100px;
+            cursor: pointer;
+            transition: bottom 0.3s ease-out, transform 1s ease, opacity 1s ease;
+        }
+        
+        .food-item.active {
+            bottom: 20px;
+        }
+        
+        /* Animation classes for food interactions */
+        .food-item.repurposed {
+            transform: translateX(-50%) scale(0.2) rotate(540deg);
+            opacity: 0;
+        }
+        
+        .food-item.composted {
+            transform: translateX(-50%) scale(0) rotate(360deg);
+            opacity: 0;
+        }
+        
+        .food-item.wasted {
+            transform: translateX(-50%) scale(1.5);
+            opacity: 0;
+        }
+        
+        .food-item.preserved {
+            transform: translateX(-50%) translateY(-50px);
+            opacity: 0;
+        }
+        
+        .fresh {
+            background-color: #81c784;
+            box-shadow: 0 0 8px #4caf50;
+        }
+        
+        .expiring {
+            background-color: #fff176;
+            box-shadow: 0 0 8px #ffeb3b;
+        }
+        
+        .rotten {
+            background-color: #e57373;
+            box-shadow: 0 0 8px #f44336;
+        }
+        
+        .trash {
+            background-color: #757575;
+            box-shadow: 0 0 8px #424242;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -50px); }
+        }
+        
+        /* Particle animation for more visual feedback */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 3s ease-out forwards;
+        }
+        
+        @keyframes particle-float {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Whack-A-Waste</h1>
+    
+    <div id="game-container">
+        <div id="game-stats">
+            <div class="stat-item">Score: <span id="score">0</span></div>
+            <div class="stat-item">Level: <span id="level">1</span></div>
+            <div class="stat-item">Mistakes: <span id="mistakes">0</span>/5</div>
+        </div>
+        
+        <div id="legend">
+            <div class="legend-item">
+                <div class="food-color fresh-color"></div>
+                <span>Fresh: Don't tap</span>
+            </div>
+            <div class="legend-item">
+                <div class="food-color expiring-color"></div>
+                <span>Expiring: Tap</span>
+            </div>
+            <div class="legend-item">
+                <div class="food-color rotten-color"></div>
+                <span>Rotten: Tap</span>
+            </div>
+            <div class="legend-item">
+                <div class="food-color trash-color"></div>
+                <span>Trash: Don't tap</span>
+            </div>
+        </div>
+        
+        <div id="game-board">
+            <!-- Holes will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Game configuration
+        const HOLE_COUNT = 9;
+        const MAX_MISTAKES = 5;
+        const LEVEL_UP_SCORE = 100;
+        
+        // Food types and their properties
+        const FOOD_TYPES = {
+            'fresh': { action: 'none', score: 0, penalty: -10, color: '#81c784' },
+            'expiring': { action: 'tap', score: 20, penalty: -15, color: '#fff176' },
+            'rotten': { action: 'tap', score: 15, penalty: -20, color: '#e57373' },
+            'trash': { action: 'none', score: 0, penalty: -25, color: '#757575' }
+        };
+        
+        // Game state
+        let score = 0;
+        let level = 1;
+        let mistakes = 0;
+        let activeItems = {};
+        let gameRunning = true;
+        
+        // DOM references
+        const gameBoard = document.getElementById('game-board');
+        const scoreDisplay = document.getElementById('score');
+        const levelDisplay = document.getElementById('level');
+        const mistakesDisplay = document.getElementById('mistakes');
+        
+        // Initialize game board
+        function initGameBoard() {
+            gameBoard.innerHTML = '';
+            
+            for (let i = 0; i < HOLE_COUNT; i++) {
+                const hole = document.createElement('div');
+                hole.className = 'hole';
+                hole.id = `hole-${i}`;
+                gameBoard.appendChild(hole);
+            }
+        }
+        
+        // Create a food item
+        function createFoodItem(holeId, foodType) {
+            const hole = document.getElementById(`hole-${holeId}`);
+            
+            // Check if hole already has an active food item
+            if (activeItems[holeId]) {
+                return;
+            }
+            
+            // Create the food item element
+            const foodItem = document.createElement('div');
+            foodItem.className = `food-item ${foodType}`;
+            foodItem.dataset.type = foodType;
+            foodItem.dataset.hole = holeId;
+            
+            // Add click event
+            foodItem.addEventListener('click', onFoodClick);
+            
+            // Add to DOM
+            hole.appendChild(foodItem);
+            
+            // Track item in game state
+            activeItems[holeId] = {
+                element: foodItem,
+                type: foodType,
+                startTime: Date.now(),
+                duration: calculateItemDuration()
+            };
+            
+            // Animate in
+            setTimeout(() => foodItem.classList.add('active'), 10);
+            
+            // Set timeout to remove if not interacted with
+            setTimeout(() => onTimeout(holeId), calculateItemDuration());
+        }
+        
+        // Calculate item duration based on level
+        function calculateItemDuration() {
+            const baseDuration = 3000;
+            const decrement = 200 * (level - 1);
+            return Math.max(1000, baseDuration - decrement);
+        }
+        
+        // Calculate spawn delay based on level
+        function calculateSpawnDelay() {
+            const baseDelay = 2000;
+            const decrement = 100 * (level - 1);
+            return Math.max(500, baseDelay - decrement);
+        }
+        
+        // Handle food item click
+        function onFoodClick(event) {
+            if (!gameRunning) return;
+            
+            const foodItem = event.target;
+            const foodType = foodItem.dataset.type;
+            const holeId = foodItem.dataset.hole;
+            
+            processInteraction(holeId, 'tap');
+        }
+        
+        // Handle timeout for an item
+        function onTimeout(holeId) {
+            if (activeItems[holeId]) {
+                processInteraction(holeId, 'none');
+            }
+        }
+        
+        // Process an interaction with a food item
+        function processInteraction(holeId, action) {
+            if (!activeItems[holeId]) return;
+            
+            const foodType = activeItems[holeId].type;
+            const correctAction = FOOD_TYPES[foodType].action;
+            const foodItem = activeItems[holeId].element;
+            
+            // Check if the action was correct
+            if (action === correctAction) {
+                // Correct action
+                if (action === 'tap') {
+                    // Award points for tapping when appropriate
+                    const points = FOOD_TYPES[foodType].score;
+                    score += points;
+                    
+                    // Apply the appropriate animation based on food type
+                    if (foodType === 'expiring') {
+                        foodItem.classList.add('repurposed');
+                        showFeedback(holeId, `Repurposed! +${points}`, '#4caf50');
+                    } else if (foodType === 'rotten') {
+                        foodItem.classList.add('composted');
+                        showFeedback(holeId, `Composted! +${points}`, '#4caf50');
+                    }
+                } else {
+                    // Correctly left alone
+                    if (foodType === 'fresh') {
+                        foodItem.classList.add('preserved');
+                        showFeedback(holeId, 'Preserved!', '#4caf50');
+                    } else {
+                        foodItem.classList.add('preserved');
+                        showFeedback(holeId, 'Avoided!', '#4caf50');
+                    }
+                }
+            } else {
+                // Incorrect action
+                const penalty = FOOD_TYPES[foodType].penalty;
+                score += penalty;
+                mistakes++;
+                mistakesDisplay.textContent = mistakes;
+                
+                // Apply wasted animation
+                foodItem.classList.add('wasted');
+                
+                if (foodType === 'fresh' && action === 'tap') {
+                    showFeedback(holeId, `Wasted! ${penalty}`, '#f44336');
+                } else if (foodType === 'trash' && action === 'tap') {
+                    showFeedback(holeId, `Wrong! ${penalty}`, '#f44336');
+                } else if ((foodType === 'expiring' || foodType === 'rotten') && action === 'none') {
+                    showFeedback(holeId, `Spoiled! ${penalty}`, '#f44336');
+                }
+                
+                if (mistakes >= MAX_MISTAKES) {
+                    endGame();
+                }
+            }
+            
+            // Update score display
+            scoreDisplay.textContent = score;
+            
+            // Check for level up
+            checkLevelUp();
+            
+            // Add a small delay to let the animation play before removing
+            setTimeout(() => removeFoodItem(holeId), 300);
+        }
+        
+        // Check if player should level up
+        function checkLevelUp() {
+            const newLevel = 1 + Math.floor(score / LEVEL_UP_SCORE);
+            if (newLevel > level) {
+                level = newLevel;
+                levelDisplay.textContent = level;
+            }
+        }
+        
+        // Remove a food item
+        function removeFoodItem(holeId) {
+            if (!activeItems[holeId]) return;
+            
+            const foodItem = activeItems[holeId].element;
+            
+            // Remove from DOM after animation completes
+            setTimeout(() => {
+                if (foodItem.parentNode) {
+                    foodItem.parentNode.removeChild(foodItem);
+                }
+            }, 1500); // Increased to 1.5 seconds
+            
+            // Remove from active items
+            delete activeItems[holeId];
+        }
+        
+        // Show feedback text and particles
+        function showFeedback(holeId, text, color) {
+            const hole = document.getElementById(`hole-${holeId}`);
+            
+            // Text feedback
+            const feedback = document.createElement('div');
+            feedback.style.position = 'absolute';
+            feedback.style.top = '30px';
+            feedback.style.left = '50%';
+            feedback.style.transform = 'translateX(-50%)';
+            feedback.style.color = color;
+            feedback.style.fontWeight = 'bold';
+            feedback.style.fontSize = '18px';
+            feedback.style.pointerEvents = 'none';
+            feedback.style.zIndex = '10';
+            feedback.style.animation = 'fadeUp 3s forwards';
+            feedback.textContent = text;
+            
+            hole.appendChild(feedback);
+            
+            // Create particles for enhanced feedback
+            createParticles(hole, color);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (feedback.parentNode) {
+                    feedback.parentNode.removeChild(feedback);
+                }
+            }, 3000); // Increased to 3 seconds
+        }
+        
+        // Create particle effects
+        function createParticles(hole, color) {
+            // Create 8 particles that float out in different directions
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.backgroundColor = color;
+                
+                // Position at center of hole
+                particle.style.left = '50%';
+                particle.style.top = '40%';
+                
+                // Random direction
+                const angle = (i / 8) * Math.PI * 2;
+                const distance = 40 + Math.random() * 60; // Increased distance
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                // Set particle animation variables
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                
+                hole.appendChild(particle);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 3000); // Increased to 3 seconds
+            }
+        }
+        
+        // Spawn a random food item
+        function spawnFoodItem() {
+            if (!gameRunning) return;
+            
+            // Find available holes
+            const availableHoles = [];
+            for (let i = 0; i < HOLE_COUNT; i++) {
+                if (!activeItems[i]) {
+                    availableHoles.push(i);
+                }
+            }
+            
+            if (availableHoles.length === 0) {
+                // All holes are full, try again soon
+                setTimeout(spawnFoodItem, 500);
+                return;
+            }
+            
+            // Choose a random hole
+            const holeId = availableHoles[Math.floor(Math.random() * availableHoles.length)];
+            
+            // Choose a food type with weighted probability based on level
+            const weights = {
+                'fresh': Math.max(0.1, 0.4 - (level * 0.03)),  // Decrease with level
+                'expiring': Math.min(0.5, 0.3 + (level * 0.02)),  // Increase with level
+                'rotten': Math.min(0.4, 0.2 + (level * 0.02)),  // Increase with level
+                'trash': 0.1  // Constant
+            };
+            
+            // Normalize weights
+            const foodTypes = Object.keys(weights);
+            const totalWeight = foodTypes.reduce((sum, type) => sum + weights[type], 0);
+            const normalizedWeights = {};
+            
+            for (const type of foodTypes) {
+                normalizedWeights[type] = weights[type] / totalWeight;
+            }
+            
+            // Select food type using weighted random
+            let random = Math.random();
+            let selectedType = 'fresh';  // default
+            
+            for (const type of foodTypes) {
+                if (random < normalizedWeights[type]) {
+                    selectedType = type;
+                    break;
+                }
+                random -= normalizedWeights[type];
+            }
+            
+            // Create the food item
+            createFoodItem(holeId, selectedType);
+            
+            // Schedule next spawn
+            setTimeout(spawnFoodItem, calculateSpawnDelay());
+        }
+        
+        // End the game
+        function endGame() {
+            gameRunning = false;
+            
+            // Clear all active items
+            for (const holeId in activeItems) {
+                removeFoodItem(holeId);
+            }
+            
+            // Show game over message
+            const gameOver = document.createElement('div');
+            gameOver.style.position = 'absolute';
+            gameOver.style.top = '0';
+            gameOver.style.left = '0';
+            gameOver.style.width = '100%';
+            gameOver.style.height = '100%';
+            gameOver.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            gameOver.style.color = 'white';
+            gameOver.style.display = 'flex';
+            gameOver.style.flexDirection = 'column';
+            gameOver.style.justifyContent = 'center';
+            gameOver.style.alignItems = 'center';
+            gameOver.style.zIndex = '100';
+            
+            const gameOverText = document.createElement('h2');
+            gameOverText.textContent = 'Game Over!';
+            
+            const finalScore = document.createElement('p');
+            finalScore.textContent = `Final Score: ${score}`;
+            
+            const restartButton = document.createElement('button');
+            restartButton.textContent = 'Play Again';
+            restartButton.style.padding = '10px 20px';
+            restartButton.style.margin = '20px';
+            restartButton.style.backgroundColor = '#4caf50';
+            restartButton.style.color = 'white';
+            restartButton.style.border = 'none';
+            restartButton.style.borderRadius = '4px';
+            restartButton.style.cursor = 'pointer';
+            
+            restartButton.addEventListener('click', function() {
+                document.body.removeChild(gameOver);
+                startGame();
+            });
+            
+            gameOver.appendChild(gameOverText);
+            gameOver.appendChild(finalScore);
+            gameOver.appendChild(restartButton);
+            document.body.appendChild(gameOver);
+        }
+        
+        // Initialize and start the game
+        function startGame() {
+            // Reset game state
+            score = 0;
+            level = 1;
+            mistakes = 0;
+            activeItems = {};
+            gameRunning = true;
+            
+            // Update UI
+            scoreDisplay.textContent = score;
+            levelDisplay.textContent = level;
+            mistakesDisplay.textContent = mistakes;
+            
+            // Initialize game
+            initGameBoard();
+            
+            // Start spawning
+            spawnFoodItem();
+        }
+        
+        // Start the game
+        startGame();
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# Author: Jem Challis, Rami Youhana
+# Author: Jem Challis, Rami Youhana, Ameera Abdullah
 
 from django.contrib.auth import views as auth_views
 from django.urls import path
@@ -17,4 +17,17 @@ urlpatterns = [
     path('recycle_rush_intro/', views.recycle_rush_intro, name='recycle_rush_intro'), 
     path('recycle_rush/', views.recycle_rush_game, name='recycle_rush_game'),
     path('recycle_rush_end/', views.recycle_rush_end, name='recycle_rush_end'), 
+
+    # Whack A Waste Paths
+    path('whack_a_waste_intro/', views.whack_a_waste_intro, name='whack_a_waste_intro'),
+    path('whack_a_waste/', views.whack_a_waste_game, name='whack_a_waste_game'),
+    path('whack_a_waste_end/', views.whack_a_waste_end, name='whack_a_waste_end'),
+
+    # Sea Sweepers Paths
+    path('sea_sweepers_intro/', views.sea_sweepers_intro, name='sea_sweepers_intro'),
+    path('sea_sweepers/', views.sea_sweepers_game, name='sea_sweepers_game'),
+    path('sea_sweepers_end/', views.sea_sweepers_end, name='sea_sweepers_end'),
+
+
+
 ]
