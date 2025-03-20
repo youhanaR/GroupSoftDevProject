@@ -35,16 +35,18 @@
 </head>
 <body>
 
+<div class="game-card"
+    <h1>Recycle Rush</h1>
     <span id="score" style="display: none;" >{{ score }}</span>
     <span id="target" style="display: none;" >{{ target }}</span>
-    
-    <div class="container">
-        <h1>Game Over</h1>
+        <h3>Game Over</h3>
         <p>Your final score: <span id="final-score">0</span></p>
         <div id="result-message"></div>
-        <button class="button" id="restart-button">Restart Game</button>
-        <button class="button" id="end-button">Exit Game</button>
+    <div class="buttons">
+        <button class="button" id="play-end">Restart Game</button>
+        <button class="button" id="play-end">Exit Game</button>
     </div>
+</div>
     
     <script>
         // Retrieves the score and target

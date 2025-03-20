@@ -179,27 +179,6 @@ p {
 }
 
 
-.buttons {
-    margin-top: 20px;
-}
-
-.play-game {
-    background-color: #d67228;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    max-width: 220px;
-}
-
-.play-game:hover {
-    background-color: #b85b1f;
-}
-
-
 @media screen and (max-width: 768px) {
     .game-container {
         margin-top: 0;
