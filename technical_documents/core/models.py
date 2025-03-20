@@ -24,8 +24,6 @@ class Location(models.Model):
         return self.name
 
 
-
-
 # Create a user progress table in the database ~ Ameera
 class UserProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
