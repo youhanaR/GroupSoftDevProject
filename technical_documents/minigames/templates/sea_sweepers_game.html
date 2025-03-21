@@ -1,0 +1,972 @@
+{% load static %}
+<!--Author: Jood Alrubian, Ameera Abdullah-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <title>Sea Sweepers</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/ss-game.css' %}">
+</head>
+<body>
+    <div id="title">Sea Sweepers</div>
+    <div id="static-url" data-static="{% static 'images/sea_sweeper_images/' %}"></div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script>
+        // Get the canvas element and context
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Game variables
+        let gameActive = true;
+        let gameOver = false;
+        let score = 0;
+        let collectedItems = 0;
+        let timer = 60;
+        
+        // Load all game images
+        const duckImage = new Image();
+        const bottleImage = new Image();
+        const canImage = new Image();
+        const trashImage = new Image(); 
+        const paperImage = new Image();
+        const milkImage = new Image();
+        const bananaImage = new Image();
+        
+        // Marine animal images
+        const dolphinImage = new Image();
+        const fishImage = new Image();
+        const nemoImage = new Image();
+        const turtleImage = new Image();
+        const whaleImage = new Image();
+        
+        // Track which images are loaded
+        let duckImageLoaded = false;
+        let bottleImageLoaded = false;
+        let canImageLoaded = false;
+        let trashImageLoaded = false;
+        let paperImageLoaded = false;
+        let milkImageLoaded = false;
+        let bananaImageLoaded = false;
+        
+        // Track marine animal images loading
+        let dolphinImageLoaded = false;
+        let fishImageLoaded = false;
+        let nemoImageLoaded = false;
+        let turtleImageLoaded = false;
+        let whaleImageLoaded = false;
+        
+        // Set up trash image loading handlers
+        duckImage.onload = function() { 
+            console.log("Duck image loaded!");
+            duckImageLoaded = true; 
+        };
+        bottleImage.onload = function() { 
+            console.log("Bottle image loaded!"); 
+            bottleImageLoaded = true; 
+        };
+        canImage.onload = function() { 
+            console.log("Can image loaded!"); 
+            canImageLoaded = true; 
+        };
+        trashImage.onload = function() { 
+            console.log("Trash bag image loaded!"); 
+            trashImageLoaded = true; 
+        };
+        paperImage.onload = function() { 
+            console.log("Paper image loaded!"); 
+            paperImageLoaded = true; 
+        };
+        milkImage.onload = function() { 
+            console.log("Milk bottle image loaded!"); 
+            milkImageLoaded = true; 
+        };
+        bananaImage.onload = function() { 
+            console.log("Banana peel image loaded!"); 
+            bananaImageLoaded = true; 
+        };
+        
+        // Set up marine animal image loading handlers
+        dolphinImage.onload = function() {
+            console.log("Dolphin image loaded!");
+            dolphinImageLoaded = true;
+        };
+        fishImage.onload = function() {
+            console.log("Fish image loaded!");
+            fishImageLoaded = true;
+        };
+        nemoImage.onload = function() {
+            console.log("Nemo image loaded!");
+            nemoImageLoaded = true;
+        };
+        turtleImage.onload = function() {
+            console.log("Turtle image loaded!");
+            turtleImageLoaded = true;
+        };
+        whaleImage.onload = function() {
+            console.log("Whale image loaded!");
+            whaleImageLoaded = true;
+        };
+        
+        // Get the static URL from the hidden div
+        const staticURL = document.getElementById("static-url").getAttribute("data-static");
+
+        // Set image sources dynamically
+        duckImage.src = staticURL + "duck.png";
+        bottleImage.src = staticURL + "Recycle_PBottle.png";
+        canImage.src = staticURL + "can.png";
+        trashImage.src = staticURL + "trash.png";
+        paperImage.src = staticURL + "paper.png";
+        milkImage.src = staticURL + "milk.png";
+        bananaImage.src = staticURL + "banana.png";
+
+        dolphinImage.src = staticURL + "dolphin.png";
+        fishImage.src = staticURL + "fish.png";
+        nemoImage.src = staticURL + "nemo.png";
+        turtleImage.src = staticURL + "turtle.png";
+        whaleImage.src = staticURL + "whale.png";
+
+        
+        // FIXED Light rays - exactly 3 rays as requested with WIDER width
+        const lightRays = [
+            {x: 200, width: 160},
+            {x: 400, width: 160},
+            {x: 600, width: 160}
+        ];
+        
+        // Player (duck) - make slightly larger too
+        const duck = {
+            x: canvas.width / 2 - 30,
+            y: canvas.height / 2,
+            width: 60,  // Increased from 50
+            height: 40, // Increased from 30
+            speed: 5
+        };
+        
+        // Arrays for game objects
+        let trashItems = [];
+        let marineAnimals = [];
+        let bubbles = [];
+        let seaweeds = [];
+        
+        // Key state tracking
+        const keys = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false,
+            Space: false,
+            KeyQ: false
+        };
+        
+        // Create bubbles
+        function createBubbles() {
+            bubbles = [];
+            for (let i = 0; i < 50; i++) {
+                bubbles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 5 + 2,
+                    speed: Math.random() * 1 + 0.5,
+                    opacity: Math.random() * 0.5 + 0.1
+                });
+            }
+        }
+        
+        // Create static curved seaweed (non-moving with smooth curves)
+        function createSeaweeds() {
+            seaweeds = [];
+            
+            for (let i = 0; i < 15; i++) {
+                const height = 50 + Math.random() * 100;
+                
+                // For curved seaweed, we'll use control points instead of waypoints
+                // These determine how the curve bends
+                const curveDirection = Math.random() > 0.5 ? 1 : -1; // Left or right curve
+                const curveMagnitude = 15 + Math.random() * 10; // How much it curves
+                
+                seaweeds.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height - 20,
+                    height: height,
+                    curveDirection: curveDirection,
+                    curveMagnitude: curveMagnitude,
+                    thickness: 5 + Math.random() * 5  // Thicker seaweed
+                });
+            }
+        }
+        
+        // Initialize trash items - much larger and more spread out
+        function createTrash() {
+            trashItems = [];
+            
+            // Create fewer items (15 instead of 20) for better spacing
+            for (let i = 0; i < 15; i++) {
+                // Update trash types to match our available images
+                const type = ['bottle', 'can', 'trash', 'paper', 'milk', 'banana'][Math.floor(Math.random() * 6)];
+                let width, height;
+                
+                // Slightly reduced sizes but keeping the same proportions
+                if (type === 'bottle') {
+                    width = 55;  // Reduced from 70
+                    height = 110; // Reduced from 140
+                } else if (type === 'can') {
+                    width = 70;  // Reduced from 90
+                    height = 85;  // Reduced from 110
+                } else if (type === 'trash') {
+                    width = 65;  // Reduced from 80
+                    height = 65;  // Reduced from 80
+                } else if (type === 'paper') {
+                    width = 67;  // Reduced from 85
+                    height = 67;  // Reduced from 85
+                } else if (type === 'milk') {
+                    width = 35;  // Reduced from 40
+                    height = 70;  // Reduced from 80
+                } else { // banana
+                    width = 80;  // Reduced from 100
+                    height = 55;  // Reduced from 70
+                }
+                
+                // More sophisticated positioning to ensure items are spread out
+                // Divide the canvas into grid cells and place one item per cell
+                const gridCols = 3;
+                const gridRows = 5;
+                const cellWidth = canvas.width / gridCols;
+                const cellHeight = (canvas.height - 100) / gridRows;
+                
+                // Calculate grid position (avoiding edges)
+                const col = i % gridCols;
+                const row = Math.floor(i / gridCols) % gridRows;
+                
+                // Add random offset within the cell (leaving margin from edges)
+                const margin = Math.max(width, height) / 2 + 20;
+                const xPos = col * cellWidth + margin + Math.random() * (cellWidth - margin * 2);
+                const yPos = row * cellHeight + 50 + Math.random() * (cellHeight - margin);
+                
+                trashItems.push({
+                    x: xPos,
+                    y: yPos,
+                    width: width,
+                    height: height,
+                    type: type,
+                    floatOffset: 0,
+                    floatDirection: Math.random() > 0.5 ? 1 : -1,
+                    floatSpeed: Math.random() * 0.1 + 0.05
+                });
+            }
+        }
+        
+        // Create a marine animal with slower speed and much larger size
+        function createMarineAnimal() {
+            const type = ['dolphin', 'fish', 'nemo', 'turtle', 'whale'][Math.floor(Math.random() * 5)];
+            let width, height, speed;
+            
+            // Even larger sizes for all marine animals
+            if (type === 'whale') {
+                width = 140;  // Increased further
+                height = 80;   // Increased further
+                speed = 1.2;
+            } else if (type === 'turtle') {
+                width = 90;    // Increased further
+                height = 70;   // Increased further
+                speed = 0.8;
+            } else if (type === 'dolphin') {
+                width = 110;   // Increased further
+                height = 70;   // Increased further
+                speed = 1.5;
+            } else if (type === 'nemo') {
+                width = 85;    // Increased further
+                height = 65;   // Increased further
+                speed = 1.3;
+            } else { // regular fish
+                width = 75;    // Increased further
+                height = 50;   // Increased further
+                speed = 1.0;
+            }
+            
+            // Randomly choose spawn side
+            const side = ['left', 'right', 'top', 'bottom'][Math.floor(Math.random() * 4)];
+            let x, y, dx, dy;
+            
+            if (side === 'left') {
+                x = -width;
+                y = Math.random() * (canvas.height - 150) + 50;
+                dx = speed;
+                dy = Math.random() * 0.6 - 0.3; // Reduced vertical movement
+            } else if (side === 'right') {
+                x = canvas.width;
+                y = Math.random() * (canvas.height - 150) + 50;
+                dx = -speed;
+                dy = Math.random() * 0.6 - 0.3; // Reduced vertical movement
+            } else if (side === 'top') {
+                x = Math.random() * (canvas.width - 50) + 25;
+                y = -height;
+                dx = Math.random() * 0.6 - 0.3; // Reduced horizontal movement
+                dy = speed;
+            } else { // bottom
+                x = Math.random() * (canvas.width - 50) + 25;
+                y = canvas.height;
+                dx = Math.random() * 0.6 - 0.3; // Reduced horizontal movement
+                dy = -speed;
+            }
+            
+            marineAnimals.push({
+                x: x,
+                y: y,
+                width: width,
+                height: height,
+                type: type,
+                dx: dx,
+                dy: dy,
+                faceRight: dx > 0 // Add property to track which direction animal is facing
+            });
+        }
+        
+        // Check collision between two rectangles
+        function checkCollision(rect1, rect2) {
+            return (
+                rect1.x < rect2.x + rect2.width &&
+                rect1.x + rect1.width > rect2.x &&
+                rect1.y < rect2.y + rect2.height &&
+                rect1.y + rect1.height > rect2.y
+            );
+        }
+        
+        // Update game state
+        function update(deltaTime) {
+            // Update duck position
+            if (keys.ArrowUp && duck.y > 0) {
+                duck.y -= duck.speed;
+            }
+            if (keys.ArrowDown && duck.y < canvas.height - duck.height - 70) {
+                duck.y += duck.speed;
+            }
+            if (keys.ArrowLeft && duck.x > 0) {
+                duck.x -= duck.speed;
+            }
+            if (keys.ArrowRight && duck.x < canvas.width - duck.width) {
+                duck.x += duck.speed;
+            }
+            
+            // Update trash float animation
+            trashItems.forEach(trash => {
+                trash.floatOffset += trash.floatSpeed * trash.floatDirection;
+                if (Math.abs(trash.floatOffset) > 5) {
+                    trash.floatDirection *= -1;
+                }
+                ctx.restore();
+            });
+            
+            // Update bubbles
+            bubbles.forEach(bubble => {
+                bubble.y -= bubble.speed;
+                if (bubble.y < -bubble.radius * 2) {
+                    bubble.y = canvas.height + bubble.radius;
+                    bubble.x = Math.random() * canvas.width;
+                }
+            });
+            
+            // Check for trash collection
+            for (let i = trashItems.length - 1; i >= 0; i--) {
+                if (checkCollision({
+                    x: duck.x,
+                    y: duck.y,
+                    width: duck.width,
+                    height: duck.height
+                }, {
+                    x: trashItems[i].x,
+                    y: trashItems[i].y + trashItems[i].floatOffset,
+                    width: trashItems[i].width,
+                    height: trashItems[i].height
+                })) {
+                    // Collect trash
+                    score += 10;
+                    collectedItems++;
+                    trashItems.splice(i, 1);
+                    
+                    // Create new trash with much larger sizes and better positioning
+                    const type = ['bottle', 'can', 'trash', 'paper', 'milk', 'banana'][Math.floor(Math.random() * 6)];
+                    let width, height;
+                    
+                    // Slightly reduced sizes but keeping the same proportions
+                    if (type === 'bottle') {
+                        width = 55;  // Reduced from 70
+                        height = 110; // Reduced from 140
+                    } else if (type === 'can') {
+                        width = 70;  // Reduced from 90
+                        height = 85;  // Reduced from 110
+                    } else if (type === 'trash') {
+                        width = 65;  // Reduced from 80
+                        height = 65;  // Reduced from 80
+                    } else if (type === 'paper') {
+                        width = 67;  // Reduced from 85
+                        height = 67;  // Reduced from 85
+                    } else if (type === 'milk') {
+                        width = 35;  // Reduced from 40
+                        height = 70;  // Reduced from 80
+                    } else { // banana
+                        width = 80;  // Reduced from 100
+                        height = 55;  // Reduced from 70
+                    }
+                    
+                    // Find a position away from the duck and other trash
+                    let newX, newY;
+                    let validPosition = false;
+                    let attempts = 0;
+                    
+                    while (!validPosition && attempts < 20) {
+                        // Try to place in a quadrant away from the duck
+                        const quadrant = Math.floor(Math.random() * 4);
+                        
+                        if (quadrant === 0) { // Top left
+                            newX = Math.random() * (canvas.width/2 - 100);
+                            newY = Math.random() * (canvas.height/2 - 100);
+                        } else if (quadrant === 1) { // Top right
+                            newX = canvas.width/2 + Math.random() * (canvas.width/2 - 100);
+                            newY = Math.random() * (canvas.height/2 - 100);
+                        } else if (quadrant === 2) { // Bottom left
+                            newX = Math.random() * (canvas.width/2 - 100);
+                            newY = canvas.height/2 + Math.random() * (canvas.height/2 - 100);
+                        } else { // Bottom right
+                            newX = canvas.width/2 + Math.random() * (canvas.width/2 - 100);
+                            newY = canvas.height/2 + Math.random() * (canvas.height/2 - 100);
+                        }
+                        
+                        // Check distance from duck (don't spawn too close)
+                        const duckDistance = Math.sqrt(
+                            Math.pow(newX - duck.x, 2) + 
+                            Math.pow(newY - duck.y, 2)
+                        );
+                        
+                        if (duckDistance > 150) {
+                            validPosition = true;
+                        }
+                        
+                        attempts++;
+                    }
+                    
+                    // If we couldn't find an ideal position, use a fallback
+                    if (!validPosition) {
+                        newX = Math.random() * (canvas.width - 100) + 50;
+                        newY = Math.random() * (canvas.height - 150) + 50;
+                    }
+                    
+                    trashItems.push({
+                        x: newX,
+                        y: newY,
+                        width: width,
+                        height: height,
+                        type: type,
+                        floatOffset: 0,
+                        floatDirection: Math.random() > 0.5 ? 1 : -1,
+                        floatSpeed: Math.random() * 0.1 + 0.05
+                    });
+                }
+            }
+            
+            // Update marine animals
+            for (let i = marineAnimals.length - 1; i >= 0; i--) {
+                const animal = marineAnimals[i];
+                
+                animal.x += animal.dx;
+                animal.y += animal.dy;
+                
+                // Remove if off screen
+                if (
+                    animal.x < -animal.width * 2 ||
+                    animal.x > canvas.width + animal.width * 2 ||
+                    animal.y < -animal.height * 2 ||
+                    animal.y > canvas.height + animal.height * 2
+                ) {
+                    marineAnimals.splice(i, 1);
+                    continue;
+                }
+                
+                // Check collision with duck
+                if (checkCollision({
+                    x: duck.x,
+                    y: duck.y,
+                    width: duck.width,
+                    height: duck.height
+                }, animal)) {
+                    gameActive = false;
+                    gameOver = true;
+                }
+            }
+            
+            // Spawn new marine animals - reduced spawn rate at the start
+            const gameProgressFactor = (1 - timer / 60) * 1.5; // Increases from 0 to 1.5 as time passes
+            const baseDifficulty = 0.005; // Lower starting difficulty
+            const difficultyFactor = baseDifficulty + gameProgressFactor * 0.01;
+            
+            if (Math.random() < difficultyFactor && marineAnimals.length < 12) {
+                createMarineAnimal();
+            }
+            
+            // Update timer
+            timer -= deltaTime;
+            if (timer <= 0) {
+                timer = 0;
+                gameActive = false;
+                gameOver = true;
+            }
+        }
+        
+        // Draw static curved seaweed (no movement)
+        function drawSeaweed() {
+            seaweeds.forEach(seaweed => {
+                // DARKER GREEN COLOR FOR SEAWEED
+                ctx.strokeStyle = '#0B6623'; // Dark forest green
+                ctx.lineWidth = seaweed.thickness; // Using variable thickness
+                
+                const baseX = seaweed.x;
+                const baseY = seaweed.y;
+                const seaweedHeight = seaweed.height;
+                
+                // Draw using quadratic curves for smooth natural appearance
+                ctx.beginPath();
+                ctx.moveTo(baseX, baseY);
+                
+                // Calculate control points for bezier curve
+                // This creates a gentle S-curve
+                const cp1x = baseX + (seaweed.curveDirection * seaweed.curveMagnitude);
+                const cp1y = baseY - seaweedHeight * 0.4;
+                const endX = baseX;
+                const endY = baseY - seaweedHeight;
+                
+                // Draw a simple curved line
+                ctx.quadraticCurveTo(cp1x, cp1y, endX, endY);
+                ctx.stroke();
+            });
+        }
+        
+        // Draw the ocean floor as a simple smooth curve
+        function drawOceanFloor() {
+            ctx.fillStyle = '#F4D03F'; // Sandy yellow
+            
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+            
+            // Simple smooth wave with no decorations
+            for (let i = 0; i <= 8; i++) {
+                const x = i * 100;
+                const y = canvas.height - 40 + Math.sin(i * 0.8) * 10;
+                
+                if (i === 0) {
+                    ctx.lineTo(x, y);
+                } else {
+                    const prevX = (i - 1) * 100;
+                    const prevY = canvas.height - 40 + Math.sin((i - 1) * 0.8) * 10;
+                    const cpX = (prevX + x) / 2;
+                    const cpY = (prevY + y) / 2;
+                    
+                    ctx.quadraticCurveTo(cpX, cpY, x, y);
+                }
+            }
+            
+            // Complete the sand area
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.closePath();
+            ctx.fill();
+        }
+                
+        // Draw everything
+        function draw() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background with gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#0A5DA3');   // Darker blue at top
+            gradient.addColorStop(0.3, '#2D82BE'); // Medium blue
+            gradient.addColorStop(0.6, '#5CB3E3'); // Lighter blue
+            gradient.addColorStop(1, '#89CFF0');   // Very light blue at bottom
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw exactly 3 light rays with wider width
+            ctx.globalAlpha = 0.1;
+            for (const ray of lightRays) {
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.moveTo(ray.x, 0);
+                ctx.lineTo(ray.x + ray.width, canvas.height);
+                ctx.lineTo(ray.x - ray.width, canvas.height);
+                ctx.closePath();
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1.0;
+            
+            // Draw static seaweed
+            drawSeaweed();
+            
+            // Draw plain sand with no decorations
+            drawOceanFloor();
+            
+            // Draw bubbles
+            bubbles.forEach(bubble => {
+                ctx.globalAlpha = bubble.opacity;
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Bubble highlight
+                ctx.beginPath();
+                ctx.arc(bubble.x - bubble.radius/3, bubble.y - bubble.radius/3, bubble.radius/4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.globalAlpha = 1.0;
+            
+            // Draw trash items using the new images
+            trashItems.forEach(trash => {
+                if (trash.type === 'bottle' && bottleImageLoaded) {
+                    ctx.drawImage(bottleImage, trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                } else if (trash.type === 'can' && canImageLoaded) {
+                    ctx.drawImage(canImage, trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                } else if (trash.type === 'trash' && trashImageLoaded) {
+                    ctx.drawImage(trashImage, trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                } else if (trash.type === 'paper' && paperImageLoaded) {
+                    ctx.drawImage(paperImage, trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                } else if (trash.type === 'milk' && milkImageLoaded) {
+                    ctx.drawImage(milkImage, trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                } else if (trash.type === 'banana' && bananaImageLoaded) {
+                    ctx.drawImage(bananaImage, trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                } else {
+                    // Fallback to simple colored rectangles if images aren't loaded
+                    if (trash.type === 'bottle' || trash.type === 'milk') {
+                        // Blue for bottles
+                        ctx.fillStyle = '#a0d8ef';
+                        ctx.fillRect(trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                    } else if (trash.type === 'can') {
+                        // Red for cans
+                        ctx.fillStyle = '#e74c3c';
+                        ctx.fillRect(trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                    } else if (trash.type === 'trash') {
+                        // Gray for trash bags
+                        ctx.fillStyle = '#7f8c8d';
+                        ctx.fillRect(trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                    } else if (trash.type === 'paper') {
+                        // White for paper
+                        ctx.fillStyle = '#ecf0f1';
+                        ctx.fillRect(trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                    } else if (trash.type === 'banana') {
+                        // Yellow for banana peels
+                        ctx.fillStyle = '#f1c40f';
+                        ctx.fillRect(trash.x, trash.y + trash.floatOffset, trash.width, trash.height);
+                    }
+                }
+            });
+            
+            // Draw marine animals with glowing effect
+            marineAnimals.forEach(animal => {
+                // Add a glowing effect around the animal
+                ctx.save();
+                
+                // Draw glow effect (larger circle behind the animal)
+                const glowSize = 15; // Size of the glow effect
+                const glowX = animal.x + animal.width/2;
+                const glowY = animal.y + animal.height/2;
+                
+                // Create a radial gradient for the glow
+                const gradient = ctx.createRadialGradient(
+                    glowX, glowY, animal.width/2,
+                    glowX, glowY, animal.width/2 + glowSize
+                );
+                
+                // Choose glow color based on animal type
+                let glowColor;
+                if (animal.type === 'dolphin') {
+                    glowColor = 'rgba(52, 152, 219, 0.4)'; // Blue glow
+                } else if (animal.type === 'turtle') {
+                    glowColor = 'rgba(46, 204, 113, 0.4)'; // Green glow
+                } else if (animal.type === 'nemo') {
+                    glowColor = 'rgba(230, 126, 34, 0.4)'; // Orange glow
+                } else if (animal.type === 'whale') {
+                    glowColor = 'rgba(142, 68, 173, 0.4)'; // Purple glow
+                } else { // fish
+                    glowColor = 'rgba(41, 128, 185, 0.4)'; // Light blue glow
+                }
+                
+                gradient.addColorStop(0, glowColor);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(glowX, glowY, animal.width/2 + glowSize, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Create a pulsing effect by adjusting the global alpha
+                const now = Date.now();
+                const pulseFactor = Math.sin(now / 300) * 0.2 + 0.8; // Pulsing between 0.6 and 1.0
+                ctx.globalAlpha = pulseFactor;
+                
+                // Determine if we should flip the image horizontally based on movement direction
+                const scaleX = animal.dx < 0 ? -1 : 1; // Flip if moving left
+                
+                if (animal.type === 'dolphin' && dolphinImageLoaded) {
+                    ctx.save();
+                    if (scaleX < 0) {
+                        // If flipping, we need to translate then scale
+                        ctx.translate(animal.x + animal.width, 0);
+                        ctx.scale(scaleX, 1);
+                        ctx.drawImage(dolphinImage, 0, animal.y, animal.width, animal.height);
+                    } else {
+                        ctx.drawImage(dolphinImage, animal.x, animal.y, animal.width, animal.height);
+                    }
+                    ctx.restore();
+                } else if (animal.type === 'fish' && fishImageLoaded) {
+                    ctx.save();
+                    if (scaleX < 0) {
+                        ctx.translate(animal.x + animal.width, 0);
+                        ctx.scale(scaleX, 1);
+                        ctx.drawImage(fishImage, 0, animal.y, animal.width, animal.height);
+                    } else {
+                        ctx.drawImage(fishImage, animal.x, animal.y, animal.width, animal.height);
+                    }
+                    ctx.restore();
+                } else if (animal.type === 'nemo' && nemoImageLoaded) {
+                    ctx.save();
+                    if (scaleX < 0) {
+                        ctx.translate(animal.x + animal.width, 0);
+                        ctx.scale(scaleX, 1);
+                        ctx.drawImage(nemoImage, 0, animal.y, animal.width, animal.height);
+                    } else {
+                        ctx.drawImage(nemoImage, animal.x, animal.y, animal.width, animal.height);
+                    }
+                    ctx.restore();
+                } else if (animal.type === 'turtle' && turtleImageLoaded) {
+                    ctx.save();
+                    if (scaleX < 0) {
+                        ctx.translate(animal.x + animal.width, 0);
+                        ctx.scale(scaleX, 1);
+                        ctx.drawImage(turtleImage, 0, animal.y, animal.width, animal.height);
+                    } else {
+                        ctx.drawImage(turtleImage, animal.x, animal.y, animal.width, animal.height);
+                    }
+                    ctx.restore();
+                } else if (animal.type === 'whale' && whaleImageLoaded) {
+                    ctx.save();
+                    if (scaleX < 0) {
+                        ctx.translate(animal.x + animal.width, 0);
+                        ctx.scale(scaleX, 1);
+                        ctx.drawImage(whaleImage, 0, animal.y, animal.width, animal.height);
+                    } else {
+                        ctx.drawImage(whaleImage, animal.x, animal.y, animal.width, animal.height);
+                    }
+                    ctx.restore();
+                } else {
+                    // Fallback to drawn shapes if images aren't loaded
+                    if (animal.type === 'dolphin') {
+                        // Dolphin shape (bluish)
+                        ctx.fillStyle = '#3498db';
+                        ctx.beginPath();
+                        ctx.ellipse(animal.x + animal.width/2, animal.y + animal.height/2, animal.width/2, animal.height/3, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        // Tail
+                        ctx.beginPath();
+                        if (animal.dx > 0) {
+                            ctx.moveTo(animal.x, animal.y + animal.height/2);
+                            ctx.lineTo(animal.x - 10, animal.y + animal.height/2 - 10);
+                            ctx.lineTo(animal.x - 10, animal.y + animal.height/2 + 10);
+                        } else {
+                            ctx.moveTo(animal.x + animal.width, animal.y + animal.height/2);
+                            ctx.lineTo(animal.x + animal.width + 10, animal.y + animal.height/2 - 10);
+                            ctx.lineTo(animal.x + animal.width + 10, animal.y + animal.height/2 + 10);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                    } else if (animal.type === 'turtle') {
+                        // Turtle shell (green)
+                        ctx.fillStyle = '#27ae60';
+                        ctx.beginPath();
+                        ctx.ellipse(animal.x + animal.width/2, animal.y + animal.height/2, animal.width/2, animal.height/2, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        // Head
+                        ctx.beginPath();
+                        if (animal.dx > 0) {
+                            ctx.ellipse(animal.x + animal.width, animal.y + animal.height/2, 8, 5, 0, 0, Math.PI * 2);
+                        } else {
+                            ctx.ellipse(animal.x, animal.y + animal.height/2, 8, 5, 0, 0, Math.PI * 2);
+                        }
+                        ctx.fill();
+                    } else {
+                        // Generic fish (blue or orange)
+                        ctx.fillStyle = animal.type === 'nemo' ? '#e67e22' : '#3498db';
+                        
+                        // Fish body
+                        ctx.beginPath();
+                        if (animal.dx > 0) {
+                            ctx.moveTo(animal.x + animal.width, animal.y + animal.height/2);
+                            ctx.lineTo(animal.x, animal.y);
+                            ctx.lineTo(animal.x, animal.y + animal.height);
+                        } else {
+                            ctx.moveTo(animal.x, animal.y + animal.height/2);
+                            ctx.lineTo(animal.x + animal.width, animal.y);
+                            ctx.lineTo(animal.x + animal.width, animal.y + animal.height);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                    }
+                }
+            });
+            
+            // Draw duck using image if loaded, otherwise fallback to drawn duck
+            if (duckImageLoaded) {
+                // Log image details the first few frames to help with debugging
+                if (collectedItems === 0 && timer > 59) {
+                    console.log("Duck image dimensions:", duckImage.width, "x", duckImage.height);
+                    console.log("Duck image complete:", duckImage.complete);
+                }
+                ctx.drawImage(duckImage, duck.x, duck.y, duck.width, duck.height);
+            } else {
+                // Duck body - simple oval shape (fallback)
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.ellipse(duck.x + 25, duck.y + 15, 25, 15, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Duck eye
+                ctx.fillStyle = '#000000';
+                ctx.beginPath();
+                ctx.arc(duck.x + 40, duck.y + 10, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Duck beak
+                ctx.fillStyle = '#FF5733';
+                ctx.beginPath();
+                ctx.moveTo(duck.x + 45, duck.y + 15);
+                ctx.lineTo(duck.x + 55, duck.y + 12);
+                ctx.lineTo(duck.x + 45, duck.y + 20);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            // Draw UI with better styling
+            // Score display
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(10, 10, 150, 40);
+            ctx.font = '20px Arial';
+            ctx.fillStyle = 'white';
+            ctx.fillText(`Score: ${score}`, 20, 38);
+            
+            // Collected items display
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(canvas.width/2 - 75, 10, 150, 40);
+            ctx.fillStyle = 'white';
+            ctx.fillText(`Collected: ${collectedItems}`, canvas.width/2 - 65, 38);
+            
+            // Time display
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(canvas.width - 160, 10, 150, 40);
+            ctx.fillStyle = 'white';
+            ctx.fillText(`Time: ${Math.ceil(timer)}`, canvas.width - 135, 38);
+            
+            // Draw game over screen
+            if (gameOver) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.font = '48px Arial';
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2 - 40);
+                
+                ctx.font = '24px Arial';
+                ctx.fillText(`Final Score: ${score}`, canvas.width/2, canvas.height/2 + 10);
+                
+                ctx.font = '20px Arial';
+                ctx.fillText('Press SPACE to Restart or Q to Quit', canvas.width/2, canvas.height/2 + 60);
+                
+                ctx.textAlign = 'left';
+            }
+        }
+        
+        // Game loop
+        let lastTime = 0;
+        
+        function gameLoop(timestamp) {
+            // Calculate delta time
+            if (!lastTime) lastTime = timestamp;
+            const deltaTime = (timestamp - lastTime) / 1000; // Convert to seconds
+            lastTime = timestamp;
+            
+            if (gameActive && !gameOver) {
+                update(deltaTime);
+            }
+            
+            draw();
+            
+            // Restart game
+            if (gameOver && keys.Space) {
+                resetGame();
+            }
+            
+            if (gameOver && keys.KeyQ) {
+                resetGame();
+            }
+            
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Reset the game
+        function resetGame() {
+            score = 0;
+            collectedItems = 0;
+            timer = 60;
+            gameActive = true;
+            gameOver = false;
+            lastTime = 0;
+            
+            duck.x = canvas.width / 2 - 25;
+            duck.y = canvas.height / 2;
+            
+            createTrash();
+            createBubbles();
+            createSeaweeds();
+            marineAnimals = [];
+            
+            // Reset keys
+            for (const key in keys) {
+                keys[key] = false;
+            }
+        }
+        
+        // Add event listeners for keyboard
+        window.addEventListener('keydown', function(e) {
+            if (e.code in keys) {
+                keys[e.code] = true;
+                
+                // Prevent scrolling when using arrow keys
+                if (e.code.startsWith('Arrow')) {
+                    e.preventDefault();
+                }
+            }
+        });
+        
+        window.addEventListener('keyup', function(e) {
+            if (e.code in keys) {
+                keys[e.code] = false;
+            }
+        });
+        
+        // Initialize and start the game
+        function init() {
+            createTrash();
+            createBubbles();
+            createSeaweeds();
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Start the game immediately
+        init();
+    </script>
+</body>
+</html>

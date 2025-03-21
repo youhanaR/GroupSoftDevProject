@@ -3,16 +3,26 @@ from django.db import models
 from django.contrib.auth.models import User
 from minigames.models import Game
 import random
-# Create a location table in the database ~ Ameera
+
+# Minigame table in database
+class Minigame(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+    
+# Location table in the database ~ Ameera
 class Location(models.Model):
     name = models.CharField(max_length=100)
-    x_coordinate = models.FloatField()  # Position on the map
-    y_coordinate = models.FloatField()
+    x_percentage = models.FloatField()  
+    y_percentage = models.FloatField()  
     access_code = models.CharField(max_length=20)
-    game = models.OneToOneField(Game, on_delete=models.CASCADE, null=True)  #these should only be null until games are added for each location
+    image_name = models.CharField(max_length=100)
+    minigame = models.OneToOneField(Minigame, on_delete=models.CASCADE, null=True)  
 
     def __str__(self):
         return self.name
+
 
 # Create a user progress table in the database ~ Ameera
 class UserProgress(models.Model):

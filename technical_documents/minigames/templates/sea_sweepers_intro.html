@@ -1,0 +1,45 @@
+{% load static %}
+<!--Author: Ameera Abdullah-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <link rel="stylesheet" href="{% static 'css/str-game.css' %}">
+    <link rel="icon" href="{% static 'core/static/images/favicon.ico' %}" type="image/x-icon">
+    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+    <title>Sort the Recycling</title>
+</head>
+
+<body>
+
+<div class="game-card">
+    <h1>Sea Sweepers</h1>
+
+    <h3>Welcome to Sea Sweepers!</h3>
+
+    <ul>
+        <li>Sea Sweepers is an underwater action game where you control a yellow rubber duck to clean up waste in water.</li>
+        <li>Collect trash (e.g., soda cans, water bottles, batteries) to earn 10 points per item.</li>
+        <li>Avoid marine life, as colliding with any creature ends the game.</li>
+        <li>As you progress, the waters become more crowded with both trash and marine life, increasing the difficulty.</li>
+        <li>Play continues until you either collide with marine creatures or the 60-second timer runs out.</li>
+        <li>Your final score reflects how much pollution you managed to clean up.</li>
+    </ul>
+    
+    <p>Good luck.</p>
+
+    <div class="buttons">
+        <form id="endGameForm" method="POST" action="{% url 'sea_sweepers_game' %}">
+            {% csrf_token %}
+            <button type="submit" class="play-game">Play Game</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

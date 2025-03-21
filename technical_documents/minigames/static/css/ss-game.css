@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap');
+
+/* Styling for 'Sea Sweepers' gameplay page */
+
+body {
+    margin: 0;
+    font-family: 'Figtree', sans-serif;
+    background-color: #f6f4f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow-x: hidden; 
+    overflow-y: auto; 
+    padding: 10px; 
+}
+
+canvas {
+    border: 10px solid #619b8a;
+    border-radius: 10px;
+    max-width: 90vw; 
+    max-height: 80vh;
+    width: 70%;
+    height: auto;
+    display: block;
+}
+
+
+#title {
+    font-family: 'Figtree', sans-serif;
+    position: absolute;
+    top: 2%;
+    color: #619b8a;
+    font-size: clamp(20px, 4vw, 28px); 
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    canvas {
+        width: 95vw;  
+        max-height: 75vh;
+    }
+    
+    #title {
+        font-size: 20px; /* Slightly smaller title */
+        top: 10px; /* Adjust positioning */
+    }
+
+    body {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+        padding: 20px;
+    }
+}

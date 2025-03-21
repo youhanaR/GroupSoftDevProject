@@ -12,67 +12,114 @@ body {
     box-sizing: inherit; 
 }
 
+/* START OF NAVBAR STYLES */
 .navbar {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    background-color: white; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-    padding: 10px 15px; 
-    padding-bottom: 3px; 
-    width: 100%; 
-    z-index: 1000; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px 15px;
+  width: 100%;
+  z-index: 1000;
+  position: sticky;
+  top: 0;
 }
 
 .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 30px; 
-    margin-left: auto; 
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-left: auto;
 }
 
 .nav-links a {
-    color: #fa8336 !important; 
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    transition: color 0.3s ease;
+  color: #fa8336;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: rgb(173, 76, 24) !important; 
+  color: rgb(173, 76, 24) !important;
 }
 
-
 .logo img {
-    height: 60px; 
-    max-height: 80px; 
+  height: 60px;
+  max-height: 80px;
 }
 
 .logout-container {
-    margin-left: auto; 
+  margin-left: auto;
 }
 
-.nav-links .logout-button {
-    background-color: #fa8336; 
-    color: white !important;  /* Force white text */
-    padding: 8px 12px;
-    border: none; 
-    border-radius: 5px; 
-    text-decoration: none; 
-    transition: background-color 0.3s; 
-    white-space: nowrap; 
+.logout-button {
+  background-color: #fa8336; 
+  color: white !important;   
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;  
+  white-space: nowrap;
 }
-
 
 .logout-button:hover {
-    background-color: #e76a26; 
-    color: white !important;
+  background-color: #e76a26;  
+  color: white !important; 
 }
 
 .logout-button:focus {
-    outline: none; 
+  outline: none;
 }
+
+/* Hamburger Menu Styles */
+.navbar-toggler {
+  display: none; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+}
+
+.navbar-toggler-icon {
+  width: 30px;
+  height: 3px;
+  background-color: #fa8336;
+  display: block;
+  margin: 5px 0;
+  transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 767px) {
+  .navbar {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .navbar-toggler {
+      display: flex;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+  }
+
+  .nav-links {
+      display: none; 
+      flex-direction: column;
+      width: 100%;
+      text-align: center;
+      gap: 15px;
+      margin-top: 10px;
+  }
+
+  .nav-links.active {
+      display: flex;
+  }
+
+}
+/* END OF DASHBOARD STYLES */
 
 
 

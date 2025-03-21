@@ -1,0 +1,91 @@
+{% load static %}
+<!--Author: Ameera Abdullah-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <link rel="stylesheet" href="{% static 'css/intro.css' %}">
+    <link rel="icon" href="{% static 'core/static/images/favicon.ico' %}" type="image/x-icon">
+
+    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+
+    <style>
+        ul > ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul > ul li {
+            display: flex;
+            align-items: center;  
+            margin-bottom: 10px;  
+        }
+        .circle {
+            display: inline-block;
+            width: 15px;  /* Adjust the size of the circle */
+            height: 15px; /* Adjust the size of the circle */
+            border-radius: 50%; /* Make it round */
+            margin-right: 10px; /* Space between circle and text */
+        }
+    
+        /* Green circle */
+        .green {
+            background-color: green;
+        }
+    
+        /* Yellow circle */
+        .yellow {
+            background-color: yellow;
+        }
+    
+        /* Red circle */
+        .red {
+            background-color: red;
+        }
+    
+        /* Black circle */
+        .black {
+            background-color: black;
+        }
+      </style>
+    <title>Sort the Recycling</title>
+</head>
+
+<body>
+
+<div class="game-card">
+    <h1>Whack-A-Waste</h1>
+
+    <p class="game-description">In this game, you manage food items to minimise waste by making quick decisions on how to handle each one.</p>
+
+
+    <h3>How to Play</h3>
+    <ul>
+        <li>Food items, represented by coloured circles, appear at various stages of their shelf life, and you must decide what action to take.</li>
+            <ul>
+                <li><span class="circle green"></span> Fresh: Don't tap</li>
+                <li><span class="circle yellow"></span> Expiring: Tap</li>
+                <li><span class="circle red"></span> Rotten: Tap</li>
+                <li><span class="circle black"></span> Trash: Don't tap</li>
+            </ul>
+        <li>As the game progresses, more food items appear, and the time to make decisions shortens, increasing the challenge.</li>
+        <li>Good decisions add to your points, wasteful choices deduct them.</li>
+        <li>The game ends when you make 5 mistakes.</li>
+    </ul>
+
+    <div class="buttons">
+        <form id="endGameForm" method="POST" action="{% url 'whack_a_waste_game' %}">
+            {% csrf_token %}
+            <button type="submit" class="play-game">Play Game</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
