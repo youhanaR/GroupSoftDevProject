@@ -77,7 +77,27 @@ def sea_sweepers_game(request):
     return render(request, 'sea_sweepers_game.html')
 
 def sea_sweepers_end(request):
-    return render (request, 'sea_sweepers_end.html' )
+    # Handling POST request to save the score
+    if request.method == 'POST':
+        score = int(request.POST.get('score', 0))
+        user = request.user
+        game = Game.objects.get(name="Sea Sweepers")  # Ensure your game name is correct
+
+        existing_score = GameScore.objects.filter(user=user, game=game).first()
+        if existing_score:
+            # Update the score only if the new score is higher
+            if score > existing_score.score:
+                existing_score.score = score
+                existing_score.save()
+        else:
+            # Create a new GameScore record if none exists
+            GameScore.objects.create(user=user, game=game, score=score)
+
+        return JsonResponse({'message': 'Score saved successfully'})
+
+    # Handling GET request: display the game end page with the score
+    score = int(request.GET.get('score', 0))
+    return render(request, 'sea_sweepers_end.html', {'score': score})
 
 ### SS VIEWS END ###
 
@@ -111,7 +131,7 @@ def whack_a_waste_end(request):
         return JsonResponse({'message': 'Score saved successfully'})
 
     # Handling GET request to display the game end page with the score
-    score = int(request.GET.get('score', 0))  # Ensure the score is an integer
+    score = int(request.GET.get('score', 0)) 
 
     return render(request, 'whack_a_waste_end.html', {'score': score})
 
