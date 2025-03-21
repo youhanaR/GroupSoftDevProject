@@ -16,17 +16,29 @@
 </head>
 
 <body>
-  <!--Nav bar linking to user profile, logout page, and the leaderboard-->
+  <!-- Navbar -->
   <nav class="navbar">
-    <a href="{% url 'dashboard'%}" class="logo">
-        <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
+    <!-- Logo -->
+    <div class="logo">
+        <a href="{% url 'dashboard' %}">
+            <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
+        </a>
     </div>
-    <div class="nav-links">
+
+    <!-- Hamburger Menu Button -->
+    <button class="navbar-toggler" id="navbar-toggler">
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navigation Links -->
+    <div class="nav-links" id="nav-links">
         <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
         <a href="#" class="nav-button">Leaderboard</a>
         <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
     </div>
-</nav>
+  </nav>
    
 <!--A container for the user profile containing the profile image and their data (username, email)-->
 <div class="user-profile"> 
@@ -107,30 +119,41 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-$(document).ready(function () { 
-  // when the pen is clicked (hides the display text shows and focus on the input for editing)
-    $('.fa-edit').click(function () {
-        var field = $(this).closest('.field');
-        var span = field.find('.display-text');
-        var input = field.find('input');
+  // JavaScript to handle toggle on .active class on .nav-links
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleButton = document.getElementById("navbar-toggler");
+    const navLinks = document.getElementById("nav-links");
 
-        span.hide();
-        input.addClass('active-input').removeClass('hidden-input').focus();
+    toggleButton.addEventListener("click", function () {
+    navLinks.classList.toggle("active");
     });
-     
-     // when the input loses focus (it hides the input field and restores the display text) 
-    $('input').blur(function () {
-        var input = $(this);
-        var field = input.closest('.field');
-        var span = field.find('.display-text');
+    
+  });
+        
+  $(document).ready(function () { 
+    // when the pen is clicked (hides the display text shows and focus on the input for editing)
+      $('.fa-edit').click(function () {
+          var field = $(this).closest('.field');
+          var span = field.find('.display-text');
+          var input = field.find('input');
 
-        if (input.val().trim() !== '') {
-            span.text(input.val().trim());
-        }
-        input.addClass('hidden-input').removeClass('active-input');
-        span.show();
-    });
-});
+          span.hide();
+          input.addClass('active-input').removeClass('hidden-input').focus();
+      });
+      
+      // when the input loses focus (it hides the input field and restores the display text) 
+      $('input').blur(function () {
+          var input = $(this);
+          var field = input.closest('.field');
+          var span = field.find('.display-text');
+
+          if (input.val().trim() !== '') {
+              span.text(input.val().trim());
+          }
+          input.addClass('hidden-input').removeClass('active-input');
+          span.show();
+      });
+  });
 </script>
 
 

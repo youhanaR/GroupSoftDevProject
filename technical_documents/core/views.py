@@ -79,6 +79,10 @@ def dashboard(request):
     locations = Location.objects.all()  # Get all locations from the database
     return render(request, 'dashboard.html', {'locations': locations})  # Pass locations to the template
 
+#leaderboard
+def leaderboard(request):
+    return render(request, 'leaderboard.html')
+
 # Log Out View
 def user_logout(request):
     auth.logout(request) # log out the user then remove authentication credentials

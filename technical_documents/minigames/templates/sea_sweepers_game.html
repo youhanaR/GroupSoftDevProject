@@ -1,33 +1,19 @@
+{% load static %}
+<!--Author: Jood Alrubian, Ameera Abdullah-->
+
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+
     <title>Sea Sweepers</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-        }
-        canvas {
-            border: 2px solid #333;
-        }
-        #title {
-            position: absolute;
-            top: 15px;
-            color: white;
-            font-size: 28px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/ss-game.css' %}">
 </head>
 <body>
     <div id="title">Sea Sweepers</div>
+    <div id="static-url" data-static="{% static 'images/sea_sweeper_images/' %}"></div>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
 
     <script>
@@ -126,21 +112,24 @@
             whaleImageLoaded = true;
         };
         
-        // Set image sources to begin loading - use the correct filenames
-        duckImage.src = 'images/duck.png';
-        bottleImage.src = 'images/Recycle_PBottle.png';
-        canImage.src = 'images/can.png';
-        trashImage.src = 'images/trash.png';
-        paperImage.src = 'images/paper.png';
-        milkImage.src = 'images/milk.png';
-        bananaImage.src = 'images/banana.png';
-        
-        // Load marine animal images
-        dolphinImage.src = 'images/dolphin.png';
-        fishImage.src = 'images/fish.png';
-        nemoImage.src = 'images/nemo.png';
-        turtleImage.src = 'images/turtle.png';
-        whaleImage.src = 'images/whale.png';
+        // Get the static URL from the hidden div
+        const staticURL = document.getElementById("static-url").getAttribute("data-static");
+
+        // Set image sources dynamically
+        duckImage.src = staticURL + "duck.png";
+        bottleImage.src = staticURL + "Recycle_PBottle.png";
+        canImage.src = staticURL + "can.png";
+        trashImage.src = staticURL + "trash.png";
+        paperImage.src = staticURL + "paper.png";
+        milkImage.src = staticURL + "milk.png";
+        bananaImage.src = staticURL + "banana.png";
+
+        dolphinImage.src = staticURL + "dolphin.png";
+        fishImage.src = staticURL + "fish.png";
+        nemoImage.src = staticURL + "nemo.png";
+        turtleImage.src = staticURL + "turtle.png";
+        whaleImage.src = staticURL + "whale.png";
+
         
         // FIXED Light rays - exactly 3 rays as requested with WIDER width
         const lightRays = [

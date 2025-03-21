@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap');
 
+/* Styling for 'Whack-A-Waste' gameplay page */
+
 body {
     font-family: 'Figtree', sans-serif;
     text-align: center;
@@ -26,7 +28,7 @@ h1 {
 #game-stats {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap; /* Allows wrapping on small screens */
+    flex-wrap: wrap; 
     background-color: #e8f5e9;
     padding: 10px;
     border-radius: 5px;
