@@ -367,12 +367,12 @@
         // End the game
         function endGame() {
             gameRunning = false;
-            
+
             // Clear all active items
             for (const holeId in activeItems) {
                 removeFoodItem(holeId);
             }
-            
+
             // Show game over message
             const gameOver = document.createElement('div');
             gameOver.style.position = 'absolute';
@@ -387,13 +387,14 @@
             gameOver.style.justifyContent = 'center';
             gameOver.style.alignItems = 'center';
             gameOver.style.zIndex = '100';
-            
+
             const gameOverText = document.createElement('h2');
             gameOverText.textContent = 'Game Over!';
-            
+
             const finalScore = document.createElement('p');
             finalScore.textContent = `Final Score: ${score}`;
-            
+
+            // Play Again Button
             const restartButton = document.createElement('button');
             restartButton.textContent = 'Play Again';
             restartButton.style.padding = '10px 20px';
@@ -403,18 +404,64 @@
             restartButton.style.border = 'none';
             restartButton.style.borderRadius = '4px';
             restartButton.style.cursor = 'pointer';
-            
+
             restartButton.addEventListener('click', function() {
                 document.body.removeChild(gameOver);
                 startGame();
             });
-            
+
+            // End Game Button
+            const endButton = document.createElement('button');
+            endButton.textContent = 'End Game';
+            endButton.style.padding = '10px 20px';
+            endButton.style.margin = '20px';
+            endButton.style.backgroundColor = '#f44336';
+            endButton.style.color = 'white';
+            endButton.style.border = 'none';
+            endButton.style.borderRadius = '4px';
+            endButton.style.cursor = 'pointer';
+
+            endButton.addEventListener('click', function() {
+                // Send the score to the backend via a POST request
+                const data = {
+                    score: score,
+                };
+
+                fetch('/save_score/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'), // CSRF token for protection
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle response if needed
+                    window.location.href = '/whack_a_waste_end/?score=' + encodeURIComponent(score);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
             gameOver.appendChild(gameOverText);
             gameOver.appendChild(finalScore);
             gameOver.appendChild(restartButton);
+            gameOver.appendChild(endButton);
+
             document.body.appendChild(gameOver);
         }
-        
+
+        // Function to get the CSRF token from the cookies (needed for POST requests in Django)
+        function getCookie(name) {
+            const cookieValue = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+            return cookieValue ? cookieValue[2] : null;
+        }
+
+
+
+
         // Initialize and start the game
         function startGame() {
             // Reset game state

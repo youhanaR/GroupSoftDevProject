@@ -79,7 +79,7 @@ def dashboard(request):
     locations = Location.objects.all()  # Get all locations from the database
     return render(request, 'dashboard.html', {'locations': locations})  # Pass locations to the template
 
-#leaderboard
+#leaderboard view
 def leaderboard(request):
     return render(request, 'leaderboard.html')
 

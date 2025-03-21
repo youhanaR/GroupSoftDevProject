@@ -29,5 +29,11 @@ urlpatterns = [
     path('sea_sweepers_end/', views.sea_sweepers_end, name='sea_sweepers_end'),
 
 
+    # URL pattern to handle saving the game score.
+    # When a POST request is made to '/save_score/', the 'save_score' view is triggered.
+    # This view processes the score, updates or creates a record in the GameScore model, 
+    # and returns a success or error message.
+    path('save_score/', views.save_score, name='save_score'),
+
 
 ]

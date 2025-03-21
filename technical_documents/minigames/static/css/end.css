@@ -1,0 +1,135 @@
+/* Import the Figtree font from Google */
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap');
+
+@font-face {
+    font-family: 'PixelGame';
+    src: url('../font/Pixel Game.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Start of Body Styling */
+body {
+    font-family: 'Figtree', sans-serif;
+    box-sizing: border-box;
+    background-color: #9bc4e2;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+/* End of Body Styling */
+
+/* Start of Game Card Styling */
+.game-card {
+    width: 60%;
+    height: auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 8px solid #fa8336;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+/* End of Game Card Styling */
+
+/* Start of Score Display Styling */
+#output {
+    font-family: 'Figtree', sans-serif;
+    font-weight: bolder;
+    color: #fa8336;
+    font-size: 10vw;
+    margin: 0;
+    padding: 0;
+}
+
+/* Media Query for Larger Screens */
+@media (max-width: 768px) {
+    #output {
+        font-size: 12vw;
+    }
+}
+
+/* Media Query for Extra Small Screens */
+@media (max-width: 480px) {
+    #output {
+        font-size: 15vw;
+    }
+}
+
+/* Adjust margins and padding */
+#output p {
+    margin: 0;
+    padding: 0;
+}
+
+#feedback p {
+    margin: 10px 0;
+}
+/* End of Score Display Styling */
+
+/* Start of Button Styling */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    align-items: center; /* Ensure buttons align in the center */
+    justify-content: center; /* Center buttons horizontally */
+}
+
+button.play-end {
+    padding: 1vw 2vw;
+    font-size: 1.25vw;
+    background-color: #fa8336;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    max-width: 150px;
+    min-width: 50px;
+    height: 60px; /* Set a fixed height for consistency */
+}
+
+button.play-end:hover {
+    background-color: #e76a26;
+}
+
+button.game-end {
+    padding: 1vw 2vw;
+    font-size: 1.25vw;
+    background-color: #619b8a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    max-width: 150px;
+    min-width: 50px;
+    height: 60px; /* Set a fixed height for consistency */
+}
+
+button.game-end:hover {
+    background-color: #4e7d6f;
+}
+/* End of Button Styling */
+
+/* Media Query for Mobile Screens */
+@media (max-width: 480px) {
+    .buttons {
+        flex-direction: column; 
+        gap: 15px; 
+    }
+
+    button.play-end,
+    button.game-end {
+        font-size: 5vw; /* Adjust font size for mobile */
+        padding: 3vw 5vw; 
+        height: auto; /* Allow the height to adjust based on content */
+        width: auto;
+    }
+}
+
