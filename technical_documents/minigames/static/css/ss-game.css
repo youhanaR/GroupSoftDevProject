@@ -54,3 +54,34 @@ canvas {
         padding: 20px;
     }
 }
+
+/* Start of Arrow Styling */
+#mobile-controls {
+    position: relative; /* Change from absolute to relative */
+    margin-top: 20px; /* Adds space between canvas and controls */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#mobile-controls button {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    font-size: 24px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Adjust layout for smaller screens */
+@media (max-width: 600px) {
+    #mobile-controls {
+        margin-top: 15px; /* Slightly less space on smaller screens */
+    }
+}
+
+
+/* End of Arrow Styling */

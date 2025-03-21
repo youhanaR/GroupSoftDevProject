@@ -10,13 +10,46 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/ss-game.css' %}">
+    
 </head>
 <body>
     <div id="title">Sea Sweepers</div>
     <div id="static-url" data-static="{% static 'images/sea_sweeper_images/' %}"></div>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="mobile-controls">
+        <button id="up">▲</button>
+        <div>
+            <button id="left">◀</button>
+            <button id="down">▼</button>
+            <button id="right">▶</button>
+        </div>
+    </div>
+    
 
     <script>
+        /**
+         * Retrieves the value of a specified cookie by name.
+         * This is commonly used to get the CSRF token required for secure POST requests in Django.
+         * 
+         * @param {string} name - The name of the cookie to retrieve.
+         * @returns {string|null} - The value of the cookie, or null if not found.
+         */
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
         // Get the canvas element and context
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -335,6 +368,50 @@
                 rect1.y + rect1.height > rect2.y
             );
         }
+
+        // Prevents default touch actions (like scrolling) on the mobile controls
+        document.getElementById('mobile-controls').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Arrow Button Functionality
+        let moveInterval;  // To store the interval for continuous movement
+
+        // Function to handle touch start 
+        function startMove(direction) {
+            keys[direction] = true;  
+            update(0);  
+
+            // Keep the duck moving by calling update() repeatedly while the button is held down
+            moveInterval = setInterval(() => {
+                update(0);  
+            }, 100);  
+        }
+
+        // Function to handle touch end (stop movement)
+        function stopMove(direction) {
+            clearInterval(moveInterval);  
+            keys[direction] = false;  
+        }
+
+        // Add event listeners for touch start and touch end to handle long presses
+        document.getElementById('up').addEventListener('touchstart', () => startMove('ArrowUp'));
+        document.getElementById('down').addEventListener('touchstart', () => startMove('ArrowDown'));
+        document.getElementById('left').addEventListener('touchstart', () => startMove('ArrowLeft'));
+        document.getElementById('right').addEventListener('touchstart', () => startMove('ArrowRight'));
+
+        // Stop moving the duck when touch ends
+        document.getElementById('up').addEventListener('touchend', () => stopMove('ArrowUp'));
+        document.getElementById('down').addEventListener('touchend', () => stopMove('ArrowDown'));
+        document.getElementById('left').addEventListener('touchend', () => stopMove('ArrowLeft'));
+        document.getElementById('right').addEventListener('touchend', () => stopMove('ArrowRight'));
+
+        // Stop moving the duck if the touch is canceled (e.g., user moves finger off the screen)
+        document.getElementById('up').addEventListener('touchcancel', () => stopMove('ArrowUp'));
+        document.getElementById('down').addEventListener('touchcancel', () => stopMove('ArrowDown'));
+        document.getElementById('left').addEventListener('touchcancel', () => stopMove('ArrowLeft'));
+        document.getElementById('right').addEventListener('touchcancel', () => stopMove('ArrowRight'));
+
         
         // Update game state
         function update(deltaTime) {
@@ -869,7 +946,7 @@
             ctx.fillStyle = 'white';
             ctx.fillText(`Time: ${Math.ceil(timer)}`, canvas.width - 135, 38);
             
-            // Draw game over screen
+            /* // Draw game over screen
             if (gameOver) {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -887,10 +964,12 @@
                 
                 ctx.textAlign = 'left';
             }
+            */
         }
         
         // Game loop
         let lastTime = 0;
+        let endScreenShown = false;
         
         function gameLoop(timestamp) {
             // Calculate delta time
@@ -904,19 +983,16 @@
             
             draw();
             
-            // Restart game
-            if (gameOver && keys.Space) {
-                resetGame();
-            }
-            
-            if (gameOver && keys.KeyQ) {
-                resetGame();
+            // Instead of checking for keys.Space or keys.KeyQ to reset, check for gameOver
+            if (gameOver && !endScreenShown) {
+                endScreenShown = true;
+                endGame();  // Display the game over overlay
             }
             
             requestAnimationFrame(gameLoop);
         }
-        
-        // Reset the game
+
+        // Reset the game remains unchanged
         function resetGame() {
             score = 0;
             collectedItems = 0;
@@ -938,25 +1014,103 @@
                 keys[key] = false;
             }
         }
-        
-        // Add event listeners for keyboard
+
+        // endGame() function to show overlay with buttons
+        function endGame() {
+            // Create the overlay div
+            const gameOverDiv = document.createElement('div');
+            gameOverDiv.style.position = 'absolute';
+            gameOverDiv.style.top = '0';
+            gameOverDiv.style.left = '0';
+            gameOverDiv.style.width = '100%';
+            gameOverDiv.style.height = '100%';
+            gameOverDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            gameOverDiv.style.color = 'white';
+            gameOverDiv.style.display = 'flex';
+            gameOverDiv.style.flexDirection = 'column';
+            gameOverDiv.style.justifyContent = 'center';
+            gameOverDiv.style.alignItems = 'center';
+            gameOverDiv.style.zIndex = '100';
+
+            // Game Over text
+            const gameOverText = document.createElement('h2');
+            gameOverText.textContent = 'Game Over!';
+
+            // Display the final score
+            const finalScore = document.createElement('p');
+            finalScore.textContent = `Final Score: ${score}`;
+
+            // "Play Again" button
+            const restartButton = document.createElement('button');
+            restartButton.textContent = 'Play Again';
+            restartButton.style.padding = '10px 20px';
+            restartButton.style.margin = '20px';
+            restartButton.style.backgroundColor = '#4caf50';
+            restartButton.style.color = 'white';
+            restartButton.style.border = 'none';
+            restartButton.style.borderRadius = '4px';
+            restartButton.style.cursor = 'pointer';
+            restartButton.addEventListener('click', function() {
+                document.body.removeChild(gameOverDiv);
+                resetGame();
+                // Reset the overlay flag so the game can end again later
+                endScreenShown = false;
+            });
+
+            // "End Game" button
+            const endButton = document.createElement('button');
+            endButton.textContent = 'End Game';
+            endButton.style.padding = '10px 20px';
+            endButton.style.margin = '20px';
+            endButton.style.backgroundColor = '#f44336';
+            endButton.style.color = 'white';
+            endButton.style.border = 'none';
+            endButton.style.borderRadius = '4px';
+            endButton.style.cursor = 'pointer';
+            endButton.addEventListener('click', function() {
+                const data = { score: score };
+                fetch('/save_score/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = '/sea_sweepers_end/?score=' + encodeURIComponent(score);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
+            // Append elements to the overlay
+            gameOverDiv.appendChild(gameOverText);
+            gameOverDiv.appendChild(finalScore);
+            gameOverDiv.appendChild(restartButton);
+            gameOverDiv.appendChild(endButton);
+
+            document.body.appendChild(gameOverDiv);
+        }
+
+        // Add event listeners for keyboard remain unchanged
         window.addEventListener('keydown', function(e) {
             if (e.code in keys) {
                 keys[e.code] = true;
-                
-                // Prevent scrolling when using arrow keys
                 if (e.code.startsWith('Arrow')) {
                     e.preventDefault();
                 }
             }
         });
-        
+
         window.addEventListener('keyup', function(e) {
             if (e.code in keys) {
                 keys[e.code] = false;
             }
         });
-        
+
         // Initialize and start the game
         function init() {
             createTrash();
@@ -964,8 +1118,6 @@
             createSeaweeds();
             requestAnimationFrame(gameLoop);
         }
-        
-        // Start the game immediately
         init();
     </script>
 </body>

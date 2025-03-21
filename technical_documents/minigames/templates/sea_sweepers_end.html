@@ -1,0 +1,40 @@
+{% load static %}
+<!--Author: Ameera Abdullah-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/end.css' %}">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <title>Sea Sweepers</title>
+</head>
+<body>
+  <div class="game-card">
+    <h1>Final Score</h1>
+    
+    <div id="output">
+      <p>{{ score }}</p>
+    </div>
+
+    <div id="feedback">
+        {% if score >= 300 %}
+            <p>You're a master of underwater waste management! Your quick thinking and dedication are making a huge difference in keeping our waters clean.</p>
+        {% elif score >= 150 %}
+            <p>You're on the right track! With more effort, you can become an expert at removing waste and protecting marine life.</p>
+        {% else %}
+            <p>Every action counts! Keep playing to improve your waste management skills and learn how to keep our water bodies clean.</p>
+        {% endif %}
+    </div>
+    
+    <p>Plastic, metal, and organic waste—every piece of trash in the water has an impact. Keep practicing your cleanup skills and take action in real life to reduce pollution in our water bodies!</p>
+    
+
+    <div class="buttons">
+      <button onclick="window.location.href='{% url 'sea_sweepers_game' %}'" class="play-end">Play Again</button>
+      <button onclick="window.location.href='{% url 'dashboard' %}'" class="game-end">Exit Game</button>
+    </div>
+  </div>
+</body>
+</html>
