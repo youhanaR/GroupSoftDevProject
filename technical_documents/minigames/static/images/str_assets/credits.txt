@@ -1,0 +1,10 @@
+Assets used in this game are credited here:
+
+Recycle items art by Clint Bellanger:
+glass.png
+metal.png
+paper.png
+plastic.png
+
+Trash can by dant-e:
+rubbish.png

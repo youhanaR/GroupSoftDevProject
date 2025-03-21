@@ -1,6 +1,6 @@
 {% load static %}
 <!-- Author: Ameera Abdullah -->
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,31 +13,46 @@
     <title>Dashboard</title>
 </head>
 <body>
-<!--Nav bar linking to user profile, logout page, and the leaderboard-->
+    <!-- Navbar -->
     <nav class="navbar">
+
+        <!-- Logo -->
         <div class="logo">
             <a href="{% url 'dashboard' %}">
                 <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
             </a>
         </div>
-        <div class="nav-links">
+    
+        <!-- Hamburger Menu Button -->
+        <button class="navbar-toggler" id="navbar-toggler">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navigation Links -->
+        <div class="nav-links" id="nav-links">
             <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
-            <a href="#" class="nav-button">Leaderboard</a>
+            <a href="{% url 'leaderboard' %}" class="nav-button">Leaderboard</a>
             <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
         </div>
     </nav>
+
     
     <div class="image-container">
-        <img src="{% static 'images/map_draft.png' %}" alt="Map Draft" class="centered-image">
+        <!-- Map Image -->
+        <img src="{% static 'images/map/map_layout.jpeg' %}" alt="Map Layout" class="centered-image">
         
-        <!-- Adding location markers -->
+        <!-- Adding location markers dynamically using x_percentage and y_percentage -->
         {% for location in locations %}
-            <a href="javascript:void(0);" class="location-marker" 
-               style="left: {{ location.x_coordinate }}%; top: {{ location.y_coordinate }}%;" 
-               title="{{ location.name }}" 
-               onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
-            </a>
+            <img 
+                src="{% static 'images/map/'|add:location.image_name %}" 
+                alt="{{ location.name }}"
+                class="building-image"
+                style="left: {{ location.x_percentage }}%; top: {{ location.y_percentage }}%;" 
+                onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
         {% endfor %}
+
     </div>
 
     <!-- The Modal -->
@@ -52,6 +67,17 @@
     </div>
 
     <script>
+
+        // JavaScript to handle toggle on .active class on .nav-links
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleButton = document.getElementById("navbar-toggler");
+            const navLinks = document.getElementById("nav-links");
+
+            toggleButton.addEventListener("click", function () {
+                navLinks.classList.toggle("active");
+            });
+        });
+
         // JavaScript to handle the modal and access code validation
         var modal = document.getElementById("codeModal");
         var currentGameUrl = '';
@@ -99,7 +125,6 @@
                 document.getElementById("modalAccessCode").value = '';
             }
         }
-
     </script>
 </body>
 </html>

@@ -1,0 +1,38 @@
+{% load static %}
+<!--Author: Ameera Abdullah-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/end.css' %}">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <title>Whack-A-Waste End</title>
+</head>
+<body>
+  <div class="game-card">
+    <h1>Final Score</h1>
+    
+    <div id="output">
+      <p>{{ score }}</p>
+    </div>
+
+    <div id="feedback">
+        {% if score >= 100 %}
+          <p>You’ve got a solid understanding of food waste management!</p>
+        {% elif score >= 50 %}
+          <p>You're on the right track! </p>
+        {% else %}
+          <p>Keep playing to sharpen your skills and make even better choices!</p>
+        {% endif %}
+    </div>
+
+    <p>From fresh to almost past its prime, you’ve learned how to handle food at every stage. Put that wisdom into action!</p>
+
+    <div class="buttons">
+      <button onclick="window.location.href='{% url 'whack_a_waste_game' %}'" class="play-end">Play Again</button>
+      <button onclick="window.location.href='{% url 'dashboard' %}'" class="game-end">Exit Game</button>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!--Author: Rami Youhana, Jem Challis-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+    <title>Recycle Rush - Game Over</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <span id="score" style="display: none;" >{{ score }}</span>
+    <span id="target" style="display: none;" >{{ target }}</span>
+    
+    <div class="container">
+        <h1>Game Over</h1>
+        <p>Your final score: <span id="final-score">0</span></p>
+        <div id="result-message"></div>
+        <button class="button" id="restart-button">Restart Game</button>
+        <button class="button" id="end-button">Exit Game</button>
+    </div>
+    
+    <script>
+        // Retrieves the score and target
+        let score = sessionStorage.getItem("score") || document.getElementById("score").innerText || 0;
+        document.getElementById("final-score").innerText = score;
+        let target = sessionStorage.getItem("target") || document.getElementById("target").innerText || 10;
+        let resultMessage = document.getElementById("result-message");
+        
+        if (score >= target) {
+            resultMessage.innerHTML = "<h2>Congratulations! You have beaten this minigame!</h2>";
+            document.querySelector(".container").appendChild(nextButton);
+        } else {
+            resultMessage.innerHTML = "<h2>Try again to improve your score!</h2>";
+        }
+        
+        document.getElementById("restart-button").onclick = function() {
+            window.location.href = '{% url "recycle_rush_game" %}';
+        };
+        document.getElementById("end-button").onclick = function() {
+            window.location.href = '{% url "dashboard" %}';
+        };
+    </script>
+</body>
+</html>

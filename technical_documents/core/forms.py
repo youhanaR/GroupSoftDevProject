@@ -33,9 +33,9 @@ class UserUpdateForm(forms.ModelForm):
         def clean_email(self):
          email = self.cleaned_data.get('email')
          if User.objects.exclude(pk=self.instance.pk).filter(email=email).exists():
-                 raise forms.ValidationError('This email already exists.')
-         return email
-            
+            raise forms.ValidationError('This email already exists.')
+         return email   
+
 # Delete user profile form 
 class UserDeleteForm(forms.ModelForm):
     class Meta:

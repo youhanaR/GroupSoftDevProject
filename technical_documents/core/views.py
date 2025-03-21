@@ -1,4 +1,4 @@
-# Author: Juri Kushayi, Surin Chai, Ameera Abdullah
+# Author: Juri Kushayi, Surin Chai, Ameera Abdullah, Jem Challis
 
 """
 This module defines the views for the Django web application. For this prototype, 
@@ -11,6 +11,7 @@ Views:
    - `register` - Handles user registration.
    - `my_login` - Manages user login authentication.
    - `user_logout` - Logs out the user and redirects to a logout page.
+   - `privacy_policy` - Content of privacy policy that is dynamically accessed by the registration page.
 3. **Dashboard & User Management**:
    - `dashboard` - Displays an interactive map with game locations.
    - `user_profile` - Allows users to update their profile details.
@@ -29,6 +30,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseNotFound
+
 
 # Create your views here.
 
@@ -68,10 +70,18 @@ def my_login(request):
     context = {'loginform': form}
     return render(request, 'my-login.html', context=context)
 
+#Privacy Policy Pop-Up Content
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
 # Main Page View (Dashboard)
 def dashboard(request):
     locations = Location.objects.all()  # Get all locations from the database
     return render(request, 'dashboard.html', {'locations': locations})  # Pass locations to the template
+
+#leaderboard view
+def leaderboard(request):
+    return render(request, 'leaderboard.html')
 
 # Log Out View
 def user_logout(request):
@@ -91,7 +101,7 @@ def user_profile(request):
         u_form = UserUpdateForm(instance=request.user)
     # Allows to access the form in the html file by {{ u_form }}
     context = {'u_form': u_form,}
-    return render(request, 'user-profile.html', context=context)
+    return render(request, 'user-profile.html', context=context) 
 
 
 # User Update 
@@ -111,6 +121,7 @@ def deleteAccount(request):
 def game_description(request, location):
     # Normalize the location string to match dictionary keys
     normalized_location = location.lower().replace(" ", "-")
+    game_url = (Location.objects.get(name=location)).game.url
 
     # Hardcoded game data
     game_data = {
@@ -147,6 +158,7 @@ def game_description(request, location):
         'game_description': game_info['description'],
         'how_to_play': game_info['how_to_play'],
         'sustainability_theme': game_info['sustainability_theme'],
-        'location': normalized_location 
+        'location': normalized_location ,
+        'game_url': game_url
     })
 

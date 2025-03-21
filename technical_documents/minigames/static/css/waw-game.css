@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap');
+
+/* Styling for 'Whack-A-Waste' gameplay page */
+
+body {
+    font-family: 'Figtree', sans-serif;
+    text-align: center;
+    background-color: #f0f8e6;
+    padding: 20px;
+}
+
+h1 {
+    color: #4a7c59;
+    font-family: 'Figtree', sans-serif;
+
+}
+
+#game-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+#game-stats {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+    background-color: #e8f5e9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: min(4vw, 18px); /* Responsive font size */
+}
+
+.stat-item {
+    font-weight: bold;
+    flex: 1; /* Ensures equal space distribution */
+    text-align: center;
+    min-width: 100px; /* Prevents excessive shrinking */
+    margin: 5px;
+}
+
+#legend {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Allows items to stack if needed */
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    font-size: min(4vw, 16px); /* Responsive text */
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    flex: 1; /* Distributes space evenly */
+    justify-content: center;
+    min-width: 120px; /* Prevents excessive shrinking */
+    margin: 5px;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 500px) {
+    #game-stats {
+        flex-direction: column; /* Stack stats vertically */
+        align-items: center;
+    }
+
+    #legend {
+        flex-direction: column; /* Stack legend items */
+        align-items: center;
+    }
+}
+
+
+.food-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.fresh-color {
+    background-color: #81c784;
+}
+
+.expiring-color {
+    background-color: #fff176;
+}
+
+.rotten-color {
+    background-color: #e57373;
+}
+
+.trash-color {
+    background-color: #757575;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: min(3vw, 20px); 
+    justify-content: center;
+    padding: 10px;
+    max-width: 100%;
+}
+
+.hole {
+    width: min(18vw, 90px); 
+    height: min(18vw, 90px);
+    background-color: #8B4513;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    margin: auto;
+}
+
+
+@media (max-width: 500px) {
+    .hole {
+        width: min(22vw, 75px);
+        height: min(22vw, 75px);
+    }
+    #game-board {
+        gap: min(2vw, 10px); 
+    }
+}
+
+
+@media (max-width: 350px) {
+    .hole {
+        width: min(25vw, 60px);
+        height: min(25vw, 60px);
+    }
+    #game-board {
+        gap: min(1.5vw, 5px); 
+    }
+}
+
+
+
+.food-item {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -100px;
+    cursor: pointer;
+    transition: bottom 0.3s ease-out, transform 1s ease, opacity 1s ease;
+}
+
+.food-item.active {
+    bottom: 20px;
+}
+
+/* Animation classes for food interactions */
+.food-item.repurposed {
+    transform: translateX(-50%) scale(0.2) rotate(540deg);
+    opacity: 0;
+}
+
+.food-item.composted {
+    transform: translateX(-50%) scale(0) rotate(360deg);
+    opacity: 0;
+}
+
+.food-item.wasted {
+    transform: translateX(-50%) scale(1.5);
+    opacity: 0;
+}
+
+.food-item.preserved {
+    transform: translateX(-50%) translateY(-50px);
+    opacity: 0;
+}
+
+.fresh {
+    background-color: #81c784;
+    box-shadow: 0 0 8px #4caf50;
+}
+
+.expiring {
+    background-color: #fff176;
+    box-shadow: 0 0 8px #ffeb3b;
+}
+
+.rotten {
+    background-color: #e57373;
+    box-shadow: 0 0 8px #f44336;
+}
+
+.trash {
+    background-color: #757575;
+    box-shadow: 0 0 8px #424242;
+}
+
+@keyframes fadeUp {
+    0% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -50px); }
+}
+
+/* Particle animation for more visual feedback */
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle-float 3s ease-out forwards;
+}
+
+@keyframes particle-float {
+    0% { transform: translate(0, 0); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+}

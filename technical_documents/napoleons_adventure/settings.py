@@ -1,4 +1,4 @@
-# Author: Ameera Abdullah, Juri Kushayi, Surin Chai
+# Author: Ameera Abdullah, Juri Kushayi, Surin Chai, Jem Challis
 
 """
 Django settings for napoleons_adventure project.
@@ -30,7 +30,8 @@ SECRET_KEY = 'django-insecure-bg@b=+w%g!ns(5jo42lmlb_2_#z@k8qt75m$ggeju)6hf)!x^v
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['13.51.64.27', '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'napoleonsadventure.com', 'www.napoleonsadventure.com']
+
 
 
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'minigames',
     'widget_tweaks',
 ]
 
@@ -124,7 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'core' /'static']
+STATICFILES_DIRS = [BASE_DIR / 'core' / 'static', BASE_DIR / 'minigames' / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
@@ -146,5 +148,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' # Using gmail's smpt server address to send emails
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('User_Email') # Retrieves the app app developers' email address from .env file to avoid coding sensitive data
-EMAIL_HOST_PASSWORD = os.environ.get('User_Password') # Retrieves app developers' password from.env file to avoid coding sensitive data
+EMAIL_HOST_USER = os.environ.get("User_Email") # Retrieves the app app developers' email address from .env file to avoid coding sensitive data
+EMAIL_HOST_PASSWORD =  os.environ.get("User_Password")# Retrieves app developers' password from.env file to avoid coding sensitive data
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER 

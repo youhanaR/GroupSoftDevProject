@@ -1,0 +1,341 @@
+{% load static %}
+<!--Author: Jem Challis, Juri Khushayl -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'core/static/images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <link rel="stylesheet" href="{% static 'css/str-game.css' %}">
+    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+    <title>Sort the Recycling</title>
+</head>
+
+
+<body>
+
+<div class="game-container">
+    <h1>Sort the Recycling</h1>
+
+    <div id="grid" class="grid"></div>
+
+  <div class="game-scores">
+    <div id="task"></div>
+    <div id="score"></div>
+    <div id="target"></div>
+    <div id="turns"></div>
+    <div id="rubbish_message"></div>
+  </div>
+
+    <div class="buttons">
+        <form id="endGameForm" method="POST" action="{% url 'str_end' %}">
+            {% csrf_token %}
+            <input type="hidden" id="score_input" name="score">
+            <input type="hidden" id="target_input" name="target">
+            <button type="submit" class="play-game">End Game</button>
+        </form>
+    </div>
+</div>
+    {% load static %}
+
+   <py-script>
+        from pyscript import display
+        from js import document
+        import random
+        import time
+
+        columns = 7
+        rows = 7
+        number_of_spaces = rows*columns
+        types = ["paper", "plastic", "metal", "glass"]
+        number_of_rubbish = 15
+        turns = 15
+        score_target = 50
+        document.getElementById('target_input').value = score_target
+
+        task = types[random.randint(0,len(types)-1)]    #this variable stores the type of piece they must match in order to remove another piece of rubbish
+        score = 0
+        document.getElementById('score_input').value = score
+        piece_picked = False
+        selected_piece = None                           #this variable stores the location(0 to number_of_spaces-1) of the selected piece
+
+        display(f"Current task: sort {task}", target = "task")
+        display(f"Score: {score}", target = "score")
+        display(f"Score target: {score_target}", target = "target")
+        display(f"Turns remaining: {turns}", target = "turns")
+        global spaces
+        spaces = []                                 #this variable stores the type of each piece on the board
+        for i in range(number_of_rubbish+1):        #the required amount of rubbish is added to the board
+            spaces.append("rubbish")
+        #the next 4 lines add the list "types" to "spaces", until spaces is full(len(spaces) == number_of_spaces)
+        while len(spaces) + len(types) < number_of_spaces:
+            spaces.extend(types)
+        if len(spaces) < number_of_spaces:
+            spaces.extend(types[:number_of_spaces - len(spaces)])
+        random.shuffle(spaces)              #the pieces are shuffled, in order to create a different, random, board each game
+        
+        no_matches = False                  #this variable stores whether the current board has any matching pieces that need to be moved
+        while no_matches == False:          #if there is a match, this function will attempt to fix it, before checking again
+            no_matches = True               #no_matches is assumed true, until shown to be false
+            for i in range(0, len(spaces) - 2):
+
+                #this is the first part of the check, checking below each piece
+                if (i+2) % 7 == 0 or (i+1) % 7 == 0:    #the last 2 pieces on each column do not need to be checked, as each piece checks the 2 below it
+                    continue
+                if spaces[i] == spaces[i+1] and spaces[i] == spaces[i+2]: #if 3 in a row
+                    #this section attempts to swap one of the pieces with one higher on the list
+                    if i+7 <= number_of_spaces-1:     #if the piece being checked is not in the last 7
+                        if spaces[i] != spaces[i+4]:
+                            spaces[i], spaces[i+4] = spaces[i+4], spaces[i]
+                        elif spaces[i+1] != spaces[i+5]:
+                            spaces[i+1], spaces[i+5] = spaces[i+5], spaces[i+1]
+                        elif spaces[i+2] != spaces[i+7]:
+                            spaces[i+2], spaces[i+7] = spaces[i+2], spaces[i+7]
+                        else:                       #if none of theses solutions work, the board is reshuffled
+                            random.shuffle(spaces)
+                            no_matches = False
+                    #this section attempts to swap one of the pieces with one lower on the list
+                    elif i>=4:                      #if the piece being checked is not in the first 3
+                        if spaces[i] != spaces[i-1]:
+                            spaces[i], spaces[i-1] = spaces[i-1], spaces[i]
+                            no_matches = False
+                        elif spaces[i+1] != spaces[i-2]:
+                            spaces[i+1], spaces[i-2] = spaces[i-2], spaces[i+1]
+                            no_matches = False
+                        elif spaces[i+2] != spaces[i-4]:
+                            spaces[i+2], spaces[i-4] = spaces[i+2], spaces[i-4]
+                            no_matches = False
+                        else:                       #if none of theses solutions work, the board is reshuffled
+                            random.shuffle(spaces)
+                            no_matches = False
+                    else:                           #if none of theses solutions work, the board is reshuffled
+                        random.shuffle(spaces)
+                        no_matches = False
+
+            #this is the second part of the check, checking to the left and right of each piece
+            for i in range(0, len(spaces) - 2*rows):    #the last 2 columns do not need to be checked, as each piece checks the 2 to the right
+                if spaces[i] == spaces[i+rows] and spaces[i] == spaces[i+2*rows]: #if 3 in a row
+                    #this section attempts to swap one of the pieces with one higher on the list
+                    if (i+2*rows+2) <= number_of_spaces:    #if the piece being checked is not in the last 2 columns
+                        if spaces[i] != spaces[i+1]:
+                            spaces[i], spaces[i+1] = spaces[i+1], spaces[i]
+                            no_matches = False
+                        elif spaces[i+rows] != spaces[i+rows+1]:
+                            spaces[i+rows], spaces[i+rows+1] = spaces[i+rows+1], spaces[i+rows]
+                            no_matches = False
+                        elif spaces[i+2*rows] != spaces[i+2*rows+1]:
+                            spaces[i+2*rows], spaces[i+2*rows+1] = spaces[i+2*rows+1], spaces[i+2*rows]
+                            no_matches = False
+                        else:                       #if none of theses solutions work, the board is reshuffled
+                            random.shuffle(spaces)
+                            no_matches = False
+                    #this section attempts to swap one of the pieces with one lower on the list
+                    elif i>=1:                              #if the piece being checked is not the first
+                        if spaces[i] != spaces[i-1]:
+                            spaces[i], spaces[i-1] = spaces[i-1], spaces[i]
+                            no_matches = False
+                        elif spaces[i+rows] != spaces[i+rows-1]:
+                            spaces[i+rows], spaces[i+rows-1] = spaces[i+rows-1], spaces[i+rows]
+                            no_matches = False
+                        elif spaces[i+2*rows] != spaces[i+2*rows-1]:
+                            spaces[i+2*rows], spaces[i+2*rows-1] = spaces[i+2*rows-1], spaces[i+2*rows]
+                            no_matches = False
+                        else:                       #if none of theses solutions work, the board is reshuffled
+                            random.shuffle(spaces)
+                            no_matches = False
+                    else:                           #if none of theses solutions work, the board is reshuffled
+                        random.shuffle(spaces)
+                        no_matches = False
+        
+        grid_container = document.getElementById("grid")
+        for i in range(0, number_of_spaces):
+            square = document.createElement("div")
+            square.classList.add("square")
+            img = document.createElement("img")
+            image_type = spaces[i]
+            img.src = "{% static 'images/str_assets/' %}" + image_type + ".png"
+            img.style.width = "100%"
+            img.style.height = "100%"
+            img.style.objectFit = "contain"  # Ensure it fits well inside the square
+            square.appendChild(img)
+            grid_container.appendChild(square)
+            square.onclick = lambda event, i=i: clicked(event, i)
+
+        def clicked(event, i):
+
+            global selected_piece
+            global piece_picked
+            global turns
+            global previous_piece
+            global task
+
+            if task == None:
+                if spaces[i] == "rubbish":
+                    replace([i])
+                    three_check(i)
+                    task = types[random.randint(0,len(types)-1)]
+                    update_grid_display()
+                        
+            #this section picks a piece to move, if the player has clicked on one, and has not already selected a piece
+            elif not piece_picked and turns != 0:
+                event.target.style.border = "1px solid red"  #Changes border to red
+                previous_piece = event.target
+                piece_picked = True
+                selected_piece = i
+
+            #this section picks which piece to swap with the selected piece, if the player has already selected a piece, and it is adjacent    
+            elif piece_picked and turns != 0:
+                previous_piece.style.border = "none" #Removes the red border from the previous square
+                piece_picked = False
+                if selected_piece in {i+1, i-1, i+rows, i-rows}:        #if the new piece is adjacent to the previously selected piece
+                    spaces[i], spaces[selected_piece] = spaces[selected_piece], spaces[i]
+                    three_check(i)
+                    three_check(selected_piece)
+                    turns-=1
+                    update_grid_display()
+                        
+        def three_check(check_piece):
+            global score
+            global task
+            vertical = vertical_check(check_piece)
+            horizontal = horizontal_check(check_piece)
+            if vertical[0] >= 2 and horizontal[0] >= 2:
+                #this if statement checks if the player has completed their task
+                if spaces[vertical[1][0]] == task:
+                    task = None
+                vertical[1].pop()       #due to both vertical and horizontal being included, this stops the initial piece from being duplicated
+                replaced = replace(vertical[1] + horizontal[1])
+                for i in range(0, len(replaced)):
+                    three_check(replaced[i])
+                score+=5                        #5 points for a T or L shape
+            elif vertical[0] >= 3:
+                if spaces[vertical[1][0]] == task:
+                    task = None
+                replaced = replace(vertical[1])
+                for i in range(0, len(replaced)):
+                    three_check(replaced[i])
+                score+=3                        #3 points for >3 in a row
+            elif horizontal[0] >= 3:
+                if spaces[horizontal[1][0]] == task:
+                    task = None
+                replaced = replace(horizontal[1])
+                for i in range(0, len(replaced)):
+                    three_check(replaced[i])
+                score+=3                        #3 points for >3 in a row
+            elif vertical[0] >= 2:
+                if spaces[vertical[1][0]] == task:
+                    task = None
+                replaced = replace(vertical[1])
+                for i in range(0, len(replaced)):
+                    three_check(replaced[i])
+                score+=1                        #1 point for 3 in a row
+            elif horizontal[0] >= 2:
+                if spaces[horizontal[1][0]] == task:
+                    task = None
+                replaced = replace(horizontal[1])
+                for i in range(0, len(replaced)):
+                    three_check(replaced[i])
+                score+=1                        #1 point for 3 in a row
+            document.getElementById('score_input').value = score
+        
+        
+        #this function checks above and below the selected piece, to see if it is 3 in a row, or more
+        def vertical_check(check_piece):
+            #if the piece being checked is rubbish, it will not be counted as 3 in row
+            if spaces[check_piece] == "rubbish":
+                return 0, []
+            else:
+                down = 0
+                up = 0
+                pieces_list = []
+                for i in range(1, 5):
+                    if check_piece+i <= number_of_spaces and (check_piece)%7 < (check_piece+i)%7:
+                        if spaces[check_piece] == spaces[check_piece+i] and (down+1) == i:
+                            down+=1
+                            pieces_list.append(check_piece+i)
+                    if check_piece-i >= 0 and (check_piece)%7 > (check_piece-i)%7 and (up+1) == i:
+                        if spaces[check_piece] == spaces[check_piece-i]:
+                            up+=1
+                            pieces_list.append(check_piece-i)
+                total = down + up
+                if total >= 2:
+                    pieces_list.append(check_piece)
+                return total, pieces_list
+            
+        
+        #this function checks to the left and right of the selected piece, to see if it is 3 in a row, or more
+        def horizontal_check(check_piece):
+            #if the piece being checked is rubbish, it will not be counted as 3 in row
+            if spaces[check_piece] == "rubbish":
+                return 0, []
+            else:
+                right = 0
+                left = 0
+                pieces_list = []
+                for i in range(1, 5):
+                    if (check_piece+(i*rows)+1) <= number_of_spaces:
+                        if spaces[check_piece] == spaces[check_piece+(i*rows)] and (right+1) == i:
+                            right+=1
+                            pieces_list.append(check_piece+(i*rows))
+                    if check_piece-(i*rows) >= 0:
+                        if spaces[check_piece] == spaces[check_piece-(i*rows)] and (left+1) == i:
+                            left+=1
+                            pieces_list.append(check_piece-(i*rows))
+                total = right + left
+                if total >= 2:
+                    pieces_list.append(check_piece)
+                return total, pieces_list
+    
+        def replace(replace_pieces):
+            #the game waits 1 second before replacing the pieces, so the player can see and comprehend what happens (updating the screen first)
+            wait(1)
+            for i in range(0,len(replace_pieces)):
+                replaced = False
+                while not replaced:
+                    replacement = types[random.randint(0,len(types)-1)]
+                    if replacement != spaces[replace_pieces[i]]:
+                        spaces[replace_pieces[i]] = replacement
+                        replaced = True
+            update_grid_display()
+            return(replace_pieces)
+
+        def wait(length):
+            time.sleep(length)
+
+        def update_grid_display():
+            grid_container = document.getElementById("grid")
+            grid_container.innerHTML = ''
+            for i in range(0, number_of_spaces):
+                square = document.createElement("div")
+                square.classList.add("square")
+                img = document.createElement("img")
+                image_type = spaces[i]
+                img.src = "{% static 'images/str_assets/' %}" + image_type + ".png"
+                img.style.width = "100%"
+                img.style.height = "100%"
+                img.style.objectFit = "contain"  # Ensure it fits well inside the square
+                square.appendChild(img)
+                grid_container.appendChild(square)
+                square.onclick = lambda event, i=i: clicked(event, i)
+            document.getElementById('task').innerHTML = ""
+            if turns != 0:
+                if task != None:
+                    display(f"Current task: sort {task}", target = "task")
+                else:
+                    display(f"Current task: {task}", target = "task")
+            else:
+                display(f"Game over: click End Game to see your results", target = "task")
+            document.getElementById('score').innerHTML = ""
+            display(f"Score: {score}", target = "score")
+            document.getElementById('turns').innerHTML = ""
+            display(f"Turns remaining: {turns}", target = "turns")
+            document.getElementById('rubbish_message').innerHTML = ""
+            if task == None:
+                display(f"Click on a piece of rubbish to remove", target = "rubbish_message")
+
+    </py-script> 
+
+</body>
+</html>

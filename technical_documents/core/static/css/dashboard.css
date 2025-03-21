@@ -1,35 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700&display=swap');
+
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Figtree', sans-serif; 
     box-sizing: border-box; 
-    background-color:#9bc4e2;
+    background-color:#7bcdff;
 }
 
 * {
     box-sizing: inherit; 
 }
 
+/* START OF NAVBAR STYLES */
 .navbar {
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    background-color: white; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-    padding: 10px 15px; 
-    padding-bottom: 3px; 
-    width: 100%; 
-    z-index: 1000; 
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px 15px;
+    width: 100%;
+    z-index: 1000;
+    position: sticky;
+    top: 0;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 30px; 
-    margin-left: auto; 
+    gap: 30px;
+    margin-left: auto;
 }
 
 .nav-links a {
-    color: #fa8336 !important; 
+    color: #fa8336;
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
@@ -37,138 +41,216 @@ body {
 }
 
 .nav-links a:hover {
-    color: rgb(173, 76, 24) !important; 
+    color: rgb(173, 76, 24) !important;
 }
 
-
 .logo img {
-    height: 60px; 
-    max-height: 80px; 
+    height: 60px;
+    max-height: 80px;
 }
 
 .logout-container {
-    margin-left: auto; 
+    margin-left: auto;
 }
 
-.nav-links .logout-button {
+.logout-button {
     background-color: #fa8336; 
-    color: white !important;  /* Force white text */
+    color: white !important;   
     padding: 8px 12px;
-    border: none; 
-    border-radius: 5px; 
-    text-decoration: none; 
-    transition: background-color 0.3s; 
-    white-space: nowrap; 
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;  
+    white-space: nowrap;
 }
-
 
 .logout-button:hover {
-    background-color: #e76a26; 
-    color: white !important;
+    background-color: #e76a26;  
+    color: white !important; 
 }
 
 .logout-button:focus {
-    outline: none; 
+    outline: none;
 }
 
+/* Hamburger Menu Styles */
+.navbar-toggler {
+    display: none; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+}
+
+.navbar-toggler-icon {
+    width: 30px;
+    height: 3px;
+    background-color: #fa8336;
+    display: block;
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 767px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-toggler {
+        display: flex;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+    }
+
+    .nav-links {
+        display: none; 
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+}
+/* END OF DASHBOARD STYLES */
+
+
+/* START OF MAP STYLES */
 .image-container {
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: calc(100vh - 20px); /* Full viewport height minus navbar height (adjust as necessary) */
-    margin-top: 0; /* Remove any additional margin */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 20px);
+    margin-top: 0;
 }
 
 .centered-image {
-    max-width: 100%; 
-    max-height: 100%; 
-    width: auto; 
-    height: auto; 
+    max-width: 100%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    /*border: 10px solid #233d4d;*/
+    /*border-radius: 10px;*/
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
 }
 
 .location-marker {
-    position: absolute; /* Use absolute positioning to place the dots correctly */
-    width: 15px; /* Set width for the marker */
-    height: 15px; /* Set height for the marker */
-    background-color: red; /* Set the marker color to red */
-    border-radius: 50%; /* Make the marker circular */
-    display: block; /* Make it a block element to allow for better positioning */
-    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 10;
 }
 
 .location-marker:hover {
-    background-color: darkred; /* Change color on hover */
+    background-color: darkred;
+}
+
+@media (max-width: 767px) {
+    .location-marker {
+        width: 15px;
+        height: 15px;
+    }
+
+    .centered-image {
+        max-height: 60%;
+    }
+}
+
+.building-image {
+    position: absolute;
+    width: 15%; 
+    height: 15%; 
+    transition: box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+
+.building-image:hover {
+    box-shadow: 0 0 15px 5px rgba(255, 255, 0, 0.8); 
 }
 
 /* Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.4); 
 }
 
 .modal-content {
-    background: #FFFFFF; /* Same background as login form */
-    max-width: 360px; /* Match login form width */
-    margin: 15% auto; /* Center the modal vertically and horizontally */
-    padding: 45px; /* Match padding from login form */
-    text-align: center; /* Center text inside modal */
-    border: 10px solid #fe7f2d; /* Same border as login form */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add some shadow for depth */
+    background: #FFFFFF; 
+    max-width: 360px; 
+    margin: 15% auto; 
+    padding: 45px; 
+    text-align: center; 
+    border: 10px solid #fe7f2d; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .modal-content input {
-    font-family: "Roboto", sans-serif; /* Match font */
-    outline: 0; /* Remove outline */
-    background: #f2f2f2; /* Input background color */
-    width: 100%; /* Full width */
-    border: 0; /* No border */
-    margin: 0 0 15px; /* Margin at the bottom */
-    padding: 15px; /* Padding for the input */
-    box-sizing: border-box; /* Include padding in width */
-    font-size: 14px; /* Font size for inputs */
+    font-family: "Figtree", sans-serif; 
+    outline: 0; 
+    background: #f2f2f2; 
+    width: 100%; 
+    border: 0; 
+    margin: 0 0 15px; 
+    padding: 15px; 
+    box-sizing: border-box; 
+    font-size: 14px; 
 }
 
 .modal-content button {
-    font-family: "Roboto", sans-serif; /* Match font */
-    text-transform: uppercase; /* Uppercase text */
-    outline: 0; /* Remove outline */
-    background: #fe7f2d; /* Button background color */
-    width: 100%; /* Full width */
-    border: 0; /* No border */
-    padding: 15px; /* Padding for the button */
-    color: #FFFFFF; /* Text color */
-    font-size: 14px; /* Font size for button */
-    transition: all 0.3s ease; /* Smooth transition */
-    cursor: pointer; /* Pointer cursor on hover */
+    font-family: "Figtree", sans-serif; 
+    text-transform: uppercase; 
+    outline: 0; 
+    background: #fe7f2d; 
+    width: 100%; 
+    border: 0; 
+    padding: 15px; 
+    color: #FFFFFF; 
+    font-size: 14px; 
+    transition: all 0.3s ease; 
+    cursor: pointer; 
 }
 
 .modal-content button:hover,
 .modal-content button:active,
 .modal-content button:focus {
-    background: #e76c1d; /* Darker background on hover */
+    background: #e76c1d; 
 }
 
 .close {
-    color: #aaa; /* Color for close button */
-    float: right; /* Float to the right */
-    font-size: 28px; /* Font size */
-    font-weight: bold; /* Bold text */
+    color: #aaa; 
+    float: right;
+    font-size: 28px; 
+    font-weight: bold; 
 }
 
 .close:hover,
 .close:focus {
-    color: black; /* Change color on hover */
-    text-decoration: none; /* Remove underline */
-    cursor: pointer; /* Pointer cursor on hover */
+    color: black; 
+    text-decoration: none; 
+    cursor: pointer; 
 }
 
-
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
