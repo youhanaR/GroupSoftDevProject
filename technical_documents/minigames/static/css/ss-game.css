@@ -57,8 +57,8 @@ canvas {
 
 /* Start of Arrow Styling */
 #mobile-controls {
-    position: relative; /* Change from absolute to relative */
-    margin-top: 20px; /* Adds space between canvas and controls */
+    position: relative; 
+    margin-top: 20px; 
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -83,6 +83,10 @@ def dashboard(request):
 def leaderboard(request):
     return render(request, 'leaderboard.html')
 
+#how to play view
+def how_to_play(request):
+    return render(request, 'how_to_play.html')
+
 # Log Out View
 def user_logout(request):
     auth.logout(request) # log out the user then remove authentication credentials

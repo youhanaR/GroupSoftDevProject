@@ -25,6 +25,7 @@ urlpatterns = [
     path('my-login/', views.my_login, name="my-login"),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('leaderboard/', views.leaderboard, name='leaderboard'),
+    path('how-to-play/', views.how_to_play, name='how-to-play'),
     path('privacy-policy/', views.privacy_policy, name='privacy-policy'),
    
     #User-Related Paths
