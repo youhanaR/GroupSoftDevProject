@@ -21,7 +21,7 @@ Views:
 Author: Juri Khushayl, Surin Wi Sut, Ameera Abdullah
 """
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CreateUserForm, LoginForm, UserUpdateForm, UserDeleteForm
 from .models import Location
 from django.contrib.auth.decorators import login_required
@@ -30,6 +30,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseNotFound
+from django.urls import reverse
 
 
 # Create your views here.
@@ -92,8 +93,6 @@ def user_logout(request):
     auth.logout(request) # log out the user then remove authentication credentials
     return render(request, 'user-logout.html')
 
-
-
 # Update user profile
 @login_required(login_url='my-login')
 def user_profile(request):
@@ -123,34 +122,46 @@ def deleteAccount(request):
 
 #Renders a game description page based on the selected location.
 def game_description(request, location):
-    # Normalize the location string to match dictionary keys
+ 
     normalized_location = location.lower().replace(" ", "-")
-    game_url = (Location.objects.get(name=location)).game.url
+    location_obj = get_object_or_404(Location, name=location)
+
+    # Retrieve the minigame URL using the new field if it exists
+    if location_obj.minigame and location_obj.minigame.intro_url_name:
+        game_url = reverse(location_obj.minigame.intro_url_name)
+    else:
+        game_url = None
 
     # Hardcoded game data
     game_data = {
-    'into-building': {
-        'title': 'Match 3',
-        'description': 'Match different types of waste to learn how to properly dispose of them.',
-        'how_to_play': 'Click on matching waste items to clear them from the board. Try to reach the highest score before the time runs out!',
-        'sustainability_theme': 'Reducing landfill waste starts with small actions—<a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">each one adds up to a cleaner world!</a>',
-    },
-    'cornwall-house': {
-        'title': 'Recycle Rush',
-        'description': 'Sort recyclable materials as fast as you can before time runs out!',
-        'how_to_play': 'Drag and drop each item into the correct recycling bin. The faster you sort, the higher your score!',
-        'sustainability_theme': 'Toss it right for a greener sight<a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">—every action counts in saving our Earth!</a>',
-    },
-    'sports-park': {
-        'title': 'Under Construction',
-        'description': '',
-        'how_to_play': '',
-        'sustainability_theme': '',
-    },
-}
+        'into-building': {
+            'title': 'Sort the Recycling',
+            'sustainability_theme': 'Sorting recycling correctly reduces contamination, ensuring that more materials can be reused and kept out of landfills.This game teaches you to sort materials correctly and underscores how<a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">small actions can lead to big effects!</a>',
+        },
+        'cornwall-house': {
+            'title': 'Recycle Rush',
+            'sustainability_theme': 'Recycling helps reduce waste, conserve natural resources, and minimise pollution. By playing this game, you learn the importance of sorting waste properly and how <a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">small actions can contribute the a sustainable future!</a>',
+        },
+        'sports-park': {
+            'title': 'Trash Trivia',
+            'sustainability_theme': '',
+        },
+        'forum': {
+            'title': 'Whack-A-Waste',
+            'sustainability_theme': 'Reducing food waste helps conserve resources and lower environmental impact. This game puts your food-saving skills to the test! Learn how to rescue, reuse, and <a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">rethink food at every stage of its shelf life to cut down on waste and help the planet.</a>',
+        },
+        'business-school-cafe': {
+            'title': 'Sort-n-Serve',
+            'sustainability_theme': '',
+        },
+        'reed-pond': {
+            'title': 'Sea Sweepers',
+            'sustainability_theme': 'Reducing waste in our waters helps protect marine life and preserve ecosystems. This game challenges you to clean up pollution from our waters and <a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">learn how to reduce waste in bodies of water, ensuring a cleaner, healthier environment for all.</a>',
+        },
 
+    }
 
-    # Retrieve the data for the given location
+    # Retrieve the game info for the normalized location
     game_info = game_data.get(normalized_location)
 
     # If location is invalid, return a 404 page
@@ -159,10 +170,7 @@ def game_description(request, location):
 
     return render(request, 'game_description.html', {
         'game_title': game_info['title'],
-        'game_description': game_info['description'],
-        'how_to_play': game_info['how_to_play'],
         'sustainability_theme': game_info['sustainability_theme'],
-        'location': normalized_location ,
+        'location': normalized_location,
         'game_url': game_url
     })
-

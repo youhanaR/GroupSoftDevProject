@@ -7,6 +7,7 @@ import random
 # Minigame table in database
 class Minigame(models.Model):
     name = models.CharField(max_length=100)
+    intro_url_name = models.CharField(max_length=100, null=True, blank=True)
     
     def __str__(self):
         return self.name

@@ -1,35 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700&display=swap');
+
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Figtree', sans-serif; 
     box-sizing: border-box; 
-    background-color:#9bc4e2;
+    background-color:#7bcdff;
 }
 
 * {
     box-sizing: inherit; 
 }
 
+/* START OF NAVBAR STYLES */
 .navbar {
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    background-color: white; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-    padding: 10px 15px; 
-    padding-bottom: 3px; 
-    width: 100%; 
-    z-index: 1000; 
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px 15px;
+    width: 100%;
+    z-index: 1000;
+    position: sticky;
+    top: 0;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 30px; 
-    margin-left: auto; 
+    gap: 30px;
+    margin-left: auto;
 }
 
 .nav-links a {
-    color: #fa8336 !important; 
+    color: #fa8336;
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
@@ -37,38 +41,92 @@ body {
 }
 
 .nav-links a:hover {
-    color: rgb(173, 76, 24) !important; 
+    color: rgb(173, 76, 24) !important;
 }
 
-
 .logo img {
-    height: 60px; 
-    max-height: 80px; 
+    height: 60px;
+    max-height: 80px;
 }
 
 .logout-container {
-    margin-left: auto; 
+    margin-left: auto;
 }
 
-.nav-links .logout-button {
+.logout-button {
     background-color: #fa8336; 
-    color: white !important;  /* Force white text */
+    color: white !important;   
     padding: 8px 12px;
-    border: none; 
-    border-radius: 5px; 
-    text-decoration: none; 
-    transition: background-color 0.3s; 
-    white-space: nowrap; 
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;  
+    white-space: nowrap;
 }
-
 
 .logout-button:hover {
-    background-color: #e76a26; 
-    color: white !important;
+    background-color: #e76a26;  
+    color: white !important; 
 }
 
 .logout-button:focus {
-    outline: none; 
+    outline: none;
+}
+
+/* Hamburger Menu Styles */
+.navbar-toggler {
+    display: none; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+}
+
+.navbar-toggler-icon {
+    width: 30px;
+    height: 3px;
+    background-color: #fa8336;
+    display: block;
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 767px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-toggler {
+        display: flex;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+    }
+
+    .nav-links {
+        display: none; 
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        gap: 15px;
+        margin-top: 10px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+}
+/* END OF NAVBAR STYLES */
+
+/* FORM STYLES */
+.form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; 
+    padding: 20px; 
 }
 
 .form {
@@ -85,6 +143,7 @@ body {
 
 h2 {
     margin-bottom: 20px;
+    font-size: 1.75rem; 
 }
 
 p {
@@ -98,13 +157,23 @@ a {
     text-decoration: none;
 }
 
+.form p a {
+    display: inline;
+    color: #a4c086;
+}
+
+.form p a:hover {
+    text-decoration: underline;
+    color: #83986c;
+}
+
 a button {
     border: none;
-    margin: 0 15px;
+    margin: 10px 0;
 }
 
 button {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Figtree', sans-serif; 
     text-transform: uppercase;
     outline: 0;
     background: #619b8a;
@@ -123,3 +192,27 @@ button:focus {
     background: #538576;
 }
 
+/* MOBILE RESPONSIVENESS FOR THE FORM */
+@media (max-width: 767px) {
+    .form {
+        max-width: 90%;  /* Use more of the screen width on mobile */
+        margin: 20px auto;
+        padding: 20px;   /* Reduce padding for smaller screens */
+        border-width: 5px;  /* Thinner border on mobile */
+    }
+
+    h2 {
+        font-size: 1.5rem;  /* Slightly smaller heading font */
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 14px;  /* Slightly smaller text */
+        margin-bottom: 15px;
+    }
+
+    button {
+        padding: 10px 20px;  /* Adjust button padding */
+        font-size: 13px;
+    }
+}
