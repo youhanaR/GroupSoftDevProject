@@ -120,6 +120,7 @@ body {
 }
 /* END OF NAVBAR STYLES */
 
+
 /* Dashboard Container */
 .dashboard-container {
     display: flex;
@@ -128,57 +129,71 @@ body {
 }
 
 /* START OF MAP STYLES */
-.image-container {
+.map-wrapper {
     position: relative;
-    width: 100%;
-    overflow: hidden;
+    width: 65%;  
+    overflow: hidden;  
     margin: 0 auto;
+    transform-origin: top left; 
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;   
+    align-items: center;       
+    position: relative;
+    height: 100vh;  
+    width: 100%;          
 }
 
 .centered-image {
-    display: block;  
+    display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
-    max-width: 50%;  
-    height: auto;    
+    width: 100%; 
+    height: auto;
 }
-  
-/* Clickable Building Markers */
+
 .building-image {
     position: absolute;
     cursor: pointer;
-    width: 15%;  
+    width: 25%;  
     height: auto;
     transition: transform 0.3s ease;
 }
-  
+
 .building-image:hover {
     transform: scale(1.2);
 }
 
-/* Image container for mobile */
-@media (max-width: 767px) {
-    .image-container {
-        width: 100%;  /* Ensure it takes up full width */
-        overflow: hidden; /* Prevent any overflow */
-        position: relative; /* Make sure we can position child elements */
-        margin-left: auto;  /* Automatically center horizontally */
-        margin-right: auto;
+/* Mobile view adjustments */
+@media (max-width: 767px) { 
+    .map-wrapper {
+        transform: scale(1.5) translateY(-35%);;  
+        transform-origin: top left;
+        margin-left: 0.125%; /* Ensure the map doesn't overflow the right side */
     }
 
-    /* Adjust the size of the centered image on mobile */
     .centered-image {
-        width: 80%;  /* Adjust this width to increase the size of the image */
-        max-width: 80%;  
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-        transform: scale(1.2); /* Scale the image itself */
-        transform-origin: center center; /* Scale from the center */
+        width: 100%; 
+        height: auto;
+    }
+
+    .building-image {
+        width: 25%; 
     }
 }
 
+/* Desktop Map Scaling */
+@media (min-width: 768px) {
+    .map-wrapper {
+        transform: scale(0.80); 
+        margin-top: 25%;  /* Push the map down to prevent overlap with navbar */
+        margin-right: 15%;
+    }
+}
+
+/* END OF MAP STYLES */
 
 /* START OF MODAL STYLES */
 .modal {

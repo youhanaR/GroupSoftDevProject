@@ -32,16 +32,20 @@
 
     <!-- Map Container -->
     <div class="image-container">
-        <img src="{% static 'images/map/empty_layout.png' %}" alt="Map Layout" class="centered-image">
-        {% for location in locations %}
-            <img 
-                src="{% static 'images/map/'|add:location.image_name %}" 
-                alt="{{ location.name }}"
-                class="building-image"
-                style="left: {{ location.x_percentage }}%; top: {{ location.y_percentage }}%;" 
-                onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
-        {% endfor %}
+        <div class="map-wrapper">
+            <img src="{% static 'images/map/empty_layout.png' %}" alt="Map Layout" class="centered-image">
+            {% for location in locations %}
+                <img 
+                    src="{% static 'images/map/'|add:location.image_name %}" 
+                    alt="{{ location.name }}"
+                    class="building-image"
+                    style="left: {{ location.x_percentage }}%; top: {{ location.y_percentage }}%;" 
+                    onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
+            {% endfor %}
+        </div>
     </div>
+
+
 
 
     <!-- The Modal -->
