@@ -27,6 +27,12 @@ urlpatterns = [
     path('sea_sweepers_intro/', views.sea_sweepers_intro, name='sea_sweepers_intro'),
     path('sea_sweepers/', views.sea_sweepers_game, name='sea_sweepers_game'),
     path('sea_sweepers_end/', views.sea_sweepers_end, name='sea_sweepers_end'),
+    
+    # Sort N Serve Paths
+    path("sns_start/", views.sns_start, name="sns_start"),
+    path("sns_game/", views.sns_game, name="sns_game"),
+    path("sns_end/", views.sns_end, name="sns_end"),
+
 
 
     # URL pattern to handle saving the game score.

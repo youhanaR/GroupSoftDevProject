@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Over - Sort and Serve</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff3cd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #856404;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 8vw;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 5vw;
+      margin-bottom: 30px;
+    }
+
+    .score {
+      font-size: 6vw;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    a.button {
+      padding: 15px 30px;
+      background: #ffc107;
+      color: black;
+      text-decoration: none;
+      font-size: 5vw;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+
+    a.button:hover {
+      background: #e0a800;
+    }
+
+    @media (min-width: 600px) {
+      h1 { font-size: 3rem; }
+      p, .score { font-size: 1.5rem; }
+      a.button { font-size: 1.2rem; }
+      .btn-group {
+        flex-direction: row;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Game Over!</h1>
+  <p>Your shift is over. Here’s how you did:</p>
+  <div class="score">Score: {{ score }}</div>
+
+  <div class="btn-group">
+    <a class="button" href="{% url 'sns_game' %}">🔁 Play Again</a>
+    <a class="button" href="{% url 'sns_start' %}">🏠 Back to Start</a>
+  </div>
+</body>
+</html>
+

@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sort and Serve</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      overflow-x: hidden;
+    }
+    .game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background-color: #f2f2f2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1px;
+    }
+    .area {
+      border: 2px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4vw;
+      padding: 1rem;
+    }
+    #conveyor {
+      position: absolute;
+      left: 45%;
+      top: 0;
+      width: 10%;
+      height: 100%;
+      background: #999;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      overflow: hidden;
+    }
+    .plate {
+      width: 8vw;
+      height: 8vw;
+      min-width: 40px;
+      min-height: 40px;
+      max-width: 70px;
+      max-height: 70px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      gap: 2vw;
+    }
+    button {
+      padding: 15px 25px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    button:active {
+      background-color: #45a049;
+    }
+    #score-display {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 1.5rem;
+      color: #333;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+  <div id="score-display">Score: 0</div>
+  <div class="game-container">
+    <div class="area" id="top-left">👥 Customers</div>
+    <div class="area" id="top-right">🗑️ Dustbin</div>
+    <div class="area" id="bottom-left">🍽️ Prep Area</div>
+    <div class="area" id="bottom-right">🧼 Soap Station</div>
+    <div id="conveyor"></div>
+  </div>
+
+  <div class="controls">
+    <button id="btn-top-left">Top Left</button>
+    <button id="btn-top-right">Top Right</button>
+    <button id="btn-bottom-left">Bottom Left</button>
+    <button id="btn-bottom-right">Bottom Right</button>
+  </div>
+
+  <script>
+    console.log("✅ JavaScript is running.");
+
+    const conveyor = document.getElementById("conveyor");
+    let plates = [];
+    let missedPlates = 0;
+    let score = 0;
+
+    // Update the score display
+    function updateScoreDisplay() {
+      document.getElementById("score-display").textContent = "Score: " + score;
+    }
+
+    function createPlate() {
+      const assets = [
+        { type: "plate", bg: "url('{% static 'images/sns_assets/plate.png' %}')", target: "bottom-right" },
+        { type: "food", bg: "url('{% static 'images/sns_assets/food.png' %}')", target: "top-left" },
+        { type: "cutlery", bg: "url('{% static 'images/sns_assets/cutlery.png' %}')", target: "bottom-left" },
+        { type: "can", bg: "url('{% static 'images/sns_assets/can.png' %}')", target: "top-right" }
+      ];
+      const chosen = assets[Math.floor(Math.random() * assets.length)];
+      
+      const obj = document.createElement("div");
+      obj.classList.add("plate");
+      obj.dataset.type = chosen.type;
+      obj.dataset.target = chosen.target;
+      obj.style.background = chosen.bg;
+      obj.style.backgroundSize = "cover";
+      obj.style.backgroundPosition = "center";
+      obj.style.top = "0px";
+      conveyor.appendChild(obj);
+      plates.push(obj);
+      console.log("Created object of type " + chosen.type + " with target " + chosen.target + ". Total objects:", plates.length);
+    }
+
+    // Move each plate downward
+    function movePlates() {
+      for (let i = plates.length - 1; i >= 0; i--) {
+        const plate = plates[i];
+        let currentTop = parseInt(plate.style.top.replace("px", "")) || 0;
+        const newTop = currentTop + 2;
+        if (newTop > window.innerHeight) {
+          plate.remove();
+          plates.splice(i, 1);
+          missedPlates++;
+          console.log(`Missed plate! Total misses: ${missedPlates}`);
+        } else {
+          plate.style.top = newTop + "px";
+        }
+      }
+      if (missedPlates >= 3) {
+        console.log("Game over! Redirecting to end screen...");
+        window.location.href = '/sns_end/?score=' + encodeURIComponent(score);
+      }
+    }
+
+    // Spawn a new plate
+    function spawnPlate() {
+      console.log("Spawning new plate...");
+      createPlate();
+    }
+
+    // Set intervals to move plates and spawn new ones
+    setInterval(movePlates, 20);
+    setInterval(spawnPlate, 3000);
+
+    // Button event listeners for each target area
+    document.getElementById("btn-top-left").addEventListener("click", function() {
+      if (plates.length > 0) {
+        const obj = plates.shift();
+        if (obj.dataset.target === "top-left") {
+          score += 10;
+          console.log("Correct! " + obj.dataset.type + " sent to top-left. Score:", score);
+        } else {
+          score -= 5;
+          console.log("Wrong! " + obj.dataset.type + " sent to top-left. Score:", score);
+        }
+        obj.remove();
+        updateScoreDisplay();
+      } else {
+        console.log("No objects to send to top-left.");
+      }
+    });
+
+    document.getElementById("btn-top-right").addEventListener("click", function() {
+      if (plates.length > 0) {
+        const obj = plates.shift();
+        if (obj.dataset.target === "top-right") {
+          score += 10;
+          console.log("Correct! " + obj.dataset.type + " sent to top-right. Score:", score);
+        } else {
+          score -= 5;
+          console.log("Wrong! " + obj.dataset.type + " sent to top-right. Score:", score);
+        }
+        obj.remove();
+        updateScoreDisplay();
+      } else {
+        console.log("No objects to send to top-right.");
+      }
+    });
+
+    document.getElementById("btn-bottom-left").addEventListener("click", function() {
+      if (plates.length > 0) {
+        const obj = plates.shift();
+        if (obj.dataset.target === "bottom-left") {
+          score += 10;
+          console.log("Correct! " + obj.dataset.type + " sent to bottom-left. Score:", score);
+        } else {
+          score -= 5;
+          console.log("Wrong! " + obj.dataset.type + " sent to bottom-left. Score:", score);
+        }
+        obj.remove();
+        updateScoreDisplay();
+      } else {
+        console.log("No objects to send to bottom-left.");
+      }
+    });
+
+    document.getElementById("btn-bottom-right").addEventListener("click", function() {
+      if (plates.length > 0) {
+        const obj = plates.shift();
+        if (obj.dataset.target === "bottom-right") {
+          score += 10;
+          console.log("Correct! " + obj.dataset.type + " sent to bottom-right. Score:", score);
+        } else {
+          score -= 5;
+          console.log("Wrong! " + obj.dataset.type + " sent to bottom-right. Score:", score);
+        }
+        obj.remove();
+        updateScoreDisplay();
+      } else {
+        console.log("No objects to send to bottom-right.");
+      }
+    });
+
+    // For immediate testing, create a plate right away
+    (function testPlate() {
+      console.log("Creating test plate immediately...");
+      createPlate();
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
