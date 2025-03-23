@@ -28,13 +28,20 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.models import auth
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseNotFound
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.http import HttpResponseNotFound, HttpResponse
 from django.urls import reverse
 from minigames.models import GameScore  # Import GameScore model from minigames
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from core.models import Profile 
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+
+
 
 # Create your views here.
 
@@ -49,14 +56,59 @@ def register(request):
         form = CreateUserForm(request.POST)
         if form.is_valid(): # Validate the form 
             try:
-                form.save() # Save the form 
-                messages.success(request, "Registration successful! You can now log in.")
-                return redirect('my-login')  # Redirect to login page
+                user = form.save(commit=False)
+                user.is_active = False  # Deactivate account until it is confirmed
+                user.save()
+                # Email confirmation
+                current_site = '127.0.0.1:8000/'
+                subject = 'Activate Your Account'
+                message = render_to_string('email_confirmed.html', {
+                    'user': user,
+                    'domain': current_site,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': default_token_generator.make_token(user),
+                })
+                send_mail(subject, message, 'nepoleonsadventure@gmail.com', [user.email], html_message = message)
+
+                messages.success(request, "Registration successful! Check your email to activate your account.")
+                return redirect('check-your-email')
             except IntegrityError:
                 messages.error(request, "Username already exists. Please choose another one.")
     # Allows to access the form in the html file by {{ registerform }}
     context = {'registerform': form}  
     return render(request, 'register.html', context=context)
+
+
+# For email confirmation
+User = get_user_model()
+
+def activate(request, uidb64, token):
+    try:
+        # Decode the uid from the URL and fetch the user object
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True  # Activate the user account
+        user.save()
+        messages.success(request, 'Your account has been activated successfully!')
+        return redirect('activation-success')  # Redirect to a custom success page
+    else:
+        return HttpResponse('Activation link is invalid!')
+    
+# Activation success
+
+def activation_success(request):
+    return render(request, 'accountactivationsuccess.html')
+
+
+
+# Check your email view
+def check_your_email(request):
+    return render(request, 'checkyouremail.html')
+
 
 # User Login View
 def my_login(request):

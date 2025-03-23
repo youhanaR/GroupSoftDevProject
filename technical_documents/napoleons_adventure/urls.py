@@ -28,6 +28,8 @@ urlpatterns = [
     path('', include('core.urls')),
     path('', include('minigames.urls')),
     path('email/', include(email_urls), name='email-verification'),
+    path('accounts/', include('allauth.urls')),  # Include allauth URLs
+
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

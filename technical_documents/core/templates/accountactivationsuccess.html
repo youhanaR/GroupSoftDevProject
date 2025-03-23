@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/accountactivationsuccess.css' %}">
+    <title>Account Activated</title>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body text-center">
+            <h2 class="card-title">Your account has been activated!</h2>
+            <p class="card-text">Thank you for confirming your email. You can now log in and start using your account.</p>
+            <a href="{% url 'my-login' %}" class="btn">Go to Login</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
