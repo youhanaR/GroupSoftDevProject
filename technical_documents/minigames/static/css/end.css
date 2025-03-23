@@ -21,6 +21,12 @@ body {
 }
 /* End of Body Styling */
 
+h1 {
+    font-family: 'Figtree', sans-serif;
+    font-weight: bolder;
+    text-align: center;
+}
+
 /* Start of Game Card Styling */
 .game-card {
     width: 60%;
@@ -121,7 +127,7 @@ button.game-end:hover {
 @media (max-width: 480px) {
     .buttons {
         flex-direction: column; 
-        gap: 15px; 
+        gap: 10px; 
     }
 
     button.play-end,

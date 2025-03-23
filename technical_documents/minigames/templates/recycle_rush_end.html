@@ -1,13 +1,17 @@
+{% load static %}
 <!--Author: Rami Youhana, Jem Challis-->
+<!--Styling: Juri Khushayk-->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/end.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
-    <title>Recycle Rush - Game Over</title>
+    <title>Recycle Rush</title>
     <style>
         body {
             display: flex;
@@ -34,32 +38,47 @@
     </style>
 </head>
 <body>
-
-    <span id="score" style="display: none;" >{{ score }}</span>
-    <span id="target" style="display: none;" >{{ target }}</span>
-    
-    <div class="container">
-        <h1>Game Over</h1>
-        <p>Your final score: <span id="final-score">0</span></p>
+    <div class="game-card">
+        <span id="score" style="display: none;" >{{ score }}</span>
+        <span id="target" style="display: none;" >{{ target }}</span>
+        
+        <h1>Final Score</h1>
+        <div id="output">
+           <span id="final-score"></span>
+        </div>
         <div id="result-message"></div>
-        <button class="button" id="restart-button">Restart Game</button>
-        <button class="button" id="end-button">Exit Game</button>
+    
+        <!-- Feedback Section -->
+        <div id="feedback"></div>
+    
+        <div class="buttons">
+            <button class="play-end" id="restart-button">Play Again</button>
+            <button class="game-end" id="end-button">Exit Game</button>
+        </div>
     </div>
     
     <script>
-        // Retrieves the score and target
+         // Retrieves the score and target
         let score = sessionStorage.getItem("score") || document.getElementById("score").innerText || 0;
         document.getElementById("final-score").innerText = score;
         let target = sessionStorage.getItem("target") || document.getElementById("target").innerText || 10;
         let resultMessage = document.getElementById("result-message");
-        
-        if (score >= target) {
-            resultMessage.innerHTML = "<h2>Congratulations! You have beaten this minigame!</h2>";
-            document.querySelector(".container").appendChild(nextButton);
+        let feedback = document.getElementById("feedback");
+    
+        if (score >= 10) {
+            resultMessage.innerHTML = "<p>Congratulations! You have beaten the game!</p>";
         } else {
-            resultMessage.innerHTML = "<h2>Try again to improve your score!</h2>";
+            resultMessage.innerHTML = "<p>Try again to improve your score!</p>";
         }
-        
+    
+        if (score >= 10) {
+            feedback.innerHTML = "<p>Great job! You’re getting closer to mastering the game. Keep it up!</p>";
+        } else if (score >= 5) {
+            feedback.innerHTML = "<p>You're on the right track!</p>";
+        } else {
+            feedback.innerHTML = "<p>Every challenge is a step towards a more sustainable future! Let’s go for a higher score next time!</p>";
+        }
+    
         document.getElementById("restart-button").onclick = function() {
             window.location.href = '{% url "recycle_rush_game" %}';
         };
@@ -67,5 +86,6 @@
             window.location.href = '{% url "dashboard" %}';
         };
     </script>
+    
 </body>
 </html>

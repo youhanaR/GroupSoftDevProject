@@ -1,44 +1,24 @@
+{% load static %}
 <!--Author: Rami Youhana-->
+<!--Styling: Juri Khushayk-->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/intro.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
-    <title>Sort the Recycling</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-        }
-        .start-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Recycle Rush</title>
+
 </head>
 <body>
-    <div class="container">
-        <h1>Recycle Rush - A Sustainability Game</h1>
-        <p>This game is part of the Sustainability Project for the University of Exeter.</p>
-        <p>In Recycle Rush, you control a recycling bin to catch falling waste items. Your goal is to sort the waste correctly by switching between the different bins using the on-screen buttons.</p>
-        <h2>How to Play</h2>
+    <div class="game-card">
+        <h1>Recycle Rush </h1>
+        <p class="game-description">In Recycle Rush, you control a recycling bin to catch falling waste items. Your goal is to sort the waste correctly by switching between the different bins using the on-screen buttons.</p>
+        <h3>How to Play</h3>
         <ul>
             <li>Use the left (⬅) and right (➡) buttons to move the bin.</li>
             <li>Switch between bins using the on-screen selection buttons (Plastic, Battery, Can, Paper).</li>
@@ -46,9 +26,12 @@
             <li>If you miss or catch the wrong item, you lose a life.</li>
             <li>The game speeds up as you score more points!</li>
         </ul>
-        <h2>Why This Matters</h2>
-        <p>Recycling helps reduce waste, conserve natural resources, and minimize pollution. By playing this game, you learn the importance of sorting waste properly and how small actions can contribute to a sustainable future.</p>
-        <button class="start-button" onclick="window.location.href='{% url 'recycle_rush_game' %}'">Start Game</button>
+        <div class="buttons">
+            <form id="endGameForm" method="POST" action="{% url 'recycle_rush_game' %}">
+                {% csrf_token %}
+                <button type="submit" class="play-game">Play Game</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

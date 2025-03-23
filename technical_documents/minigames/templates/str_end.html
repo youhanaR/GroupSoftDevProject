@@ -1,5 +1,6 @@
 {% load static %}
-<!--Author: Jem Challis, Juri Khushayl-->
+<!--Author: Jem Challis-->
+<!--Styling: Juri Khushayk-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
-    <link rel="stylesheet" href="{% static 'css/str-game.css' %}">
+    <link rel="stylesheet" href="{% static 'css/end.css' %}">
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
     <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
@@ -16,34 +17,45 @@
 
 
 <body>
-<div class ="game-card">
-    <h1>Sort the Recycling</h1>
+    <div class="game-card">
+        <h1>Final Score</h1>
+    
+        <div id="output">
+            <p>{{ score }}</p>
+        </div>
+        <span id="score" style="display: none;" >{{ score }}</span>
+        <span id="target" style="display: none;" >{{ target }}</span>
 
-    <div id="output"></div>
-    <span id="score" style="display: none;" >{{ score }}</span>
-    <span id="target" style="display: none;" >{{ target }}</span>
+        <div id="feedback"></div>
+        <p>From fresh to almost past its prime, you’ve learned how to handle food at every stage. Put that wisdom into action!</p>
 
-    <div class="buttons">
-        <button onclick="window.location.href='{% url 'str_game' %}'" class="play-end">Replay Game</button>
-        <button onclick="window.location.href='{% url 'dashboard' %}'" class="play-end">Exit Game</button>
+        <div class="buttons">
+            <button onclick="window.location.href='{% url 'str_game' %}'" class="play-end">Play Again</button>
+            <button onclick="window.location.href='{% url 'dashboard' %}'" class="game-end">Exit Game</button>
+        </div>
+    
+    
+        <py-script>
+            from pyscript import display
+            from js import document
+    
+            score = int(document.getElementById("score").textContent)
+            target = int(document.getElementById("target").textContent)
+    
+            feedback_div = document.getElementById("feedback")  # Get the feedback div
+    
+            if score >= target:
+                feedback_div.innerHTML = f"<p>You scored {score} points. You win!</p>"
+                feedback_div.innerHTML += "<p>You have beaten the game, but feel free to keep playing for a new high score.</p>"
+                feedback_div.innerHTML += "<p>Make sure to keep in mind the things you've learned here: recycling should be sorted, and rubbish should be separated.</p>"
+            else:
+                feedback_div.innerHTML = f"<p>You scored {score} points. You lose, try again.</p>"
+                feedback_div.innerHTML += "<p>Don’t give up! Keep playing and improving with each move you make!</p>"
+                feedback_div.innerHTML += "<p>Try completing the tasks in order to remove the rubbish.</p>"
+                feedback_div.innerHTML += "<p>You get more points for T and L shapes (5) and 4 and 5 in rows (3).</p>"
+        </py-script>
     </div>
-
-    <py-script>
-        from pyscript import display
-        from js import document
-
-        score = int(document.getElementById("score").textContent)
-        target = int(document.getElementById("target").textContent)
-
-        if score >= target:
-            display(f"You scored {score} points.  You win.", target = "output")
-            display("You have beaten the game, but feel free to keep playing for a new high score.", target = "output")
-            display("Make sure to keep in mind the things you've learned here: recycling should be sorted, and rubbish should be seperated.", target = "output")
-        else:
-            display(f"You scored {score} points. You lose, try again.", target = "output")
-            display("Try completing the tasks in order to remove the rubbish.", target = "output")
-            display("You get more points for T and L shapes (5) and 4 and 5 in a rows (3).", target = "output")
-    </py-script>
+    
 </div>
 </body>
 </html>

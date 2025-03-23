@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap');
+
+
+body {
+    font-family: 'Figtree', sans-serif;
+    text-align: center;
+    background-color: #f0f8e6;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50%; 
+    width: 70%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #4a7c59;
+    font-family: 'Figtree', sans-serif;
+    font-size: 2rem;
+    text-align: center;
+    padding-bottom: 3%;
+
+}
+
+#game-box {
+    position: relative;
+    width: 600px; 
+    height: 350px; 
+    background-color: #a2d5c6;
+    border: 1px solid #4a7c59;
+    margin-bottom: 20px;
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+}
+
+
+.falling-item {
+    width: 60px; 
+    height: 60px; 
+    position: absolute;
+    top: 0; 
+    z-index: 10; 
+}
+
+
+.bin {
+    position: absolute;
+    bottom: 10px;
+    left: 250px; 
+    width: 60px;
+}
+
+
+.controls {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 600px;
+}
+
+.large-button {
+    font-size: 30px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.large-button:hover {
+    background-color: #45a049;
+}
+
+.bin-selector button {
+    font-size: 16px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.bin-selector button:hover {
+    background-color: #45a049;
+}
+
+#plastic-bin-btn {
+    background-color: #4CAF50; 
+}
+
+#plastic-bin-btn:hover {
+    background-color: #45a049;
+}
+
+
+#battery-bin-btn {
+    background-color: #f44336; 
+}
+
+#battery-bin-btn:hover {
+    background-color: #d32f2f;
+}
+
+
+#can-bin-btn {
+    background-color: #ff9800; 
+}
+
+#can-bin-btn:hover {
+    background-color: #f57c00; 
+}
+
+#paper-bin-btn {
+    background-color: #2196F3; 
+}
+
+#paper-bin-btn:hover {
+    background-color: #1976D2; 
+}
+
+#score, #lives {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.play-end {
+    background-color: #4a7c59;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 220px;
+}
+
+.play-end:hover {
+    background-color:#4cb36a;
+}
+
+
+@media (max-width: 768px) {
+    .game-container {
+        width: 90%; 
+    }
+
+    #game-box {
+        height: 250px; 
+        justify-content: center;
+    }
+
+    .large-button {
+        font-size: 24px; 
+        padding: 8px 15px;
+    }
+
+    .bin-selector button {
+        font-size: 14px; 
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    #score, #lives {
+        font-size: 18px; 
+    }
+    .play-end {
+        width: 50%;
+        height: 50%;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .game-container {
+        width: 100%; 
+    }
+
+    #game-box{
+        width: 400px;
+        justify-content: center;
+
+    }
+
+    .controls {
+        justify-content: center;
+        width: 100%; 
+    }
+
+    .large-button {
+        font-size: 20px; 
+        padding: 10px 20px;
+    }
+
+    .bin-selector button {
+        font-size: 17px; 
+        padding: 6px;
+    }
+
+    h1 {
+        font-size: 1.25rem; 
+    }
+
+    .play-end {
+        font-size: 15px; 
+        padding: 10px 20px;
+        width: 30%;
+        
+    }
+}

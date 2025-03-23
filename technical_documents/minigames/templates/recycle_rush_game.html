@@ -1,75 +1,28 @@
+{% load static %}
 <!--Author: Rami Youhana, Jem Challis-->
+<!--Styling: Juri Khushayk-->
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/rr-game.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
-    <title>Sort the Recycling</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-        #game-container {
-            width: 600px;
-            height: 600px;
-            border: 1px solid black;
-            position: relative;
-            overflow: hidden;
-            background-color: lightblue;
-        }
-        .falling-item {
-            width: 60px;
-            height: 60px;
-            position: absolute;
-            top: 0;
-            z-index: 10;
-        }
-        .bin {
-            width: 80px;
-            height: 80px;
-            position: absolute;
-            bottom: 10px;
-            z-index: 20;
-        }
-        .controls {
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            width: 600px;
-        }
-        #score, #lives {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .bin-selector button {
-            width: 60px;
-            height: 40px;
-            margin: 5px;
-        }
-        .large-button {
-            width: 100px;
-            height: 60px;
-            font-size: 24px;
-        }
-    </style>
+    <title>Recycle Rush</title>
 </head>
  
 <body>
+
+<div id="game-container">
     <h1>Recycle Rush</h1>
     {% load static %}
  
     <div id="output"></div>
-    <div id="game-container">
+    <div id="game-box">
         <img id="bin" class="bin" src="{%static 'images/RR_images/Recycle_Bin_Plastic.png'%}" style="left: 260px;">
     </div>
     <div class="controls">
@@ -82,6 +35,7 @@
         <button id="can-bin-btn">Can</button>
         <button id="paper-bin-btn">Paper</button>
     </div>
+    
     <div id="score">Score: 0</div>
     <div id="lives">Lives: 3</div>
 
@@ -90,16 +44,16 @@
             {% csrf_token %}
             <input type="hidden" id="score_input" name="score">
             <input type="hidden" id="target_input" name="target">
-            <button type="submit">End Game</button>
+            <button  class="play-end" type="submit">End Game</button>
         </form>
     </div>
-
+</div>
     <py-script>
         from pyodide.ffi import create_proxy
         from js import document, setInterval, requestAnimationFrame, clearInterval
         import random
 
-        container = document.getElementById("game-container")
+        container = document.getElementById("game-box")
         bin_element = document.getElementById("bin")
         left_btn = document.getElementById("left-btn")
         right_btn = document.getElementById("right-btn")
