@@ -1,0 +1,122 @@
+[
+{
+  "model": "core.minigame",
+  "pk": 1,
+  "fields": {
+    "name": "Sea Sweepers",
+    "intro_url_name": "sea_sweepers_intro"
+  }
+},
+{
+  "model": "core.minigame",
+  "pk": 2,
+  "fields": {
+    "name": "Sort The Recycling",
+    "intro_url_name": "str_intro"
+  }
+},
+{
+  "model": "core.minigame",
+  "pk": 3,
+  "fields": {
+    "name": "Recycle Rush",
+    "intro_url_name": "recycle_rush_intro"
+  }
+},
+{
+  "model": "core.minigame",
+  "pk": 4,
+  "fields": {
+    "name": "Whack A Waste",
+    "intro_url_name": "whack_a_waste_intro"
+  }
+},
+{
+  "model": "core.minigame",
+  "pk": 5,
+  "fields": {
+    "name": "Sort N Serve",
+    "intro_url_name": null
+  }
+},
+{
+  "model": "core.minigame",
+  "pk": 6,
+  "fields": {
+    "name": "Trash Trivia",
+    "intro_url_name": null
+  }
+},
+{
+  "model": "core.location",
+  "pk": 1,
+  "fields": {
+    "name": "Sports Park",
+    "x_percentage": 45.0,
+    "y_percentage": 5.0,
+    "access_code": "LP897R",
+    "image_name": "sports_park.PNG",
+    "minigame": 6
+  }
+},
+{
+  "model": "core.location",
+  "pk": 2,
+  "fields": {
+    "name": "INTO Building",
+    "x_percentage": 62.0,
+    "y_percentage": 38.0,
+    "access_code": "SH23WR",
+    "image_name": "into_building.PNG",
+    "minigame": 2
+  }
+},
+{
+  "model": "core.location",
+  "pk": 3,
+  "fields": {
+    "name": "Reed Pond",
+    "x_percentage": 5.0,
+    "y_percentage": 53.0,
+    "access_code": "MN8P90",
+    "image_name": "pond.PNG",
+    "minigame": 1
+  }
+},
+{
+  "model": "core.location",
+  "pk": 4,
+  "fields": {
+    "name": "Forum",
+    "x_percentage": 31.0,
+    "y_percentage": 36.0,
+    "access_code": "FR567P",
+    "image_name": "forum.PNG",
+    "minigame": 4
+  }
+},
+{
+  "model": "core.location",
+  "pk": 5,
+  "fields": {
+    "name": "Business School Cafe",
+    "x_percentage": 63.0,
+    "y_percentage": 65.0,
+    "access_code": "ML20YU",
+    "image_name": "bzscl.PNG",
+    "minigame": 5
+  }
+},
+{
+  "model": "core.location",
+  "pk": 6,
+  "fields": {
+    "name": "Cornwall House",
+    "x_percentage": 30.0,
+    "y_percentage": 75.0,
+    "access_code": "JHS12D",
+    "image_name": "cornwall house.PNG",
+    "minigame": 3
+  }
+}
+]

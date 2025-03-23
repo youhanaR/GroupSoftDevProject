@@ -1,11 +1,15 @@
 # Author: Ameera Abdullah, Juri Khushayl
 from django.apps import AppConfig
+from django.db.models.signals import post_migrate
+from django.core.management import call_command
 
-# Create an app ~ Ameera
 class CoreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'core'
-     
-    # Import the core.signals module to connect signal handlers. ~ Juri
+
     def ready(self):
-        import core.signals
+        post_migrate.connect(load_fixture, sender=self)
+
+
+def load_fixture(sender, **kwargs):
+    call_command('loaddata', 'core/fixtures/minigames_locations.json')
