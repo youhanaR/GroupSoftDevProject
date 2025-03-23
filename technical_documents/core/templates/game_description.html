@@ -1,50 +1,57 @@
 {% load static %}
-<!-- Author: Ameera Abdullah -->
- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/minigame.css' %}">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}"type="image/x-icon">
-
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <title>{{ game_title }}</title>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">
-            <a href="{% url 'dashboard' %}"> 
+            <a href="{% url 'dashboard' %}">
                 <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
             </a>
         </div>
-        <div class="nav-links">
+        <button class="navbar-toggler" id="navbar-toggler">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+            <a href="{% url 'how-to-play' %}" class="nav-button">How to Play</a>
             <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
-            <a href="#" class="nav-button">Leaderboard</a>
+            <a href="{% url 'leaderboard' %}" class="nav-button">Leaderboard</a>
             <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
         </div>
     </nav>
 
-    <div class ='form'>
-        <div class="game-description">
-            <h2>{{ game_title }}</h2>
-            <p>{{ game_description }}</p>
-            
-            <h3>How to Play</h3>
-            <p>{{ how_to_play }}</p>
-            
-            <h3>How it Tackles Sustainability</h3>
-            <p>{{ sustainability_theme|safe }}</p>
-            
-            <!-- Button to Start the Game -->
-            <a href="/{{ game_url }}">
-                <button type="button">Start Game</button>
-            </a>        
-    
-            <!-- Button to Return to Map -->
-            <a href="{% url 'dashboard' %}"> 
-                <button type="button">Back to Map</button>
-            </a>
+    <!-- Content -->
+    <div class="form-container">
+        <div class="form">
+            <div class="game-description">
+                <h2>{{ game_title }}</h2>
+                
+                <h3>Sustainability Corner</h3>
+                <p>{{ sustainability_theme|safe }}</p>
+                
+                {% if game_url %}
+                    <!-- Button to Start the Game -->
+                    <a href="{{ game_url }}">
+                        <button type="button">Play Game</button>
+                    </a>
+                {% else %}
+                    <p>Work in Progress!</p>
+                {% endif %}
+                
+                <!-- Button to Return to Map -->
+                <a href="{% url 'dashboard' %}"> 
+                    <button type="button">Back to Map</button>
+                </a>
+            </div>
         </div>
     </div>
 </body>

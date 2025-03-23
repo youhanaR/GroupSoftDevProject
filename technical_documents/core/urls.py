@@ -25,11 +25,12 @@ urlpatterns = [
     path('my-login/', views.my_login, name="my-login"),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('leaderboard/', views.leaderboard, name='leaderboard'),
+    path('how-to-play/', views.how_to_play, name='how-to-play'),
     path('privacy-policy/', views.privacy_policy, name='privacy-policy'),
    
     #User-Related Paths
     path('user-logout/', views.user_logout, name='user-logout'),
-    path('user-profile', views.user_profile, name="user-profile"), 
+    path('user-profile', views.user_profile, name="user-profile"),  
     path('delete-account', views.deleteAccount, name="delete-account"),
     
     #Password Reset Related Paths

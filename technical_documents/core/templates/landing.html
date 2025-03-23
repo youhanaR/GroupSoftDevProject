@@ -60,23 +60,31 @@
 
     <!-- About Section -->
     <section id="sec-about" class="about-section d-flex align-items-center">
-        <div class="container d-flex flex-column flex-md-row align-items-center">
-            <!-- Image on the left -->
-            <div class="about-image">
-                <img src="{% static 'images/pixel_cat.png' %}" alt="Napoleon the Cat">
-            </div>
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Animation -->
+                <div class="col-md-6 text-center text-md-start">
+                    <img src="{% static 'images/pixel_cat.png' %}" alt="Napoleon Animation" class="img-fluid">
+                    <!-- <video autoplay loop muted playsinline class="img-fluid">
+                        <source src="{% static 'images/napoleon_animation.webm' %}" type="video/webm">
+                        <source src="{% static 'images/napoleon_animation.mp4' %}" type="video/mp4">
+                        Your browser does not support the video tag.-->
+                    </video>
+                </div>
 
-            <!-- Text on the right -->
-            <div class="about-content">
-                <h2 class="fw-bold">Join Napoleon on a Sustainability Adventure!</h2>
-                <p class="mt-3">
-                    Napoleon’s daily patrol around campus has uncovered a mess—overflowing bins, misplaced recyclables, and litter piling up. This won’t do!
-                    <br><br>
-                    Team up with our favourite feline to clean up Streatham Campus through fun, fast-paced mini-games. 
-                </p>
+                <!-- Text  -->
+                <div class="col-md-6">
+                    <h2 class="fw-bold">Join Napoleon on a Sustainability Adventure!</h2>
+                    <p class="mt-3">
+                        Napoleon’s daily patrol around campus has uncovered a mess—overflowing bins, misplaced recyclables, and litter piling up. This won’t do!
+                        <br><br>
+                        Team up with our favourite feline to clean up Streatham Campus through fun, fast-paced mini-games. 
+                    </p>
+                </div>
             </div>
         </div>
     </section>
+
 
 
     <!-- 'How it Works' Section -->

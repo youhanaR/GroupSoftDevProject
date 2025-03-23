@@ -118,70 +118,84 @@ body {
     }
 
 }
-/* END OF DASHBOARD STYLES */
+/* END OF NAVBAR STYLES */
 
+
+/* Dashboard Container */
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+}
 
 /* START OF MAP STYLES */
-.image-container {
+.map-wrapper {
     position: relative;
+    width: 65%;  
+    overflow: hidden;  
+    margin: 0 auto;
+    transform-origin: top left; 
+}
+
+.image-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 20px);
-    margin-top: 0;
+    justify-content: center;   
+    align-items: center;       
+    position: relative;
+    height: 100vh;  
+    width: 100%;          
 }
 
 .centered-image {
-    max-width: 100%;
-    max-height: 90%;
-    width: auto;
-    height: auto;
-    /*border: 10px solid #233d4d;*/
-    /*border-radius: 10px;*/
-    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
-}
-
-.location-marker {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    border-radius: 50%;
     display: block;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    z-index: 10;
-}
-
-.location-marker:hover {
-    background-color: darkred;
-}
-
-@media (max-width: 767px) {
-    .location-marker {
-        width: 15px;
-        height: 15px;
-    }
-
-    .centered-image {
-        max-height: 60%;
-    }
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; 
+    height: auto;
 }
 
 .building-image {
     position: absolute;
-    width: 15%; 
-    height: 15%; 
-    transition: box-shadow 0.3s ease-in-out;
     cursor: pointer;
+    width: 25%;  
+    height: auto;
+    transition: transform 0.3s ease;
 }
-
 
 .building-image:hover {
-    box-shadow: 0 0 15px 5px rgba(255, 255, 0, 0.8); 
+    transform: scale(1.2);
 }
 
-/* Modal Styles */
+/* Mobile view adjustments */
+@media (max-width: 767px) { 
+    .map-wrapper {
+        transform: scale(1.5) translateY(-35%);;  
+        transform-origin: top left;
+        margin-left: 0.125%; /* Ensure the map doesn't overflow the right side */
+    }
+
+    .centered-image {
+        width: 100%; 
+        height: auto;
+    }
+
+    .building-image {
+        width: 25%; 
+    }
+}
+
+/* Desktop Map Scaling */
+@media (min-width: 768px) {
+    .map-wrapper {
+        transform: scale(0.80); 
+        margin-top: 25%;  /* Push the map down to prevent overlap with navbar */
+        margin-right: 15%;
+    }
+}
+
+/* END OF MAP STYLES */
+
+/* START OF MODAL STYLES */
 .modal {
     display: none; 
     position: fixed; 
@@ -254,3 +268,4 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
+/* END OF MODAL STYLE*/

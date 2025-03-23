@@ -1,6 +1,4 @@
 {% load static %}
-<!-- Author: Ameera Abdullah -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,51 +7,46 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-
     <title>Dashboard</title>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-
-        <!-- Logo -->
         <div class="logo">
             <a href="{% url 'dashboard' %}">
                 <img src="{% static 'images/paw_logo.png' %}" alt="Paw Logo">
             </a>
         </div>
-    
-        <!-- Hamburger Menu Button -->
         <button class="navbar-toggler" id="navbar-toggler">
             <span class="navbar-toggler-icon"></span>
             <span class="navbar-toggler-icon"></span>
             <span class="navbar-toggler-icon"></span>
         </button>
-    
-        <!-- Navigation Links -->
         <div class="nav-links" id="nav-links">
+            <a href="{% url 'how-to-play' %}" class="nav-button">How to Play</a>
             <a href="{% url 'user-profile' %}" class="nav-button">Profile</a>
             <a href="{% url 'leaderboard' %}" class="nav-button">Leaderboard</a>
             <a href="{% url 'user-logout' %}" class="logout-button">Logout</a>
         </div>
     </nav>
 
-    
+    <!-- Map Container -->
     <div class="image-container">
-        <!-- Map Image -->
-        <img src="{% static 'images/map/map_layout.jpeg' %}" alt="Map Layout" class="centered-image">
-        
-        <!-- Adding location markers dynamically using x_percentage and y_percentage -->
-        {% for location in locations %}
-            <img 
-                src="{% static 'images/map/'|add:location.image_name %}" 
-                alt="{{ location.name }}"
-                class="building-image"
-                style="left: {{ location.x_percentage }}%; top: {{ location.y_percentage }}%;" 
-                onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
-        {% endfor %}
-
+        <div class="map-wrapper">
+            <img src="{% static 'images/map/empty_layout.png' %}" alt="Map Layout" class="centered-image">
+            {% for location in locations %}
+                <img 
+                    src="{% static 'images/map/'|add:location.image_name %}" 
+                    alt="{{ location.name }}"
+                    class="building-image"
+                    style="left: {{ location.x_percentage }}%; top: {{ location.y_percentage }}%;" 
+                    onclick="openModal('{{ location.access_code }}', '{{ location.game_url }}', '{{ location.name }}')">
+            {% endfor %}
+        </div>
     </div>
+
+
+
 
     <!-- The Modal -->
     <div id="codeModal" class="modal">
@@ -61,24 +54,22 @@
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Enter Access Code</h2>
             <input type="text" id="modalAccessCode" placeholder="Enter Code">
-            <div id="error-message" style="color: red; display: none;"></div> <!-- Error message div -->
+            <div id="error-message" style="color: red; display: none;"></div>
             <button id="submitCode" onclick="validateCode()">Submit</button>
         </div>
     </div>
 
     <script>
-
-        // JavaScript to handle toggle on .active class on .nav-links
+        // Navbar toggle
         document.addEventListener("DOMContentLoaded", function () {
             const toggleButton = document.getElementById("navbar-toggler");
             const navLinks = document.getElementById("nav-links");
-
             toggleButton.addEventListener("click", function () {
                 navLinks.classList.toggle("active");
             });
         });
 
-        // JavaScript to handle the modal and access code validation
+        // Modal and access code validation
         var modal = document.getElementById("codeModal");
         var currentGameUrl = '';
         var currentLocationName = '';
@@ -96,11 +87,9 @@
                 <h1>${locationName}</h1>
                 <p>Enter access code to play</p>
                 <input type="text" id="modalAccessCode" placeholder="Code">
-                <div id="error-message" style="color: red; display: none;"></div> <!-- Error message div -->
+                <div id="error-message" style="color: red; display: none;"></div>
                 <button id="submitCode" onclick="validateCode()">Submit</button>
             `;
-
-            // Set the modal content
             document.querySelector(".modal-content").innerHTML = modalContent;
         }
 
@@ -113,10 +102,8 @@
         function validateCode() {
             var userInput = document.getElementById("modalAccessCode").value;
             var errorMessage = document.getElementById("error-message");
-
             errorMessage.style.display = 'none';
             errorMessage.textContent = '';
-
             if (userInput === correctAccessCode) {
                 window.location.href = `/game/description/${encodeURIComponent(currentLocationName)}/`;
             } else {

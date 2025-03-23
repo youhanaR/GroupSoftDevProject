@@ -158,6 +158,7 @@ ul {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding: 0 20px;
 }
 
 .landing-page .info .game-logo {
@@ -188,6 +189,7 @@ ul {
 
 @media (max-width: 768px) {
   .landing-page .info .buttons {
+    min-height: 100vh;
     flex-direction: column;
     align-items: center;
     gap: 15px;
@@ -206,7 +208,6 @@ ul {
     font-size: 14px;
   }
 }
-
 
 
 /* Responsive Header */
@@ -248,9 +249,9 @@ ul {
 }
 
 .about-image img {
-  max-width: 90%;
-  max-height: 200px;
-  height: auto;
+  height: 10%;
+  width: auto;
+  max-width: 100%; 
   display: block;
 }
 

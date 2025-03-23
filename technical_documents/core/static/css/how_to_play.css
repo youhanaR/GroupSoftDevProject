@@ -120,99 +120,54 @@ body {
 }
 /* END OF NAVBAR STYLES */
 
-/* FORM STYLES */
-.form-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh; 
-    padding: 20px; 
+/* How to Play Card Styles */
+.how-to-play-card {
+    background-color: white;
+    border: 10px solid #fcca46; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 800px; 
+    margin: 50px auto; 
 }
 
-.form {
-    position: relative;
-    z-index: 1;
-    background: #FFFFFF;
-    max-width: 500px; 
-    margin: 50px auto;
-    padding: 45px;
+.how-to-play-card h2 {
     text-align: center;
-    border: 10px solid #619b8a; 
-    border-radius: 15px; 
-}
-
-h2 {
-    margin-bottom: 20px;
-    font-size: 1.75rem; 
-}
-
-p {
-    color: #4a4a4a;
-    font-size: 16px;
+    color: #fa8336;
+    font-size: 1.8rem;
     margin-bottom: 20px;
 }
 
-a {
-    display: inline-block;
-    text-decoration: none;
+.how-to-play-content {
+    font-size: 1.1rem;
 }
 
-.form p a {
-    display: inline;
-    color: #a4c086;
+.how-to-play-content ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-.form p a:hover {
-    text-decoration: underline;
-    color: #83986c;
+.how-to-play-content li {
+    margin-bottom: 10px;
+    line-height: 1.6;
 }
 
-a button {
-    border: none;
-    margin: 10px 0;
+.how-to-play-content li strong {
+    color: #fa8336; /* Accent color for steps */
 }
 
-button {
-    font-family: 'Figtree', sans-serif; 
-    text-transform: uppercase;
-    outline: 0;
-    background: #619b8a;
-    border: 0;
-    padding: 15px 25px;
-    color: #FFFFFF;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover,
-button:active,
-button:focus {
-    background: #538576;
-}
-
-/* MOBILE RESPONSIVENESS FOR THE FORM */
+/* Mobile Adjustments */
 @media (max-width: 767px) {
-    .form {
-        max-width: 90%;  /* Use more of the screen width on mobile */
-        margin: 20px auto;
-        padding: 20px;   /* Reduce padding for smaller screens */
-        border-width: 5px;  /* Thinner border on mobile */
+    .how-to-play-card {
+        padding: 15px;
+        margin: 20px;
     }
 
-    h2 {
-        font-size: 1.5rem;  /* Slightly smaller heading font */
-        margin-bottom: 15px;
+    .how-to-play-card h2 {
+        font-size: 1.6rem;
     }
 
-    p {
-        font-size: 14px;  /* Slightly smaller text */
-        margin-bottom: 15px;
-    }
-
-    button {
-        padding: 10px 20px;  /* Adjust button padding */
-        font-size: 13px;
+    .how-to-play-content {
+        font-size: 1rem;
     }
 }

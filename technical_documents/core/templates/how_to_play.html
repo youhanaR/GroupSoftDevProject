@@ -6,10 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/leaderboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/how_to_play.css' %}">
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
-    <title>Leaderboard</title>
+    <title>How To Play</title>
 </head>
 <body>
     <!-- Navbar -->
@@ -38,7 +38,19 @@
         </div>
     </nav>
 
-
+    <!-- How to Play Section -->
+    <div class="how-to-play-card">
+        <h2>How to Play:</h2>
+        <div class="how-to-play-content">
+            <ul>
+                <li><strong>Explore the Map:</strong> Click on any building on the map to interact with it.</li>
+                <li><strong>Get the Access Code:</strong> Scan the QR code at the real-world location of the building to get your unique access code.</li>
+                <li><strong>Enter the Code:</strong> Type the access code in the pop-up that appears when you click on the building.</li>
+                <li><strong>Start the Game:</strong> If the code is correct, you'll be taken to the mini-game at that location.</li>
+                <li><strong>Try Again:</strong> If the code is incorrect, an error message will appear. Double-check your QR scan and try again!</li>
+            </ul>
+        </div>
+    </div>
 
     <script>
         // JavaScript to handle toggle on .active class on .nav-links
