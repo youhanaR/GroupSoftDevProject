@@ -143,14 +143,17 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 84px); 
   text-align: center;
+  box-sizing: border-box;
 }
+
 
 .landing-page .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center; 
+  align-items: center; 
 }
 
 .landing-page .info {
@@ -158,8 +161,11 @@ ul {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: center; /* Ensure it is centered */
+  height: 100%; /* This ensures it fills the available space */
   padding: 0 20px;
 }
+
 
 .landing-page .info .game-logo {
   max-width: 90%;
@@ -187,36 +193,20 @@ ul {
 }
 
 
-@media (max-width: 768px) {
-  .landing-page .info .buttons {
-    min-height: 100vh;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .landing-page .info .buttons a {
-    padding: 0.8em 2em; 
-    font-size: 16px; 
-  }
-}
-
-
-@media (max-width: 480px) {
-  .landing-page .info .buttons a {
-    padding: 0.7em 1.8em;
-    font-size: 14px;
-  }
-}
-
-
-/* Responsive Header */
 @media (max-width: 767px) {
   .landing-page {
-    min-height: auto;
-    padding: 40px 0;
+    height: calc(100vh - 84px);  
+    padding: 0;
   }
 
+  .landing-page .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
   .landing-page .info .buttons {
     flex-direction: column;
     align-items: center;
