@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300');
+
+body {
+  background: #f6f4f3;
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  max-width: 360px;
+  background: #FFFFFF;
+  border: 10px solid #fe7f2d;
+  border-radius: 15px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 24px;
+  color: #1a1a1a;
+  font-weight: 300;
+  margin-bottom: 15px;
+}
+
+p {
+  font-size: 14px;
+  color: #4d4d4d;
+  margin-bottom: 20px;
+}
+
+.btn {
+  background: #fe7f2d;
+  border: 0;
+  padding: 10px 20px;
+  color: #FFFFFF;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  text-decoration: none; /* Remove underline */
+}
+
+.btn:hover, .btn:active, .btn:focus {
+  background: #e76c1d;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 90%; /* Increase container width on smaller screens */
+    padding: 30px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    max-width: 95%;
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+}

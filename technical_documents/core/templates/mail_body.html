@@ -1,20 +1,8 @@
 {% load static %}
 <!-- Author: Surin Chai -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-
-    <title>Email Confirmation</title>
-</head>
-<body>
-    {% autoescape off %}
-    Hi {{ user.username }},
-    Please click on the link to confirm your registration,  
-    http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
-    {% endautoescape %}
-</body>
-</html>
+{% autoescape off %}
+Hi {{ user.username }},
+Please click on the link to confirm your registration,
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}
