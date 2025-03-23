@@ -31,7 +31,10 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseNotFound
 from django.urls import reverse
-
+from minigames.models import GameScore  # Import GameScore model from minigames
+from django.db.models import Sum
+from django.contrib.auth.models import User
+from core.models import Profile 
 
 # Create your views here.
 
@@ -174,3 +177,39 @@ def game_description(request, location):
         'location': normalized_location,
         'game_url': game_url
     })
+
+
+# Leaderboard view
+@login_required
+def leaderboard(request):
+    # Retrieve the top 10 users based on their total score from the GameScore model
+    # Calculate total score for each user
+    # Order by total score in descending order and get top 10 highest score 
+    leaderboard_data = GameScore.objects.values('user') \
+        .annotate(total_score=Sum('score')) \
+        .order_by('-total_score')[:10]  
+
+    leaderboard_info = []
+    # Loop through each entry in the leaderboard_data
+    for entry in leaderboard_data:
+        # Get the user object that matches the user ID in the GameScore entry.
+        user = User.objects.get(id=entry['user'])  
+        total_score = entry['total_score']
+        
+        # Get the user's profile from the Profile model to get the profile image
+        profile_image = None
+        try:
+            profile = Profile.objects.get(user=user)
+            profile_image = profile.profile_image.url if profile.profile_image else None
+        except Profile.DoesNotExist:
+            profile_image = None  
+        # Append the user's data to the leaderboard_info list   
+        leaderboard_info.append({
+            'username': user.username, # username
+            'total_score': total_score, # score
+            'profile_image': profile_image, # profile image
+        })
+     # Pass the leaderboard_info data to the template as context
+    context = {'leaderboard_data': leaderboard_info}
+     # Render the leaderboard template with the context data
+    return render(request, 'leaderboard.html', context) 
