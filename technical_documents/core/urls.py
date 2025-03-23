@@ -41,6 +41,7 @@ urlpatterns = [
 
     #Dynamic paths for the game description page
     path('game/description/<str:location>/', views.game_description, name='game_description'),
+    path('leaderboard/', views.leaderboard, name='leaderboard'),
 
 ]
    

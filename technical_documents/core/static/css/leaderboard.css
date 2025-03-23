@@ -118,4 +118,146 @@ body {
     }
 
 }
-/* END OF DASHBOARD STYLES */
+
+
+h1 {
+    font-size: 2rem;
+    margin-top: 20px;
+    text-align: center;
+    color: #fa8336;
+}
+
+.leaderboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; 
+}
+
+.leaderboard-card {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 600px;
+    height: 90px;  
+    min-height: 100px;  
+    padding: 40px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(158, 128, 128, 0.1);
+    border: #bd6212;
+    display: flex;
+    flex-direction: row;  
+    align-items: center; 
+    justify-content: flex-start;  
+}
+
+.leaderboard-info {
+    display: flex;
+    flex-direction: row;  
+    align-items: center;
+    justify-content: flex-start;  
+    width: 100%; 
+}
+
+.leaderboard-image img {
+    width: 50px;
+    height: 50px;
+    border-radius: 30%;
+    margin-right: 15px; 
+}
+
+.leaderboard-text {
+    display: flex;
+    flex-direction: row;  
+    align-items: center; 
+    justify-content: flex-start; 
+    margin-left: 15px;
+    width: 100%;  
+    justify-content: space-between; 
+}
+
+.leaderboard-username {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 20px; 
+    color: #0000009d;
+}
+
+.leaderboard-score {
+    font-size: 20px;
+    margin-left: 20px;  
+    margin-right: 20px;
+    color: #0000009d;
+    font-weight: bold;
+}
+
+.leaderboard-rank {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 20px;
+    margin-left: 10px;  
+    color: gold;
+}
+
+
+/* Mobile Responsives */
+@media screen and (max-width: 768px) {
+    .leaderboard-card {
+        width: 100%;  
+        height: auto; 
+        padding: 20px; 
+    }
+
+    .leaderboard-image img {
+        width: 40px;  
+        height: 40px;
+    }
+
+    .leaderboard-username {
+        font-size: 18px;  
+    }
+
+    .leaderboard-score {
+        font-size: 18px;  
+    }
+
+    .leaderboard-rank {
+        font-size: 1.2rem;  
+    }
+
+    .leaderboard-text {
+        flex-direction: column;  
+        align-items: flex-start; 
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .leaderboard-card {
+        width: 90%;  
+        padding: 15px; 
+    }
+
+    .leaderboard-image img {
+        width: 35px;  
+        height: 35px;
+    }
+
+    .leaderboard-username {
+        font-size: 16px;  
+    }
+
+    .leaderboard-score {
+        font-size: 16px;  
+    }
+
+    .leaderboard-rank {
+        font-size: 1rem;  
+    }
+
+    .leaderboard-text {
+        flex-direction: row; 
+        align-items: flex-start; 
+    }
+}

@@ -1,5 +1,5 @@
 {% load static %}
-<!-- Author: Ameera Abdullah -->
+<!-- Author: Ameera Abdullah, Juri Khushayl -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/leaderboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
     <title>Leaderboard</title>
@@ -38,7 +39,36 @@
         </div>
     </nav>
 
+    
+    
 
+    <h1>Leaderboard</h1>
+
+    <div class="leaderboard-container">
+         <!-- Loops through the leaderboard data -->
+        {% for entry in leaderboard_data %}
+        <div class="leaderboard-card">
+            <div class="leaderboard-info">
+                <!-- Display the rank of the user, add crown for the first place -->
+                <div class="leaderboard-rank">
+                    {% if forloop.counter == 1 %}
+                        <i class="fas fa-crown" style="color: gold;"></i> 
+                    {% endif %}
+                    {{ forloop.counter }} <!-- Display the rank numbers -->
+                </div>
+                <!-- Add the profile image -->
+                <div class="leaderboard-image">
+                    <img src="{% if entry.profile_image %}{% static entry.profile_image %}{% else %}{% static 'images/default-profile-image.jpg' %}{% endif %}" alt="Profile Image">
+                </div>
+                <!-- Username and score -->
+                <div class="leaderboard-text">
+                    <p class="leaderboard-username">{{ entry.username }}</p>
+                    <p class="leaderboard-score"> {{ entry.total_score }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
     <script>
         // JavaScript to handle toggle on .active class on .nav-links
