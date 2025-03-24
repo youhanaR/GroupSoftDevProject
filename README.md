@@ -30,6 +30,7 @@ This is a submission for Sprint 2. It consists of three other folders: process, 
 - The napoleons_adventure folder contains the main django project.
 - The core app contains the core functionalities of the web-app.
 - The minigame app contains source code and res files for all minigames.
+- The folder 'Mini Game Tests' contain the minigame related automated tests.
 - The location-qr folder contains the program that generates a qr code that users scan in order to access the minigames.
 - db.sqlite3 is the database.
 - manage.py manages the application.
