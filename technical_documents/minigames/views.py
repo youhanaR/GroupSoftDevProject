@@ -142,8 +142,8 @@ def whack_a_waste_end(request):
 
 ### SNS VIEWS
 
-def sns_start(request):
-    return render(request, 'sns_start.html')
+def sns_intro(request):
+    return render(request, 'sns_intro.html')
 
 def sns_game(request):
     return render(request, 'sns_game.html')

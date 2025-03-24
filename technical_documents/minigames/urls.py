@@ -29,7 +29,7 @@ urlpatterns = [
     path('sea_sweepers_end/', views.sea_sweepers_end, name='sea_sweepers_end'),
     
     # Sort N Serve Paths
-    path("sns_start/", views.sns_start, name="sns_start"),
+    path("sns_intro/", views.sns_intro, name="sns_intro"),
     path("sns_game/", views.sns_game, name="sns_game"),
     path("sns_end/", views.sns_end, name="sns_end"),
 
