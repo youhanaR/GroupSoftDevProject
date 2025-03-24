@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-bg@b=+w%g!ns(5jo42lmlb_2_#z@k8qt75m$ggeju)6hf)!x^v
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'napoleonsadventure.com', 'www.napoleonsadventure.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'napoleonsadventure.com', 'www.napoleonsadventure.com','172.20.10.4', '10.207.112.220']
 
 
 
@@ -127,8 +127,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'core' / 'static', 
-                    BASE_DIR / 'minigames' / 'static',
-                    BASE_DIR / 'minigames' / 'migrations' / 'static',
+                    BASE_DIR / 'minigames' / 'static'
                     ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
