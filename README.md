@@ -12,22 +12,23 @@ ___
 - Rami Youhana rjay201@exeter.ac.uk
 - Surin Chaisuvarn Wi Sut scw225@exeter.ac.uk
 
-This is a submission for Sprint 1. In this folder you will find the privacy policy, and three other folders: process, product, and technical documents.
+This is a submission for Sprint 2. It consists of three other folders: process, product, and technical documents.
 
 ## Process documents:
-- Our process documents take the form of screenshots of our Kanban board, and meeting notes.
+- Our process documents take the form of screenshots of our Kanban board, meeting notes and the sprint reflection document.
 - Trello project link - [https://trello.com/b/z8cFvnT7/jarse-group-software-engineering-project]
 - GitHub repository link - [https://github.com/youhanaR/GroupSoftDevProject]
 
 ## Product documents:
-- Our product documents consist of a UI document and a requirements analysis document.
-- The UI document document explains the UI and overall structure of the website
-- The requirements analysis document explains how we aim to meet the requirements of this project
+- Our product documents consist of a user document and a technical document.
+- The user document document is intended to act as a guide for users on how to interact with the app, including how to register, complete challenges, and view progress.
+- The technical document contains descriptions of the system architecture, the database structure, and design decisions made throughout project development. 
 
 ## Technical documents:
-- The napoleons_adventure folder contains the main django project
-- The core folder contains the web-app
-- The location-qr folder contains the program that generates a qr code that users scan in order to access the minigames
-- The media folder contains the zip files of the minigames that the players can download
-- db.sqlite3 is the database
-- manage.py manages the application
+- The README file in this folder contains instructions on how to deploy the app, including the necessary configurations. 
+- The napoleons_adventure folder contains the main django project.
+- The core app contains the core functionalities of the web-app.
+- The minigame app contains source code and res files for all minigames.
+- The location-qr folder contains the program that generates a qr code that users scan in order to access the minigames.
+- db.sqlite3 is the database.
+- manage.py manages the application.
