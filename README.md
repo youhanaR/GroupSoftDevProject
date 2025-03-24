@@ -20,9 +20,10 @@ This is a submission for Sprint 2. It consists of three other folders: process, 
 - GitHub repository link - [https://github.com/youhanaR/GroupSoftDevProject]
 
 ## Product documents:
-- Our product documents consist of a user document and a technical document.
+- For sprint 2, our product documents consist of a user document and a technical document.
 - The user document document is intended to act as a guide for users on how to interact with the app, including how to register, complete challenges, and view progress.
-- The technical document contains descriptions of the system architecture, the database structure, and design decisions made throughout project development. 
+- The technical document contains descriptions of the system architecture, the database structure, and design decisions made throughout project development.
+- The product documents from sprint 1 (i.e. UI document, Requirement Analysis Document) are also located in this folder.
 
 ## Technical documents:
 - The README file in this folder contains instructions on how to deploy the app, including the necessary configurations. 
