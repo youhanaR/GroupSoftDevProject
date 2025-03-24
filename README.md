@@ -10,8 +10,8 @@ The group members are:
 3. Jem Challis (jc1590@exeter.ac.uk)
 4. Juri Khushayl (jk697@exeter.ac.uk)
 5. Elliot Leong (el593@exeter.ac.uk)
-6. Surin Chaisuvarn Wi Sut scw225@exeter.ac.uk
-7. Rami Youhana rjay201@exeter.ac.uk
+6. Surin Chaisuvarn Wi Sut (scw225@exeter.ac.uk)
+7. Rami Youhana (rjay201@exeter.ac.uk)
 
 
 This is a submission for Sprint 2. There are three types of document that you will find the following places.
