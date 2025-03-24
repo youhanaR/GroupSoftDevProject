@@ -1,36 +1,65 @@
-# GroupSoftDevProject
+# Welcome to the Napoleon's Adventures
 
-## Group - JARS with an E
+### Group: JARS with an E
 ___
 
-## Group Members:
-- Jem Challis jc1590@exeter.ac.uk
-- Elliot Leong el593@exeter.ac.uk
-- Juri Khushayl jk697@exeter.ac.uk
-- Ameera Arfa Binti Abdullah aab231@exeter.ac.uk
-- Jood Alrubian ja733@exeter.ac.uk
-- Rami Youhana rjay201@exeter.ac.uk
-- Surin Chaisuvarn Wi Sut scw225@exeter.ac.uk
+The group members are:
 
-This is a submission for Sprint 2. It consists of three other folders: process, product, and technical documents.
+1. Jood Alrubian (ja733@exeter.ac.uk)
+2. Ameera Arfa Binti Abdullah (aab231@exeter.ac.uk)
+3. Jem Challis (jc1590@exeter.ac.uk)
+4. Juri Khushayl (jk697@exeter.ac.uk)
+5. Elliot Leong (el593@exeter.ac.uk)
+6. Surin Chaisuvarn Wi Sut scw225@exeter.ac.uk
+7. Rami Youhana rjay201@exeter.ac.uk
 
-## Process documents:
-- Our process documents take the form of screenshots of our Kanban board, meeting notes and the sprint reflection document.
-- Trello project link - [https://trello.com/b/z8cFvnT7/jarse-group-software-engineering-project]
-- GitHub repository link - [https://github.com/youhanaR/GroupSoftDevProject]
 
-## Product documents:
-- For sprint 2, our product documents consist of a user document and a technical document.
-- The user document document is intended to act as a guide for users on how to interact with the app, including how to register, complete challenges, and view progress.
-- The technical document contains descriptions of the system architecture, the database structure, and design decisions made throughout project development.
-- The product documents from sprint 1 (i.e. UI document, Requirement Analysis Document) are also located in this folder.
+This is a submission for Sprint 2. There are three types of document that you will find the following places.
 
-## Technical documents:
-- The README file in this folder contains instructions on how to deploy the app, including the necessary configurations. 
-- The napoleons_adventure folder contains the main django project.
-- The core app contains the core functionalities of the web-app.
-- The minigame app contains source code and res files for all minigames.
-- The folder 'Mini Game Tests' contain the minigame related automated tests.
-- The location-qr folder contains the program that generates a qr code that users scan in order to access the minigames.
-- db.sqlite3 is the database.
-- manage.py manages the application.
+## PROCESS DOCUMENTS
+Our process documents are managed in the trello platform. The link to our project page is below. We (specific username that added) have added solex2006 to the board so it is visible.
+
+Trello link: [https://trello.com/b/z8cFvnT7/jarse-group-software-engineering-project]
+
+We have also taken regular snapshots of the kanban board in trello to archive our progress. These are held in the repository below.
+
+[Kanban Screenshots - Sprint 2](process-documents/kanban-screenshots/sprint-2-kanban-screenshots/)
+
+Within process documents we have also included the meeting notes and minutes, as well as the sprint reflection document. These will be found in the repository below.
+
+[Process Documents](process-documents/)
+
+## PRODUCT DOCUMENTS
+Our product documents are primarily in the form of a User Document and a Technical Document. These are held in the repository below.
+
+[Sprint 2 User Document](product-documents/sprint-2-user-document/)
+[Sprint 2 Technical Document](product-documents/sprint-2-technical-document/)
+
+The UI and requirement analysis documents from sprint 1 have also been archived under the link below:
+
+[UI Documentation](product-documents/UI/)
+[Requirement Analysis](product-documents/requirement-analysis/)
+
+
+## TECHNICAL DOCUMENTS
+Our technical documents are primarily managed on the github system. The link to the project is below:
+
+github link: [https://github.com/youhanaR/GroupSoftDevProject]
+
+We have also include the versioned source code for archiving.
+
+[Technical Documents](technical_documents/)
+
+The **technical_documents** folder is organized as follows:  
+
+- **`README.md`** – Contains instructions on how to deploy the app, including necessary configurations.  
+- **`napoleons_adventure/`** – The main Django project folder.  
+- **`core/`** – Handles the core functionalities of the web application.  
+- **`minigame/`** – Contains the source code and resources for all minigames.  
+- **`Mini Game Tests/`** – Includes automated tests for the minigames.  
+- **`location-qr/`** – A program that generates QR codes for users to scan and access the minigames.  
+- **`db.sqlite3`** – The project's database.  
+- **`manage.py`** – A management script for running the application.  
+  
+
+
