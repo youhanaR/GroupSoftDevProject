@@ -188,12 +188,15 @@ def leaderboard(request):
     leaderboard_data = GameScore.objects.values('user') \
         .annotate(total_score=Sum('score')) \
         .order_by('-total_score')[:10]  
+        
+    user_ids = [entry['user'] for entry in leaderboard_data]
+    users = User.objects.filter(id__in=user_ids).select_related('profile')
 
     leaderboard_info = []
     # Loop through each entry in the leaderboard_data
     for entry in leaderboard_data:
         # Get the user object that matches the user ID in the GameScore entry.
-        user = User.objects.get(id=entry['user'])  
+        user = next(user for user in users if user.id == entry['user']) 
         total_score = entry['total_score']
         
         # Get the user's profile from the Profile model to get the profile image
