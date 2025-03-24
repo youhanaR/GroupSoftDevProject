@@ -37,7 +37,7 @@
     </div>
     
     <div id="score">Score: 0</div>
-    <div id="lives">Lives: 3</div>
+    <div id="lives">Lives: 10</div>
 
     <div class="buttons">
         <form id="endGameForm" method="POST" action="{% url 'recycle_rush_end' %}">
@@ -64,7 +64,7 @@
         document.getElementById('score_input').value = score
         target = 10
         document.getElementById('target_input').value = target
-        lives = 3
+        lives = 10
         game_active = True
         move_interval = None
 
@@ -156,7 +156,7 @@
                     return
                 
                 if position < 460:
-                    position += 2
+                    position += 1
                     item.style.top = f"{position}px"
                     requestAnimationFrame(fall_proxy)
                 else:

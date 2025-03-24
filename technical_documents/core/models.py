@@ -1,7 +1,6 @@
 # Author: Ameera Abdullah, Juri Khushayl, Jem Challis
 from django.db import models
 from django.contrib.auth.models import User
-from minigames.models import Game
 import random
 
 # Minigame table in database
@@ -12,18 +11,18 @@ class Minigame(models.Model):
     def __str__(self):
         return self.name
     
+    
 # Location table in the database ~ Ameera
 class Location(models.Model):
     name = models.CharField(max_length=100)
+    access_code = models.CharField(max_length=20)
     x_percentage = models.FloatField()  
     y_percentage = models.FloatField()  
-    access_code = models.CharField(max_length=20)
-    image_name = models.CharField(max_length=100)
     minigame = models.OneToOneField(Minigame, on_delete=models.CASCADE, null=True)  
+    image_name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
-
 
 # Create a user progress table in the database ~ Ameera
 class UserProgress(models.Model):

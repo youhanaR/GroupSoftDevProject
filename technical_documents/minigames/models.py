@@ -2,18 +2,17 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.apps import apps
 
-# Jem
-class Game(models.Model):
-    name = models.CharField(max_length=20)
-    url = models.CharField(max_length=100)  # URL of the minigame page
-    def __str__(self):
-        return f"{self.name}"
 
-# Jem
+#Jem
 class GameScore(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
+    minigame = models.ForeignKey(
+        'core.Minigame',  # Reference the model using the app label
+        on_delete=models.CASCADE
+    )
     score = models.IntegerField(default=0)
+
     def __str__(self):
-        return f"{self.user.username} - {self.game.name} - {self.score}"
+        return f"{self.user.username} - {self.minigame.name} - {self.score}"
