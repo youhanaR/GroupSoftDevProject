@@ -166,10 +166,9 @@
         height: 80%;
       }
     
-      .controls {
-        flex-direction: column;
-        gap: 1rem;
-        bottom: 10px;
+      .controls button {
+        font-size: 0.8rem;
+        padding: 8px 12px;
       }
     
       .controls button {
@@ -183,8 +182,14 @@
       }
     
       #score-display {
-        font-size: 1rem;
-        padding: 6px;
+        top: 5px;           /* Bring it closer to the top */
+        font-size: 0.8rem;   /* Smaller font */
+        padding: 4px;       /* Less padding */
+      }
+      .label {
+        top: 2px;           /* Lower the gap between label and picture */
+        font-size: 1rem;    /* Smaller font size */
+        padding: 1px 4px;   /* Smaller padding */
       }
     }
     

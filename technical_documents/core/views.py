@@ -206,8 +206,9 @@ def game_description(request, location):
             'sustainability_theme': 'Reducing food waste helps conserve resources and lower environmental impact. This game puts your food-saving skills to the test! Learn how to rescue, reuse, and <a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">rethink food at every stage of its shelf life to cut down on waste and help the planet.</a>',
         },
         'business-school-cafe': {
-            'title': 'Sort-n-Serve',
-            'sustainability_theme': '',
+            'title': 'Sort-N-Serve',
+            'sustainability_theme': 'Sorting food waste and recycling food containers like plastics and styrofoam helps conserve resources and lower environmental impact. This game challenges your ability to rescue, reuse, and <a href="https://www.exeter.ac.uk/about/sustainability/whatyoucando/" target="_blank">rethink the lifecycle of food and utensils</a> for a more sustainable future.'
+
         },
         'reed-pond': {
             'title': 'Sea Sweepers',
