@@ -17,7 +17,7 @@ The group members are:
 This is a submission for Sprint 2. There are three types of document that you will find the following places.
 
 ## PROCESS DOCUMENTS
-Our process documents are managed in the trello platform. The link to our project page is below. We (specific username that added) have added solex2006 to the board so it is visible.
+Our process documents are managed in the trello platform. The link to our project page is below. We have added solomonoyelere1 to the board so it is visible.
 
 Trello link: [https://trello.com/b/z8cFvnT7/jarse-group-software-engineering-project]
 
@@ -42,7 +42,7 @@ The UI and requirement analysis documents from sprint 1 have also been archived 
 
 
 ## TECHNICAL DOCUMENTS
-Our technical documents are primarily managed on the github system. The link to the project is below:
+Our technical documents are primarily managed on the github system, we have added solex2006 as per the project requirement. The link to the project is below:
 
 github link: [https://github.com/youhanaR/GroupSoftDevProject]
 
