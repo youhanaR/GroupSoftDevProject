@@ -1,43 +1,50 @@
 {% load static %}
-<!--Author: Jem Challis, Juri Khushayl-->
-
+<!--Author: Ameera Abdullah-->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
-    <link rel="stylesheet" href="{% static 'css/str-game.css' %}">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
-    <title>Sort N Serve</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+  <link rel="stylesheet" href="{% static 'css/intro.css' %}">
+  <link rel="icon" href="{% static 'core/static/images/favicon.ico' %}" type="image/x-icon">
+  <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+  <title>Sort n Serve</title>
 </head>
-
-
 <body>
+  <div class="game-card">
+    <h1>Sort n Serve</h1>
+    <p class="game-description">
+      In Sort n Serve, your mission is to quickly sort and serve falling items to their correct destinations.
+      Items such as plates, utensils, waste and food will appear on a conveyor belt.
+      Send each item to the appropriate target area before it reaches the bottom.
+      Earn points for every correct sort and avoid mistakes!
+    </p>
 
-<div class="game-card">
-    <h1>Sort N Serve</h1>
-
-    <h3>Welcome to Sort N Serve!</h3>
-
-
-
+    <h3>How to Play</h3>
     <ul>
-        <p>Sort N Serve.</p>
+      <li>Each correctly sorted item earns you 10 points; an incorrect sort deducts 5 points.</li>
+      <li>Items fall from the conveyor belt—act quickly before they reach the bottom.</li>
+      <li>If an item falls unsorted or the timer runs out of time, the game ends.</li>
+      <li>The game speeds up over time, so your reaction time is key.</li>
+      <li>Send items to the correct areas: 
+        <br><br>
+        <ul>
+          <li><strong>Customer Area:</strong>Foods in Bowls and Plates, Cups of Tea</li>
+          <li><strong>Sink :</strong>Plates, Forks, Spoons</li>
+          <li><strong>Food Waste Recycling Bin:</strong>Fish Bones, Cracked Eggs, Eaten Apples</li>
+          <li><strong>Mixed Recycling Bin:</strong>Styrofoams, Crushed Cans, Pizza Boxes</li>
+        </ul>
+      </li>
     </ul>
-    
-    <p>Good luck.</p>
 
     <div class="buttons">
-        <form id="endGameForm" method="POST" action="{% url 'sns_game' %}">
-            {% csrf_token %}
-            <button type="submit" class="play-game">Play Game</button>
-        </form>
+      <form id="startGameForm" method="POST" action="{% url 'sns_game' %}">
+        {% csrf_token %}
+        <button type="submit" class="play-game">Play Game</button>
+      </form>
     </div>
-
-</div>
-
+  </div>
 </body>
 </html>

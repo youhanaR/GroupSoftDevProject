@@ -226,7 +226,7 @@
 <div class="controls">
   <div class="left-controls">
     <button id="btn-top-left">Customer</button>
-    <button id="btn-bottom-left">Waste Recycling Bin</button>
+    <button id="btn-bottom-left">Food Waste Recycling Bin</button>
   </div>
   <div class="right-controls">
     <button id="btn-top-right">Sink</button>
@@ -284,10 +284,12 @@
     let score = 0;
     let missedPlates = 0;
     let gameActive = true;
+    let timeLeft = 60; // 60 seconds timer
+
 
     function updateScoreDisplay() {
       document.getElementById("score-display").textContent =
-        "Score: " + score + " | Missed: " + missedPlates;
+        "Score: " + score + " | Time: " + timeLeft;
     }
 
     // Create a falling object with its target and associated image
@@ -466,6 +468,15 @@
         btn.click();
       });
     });
+    // Timer: Decrement every second and stop game when time runs out
+    let timerInterval = setInterval(() => {
+      if (timeLeft > 0) {
+        timeLeft--;
+        updateScoreDisplay();
+      } else {
+        stopGame();
+      }
+    }, 1000);
   </script>
 </body>
 </html>
