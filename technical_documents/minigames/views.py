@@ -151,6 +151,40 @@ def whack_a_waste_end(request):
 
 ### WAW VIEWS END
 
+
+
+### SNS VIEWS
+
+def sns_intro(request):
+    return render(request, 'sns_intro.html')
+
+def sns_game(request):
+    return render(request, 'sns_game.html')
+
+def sns_end(request):
+    if request.method == 'POST':
+        score = int(request.POST.get('score', 0))
+
+        user = request.user
+        game = Game.objects.get(name="Sort and Serve")
+
+        existing_score = GameScore.objects.filter(user=user, game=game).first()
+
+        if existing_score:
+            if score > existing_score.score:
+                existing_score.score = score
+                existing_score.save()
+        else:
+            GameScore.objects.create(user=user, game=game, score=score)
+
+        return JsonResponse({'message': 'Score saved successfully'})
+
+    score = int(request.GET.get('score', 0))
+    return render(request, 'sns_end.html', {'score': score})
+
+### SAS VIEWS END ###
+
+
 # View to handle saving the score for the games.
 # This view is triggered by a POST request with the user's score in JSON format.
 # It checks if the user has an existing score for the game:

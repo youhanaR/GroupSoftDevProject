@@ -1,0 +1,43 @@
+{% load static %}
+<!--Author: Jem Challis, Juri Khushayl-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css">
+    <link rel="stylesheet" href="{% static 'css/str-game.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
+    <title>Sort N Serve</title>
+</head>
+
+
+<body>
+
+<div class="game-card">
+    <h1>Sort N Serve</h1>
+
+    <h3>Welcome to Sort N Serve!</h3>
+
+
+
+    <ul>
+        <p>Sort N Serve.</p>
+    </ul>
+    
+    <p>Good luck.</p>
+
+    <div class="buttons">
+        <form id="endGameForm" method="POST" action="{% url 'sns_game' %}">
+            {% csrf_token %}
+            <button type="submit" class="play-game">Play Game</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

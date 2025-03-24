@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/end.css' %}">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <title>Sort N Serve - Final Score</title>
+</head>
+<body>
+  <div class="game-card">
+    <h1>Final Score</h1>
+    <div id="output">
+      <p>{{ score }}</p>
+    </div>
+
+    <div id="feedback">
+      {% if score >= 300 %}
+        <p>Your sorting skills are off the charts! You're a true master of waste management.</p>
+      {% elif score >= 150 %}
+        <p>Not bad! With a bit more practice, you'll be sorting like a pro in no time.</p>
+      {% else %}
+        <p>Keep trying! Every piece sorted brings you closer to becoming an expert.</p>
+      {% endif %}
+    </div>
+    
+    <p>Sorting waste correctly not only helps save the environment but also sharpens your quick thinking. Keep playing and improve your skills!</p>
+    
+    <div class="buttons">
+      <button onclick="window.location.href='{% url 'sns_game' %}'" class="play-end">Play Again</button>
+      <button onclick="window.location.href='{% url 'dashboard' %}'" class="game-end">Exit Game</button>
+    </div>
+  </div>
+</body>
+</html>
