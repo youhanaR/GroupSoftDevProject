@@ -11,73 +11,54 @@ from core.models import Profile
 from minigames.models import GameScore
 from django.db import IntegrityError
 
+
 class RegisterTestCase(TestCase):
     def test_register_page(self):
-        self.client.logout()  # Ensure the user is logged out before starting the test
-        output = self.client.get(reverse('register'))  # Access the register page
-        self.assertEqual(output.status_code, 200)  # Ensure the page loads
-        self.assertTemplateUsed(output, 'register.html')  # Ensure the correct template is used
-
+        
+        # Test if the sign up page loads successfully
+        output = self.client.get(reverse('register'))
+        self.assertEqual(output.status_code, 200)
+        self.assertTemplateUsed(output, 'register.html')
+        
     def test_register_successful(self):
-        self.client.logout()  # Ensure the user is logged out before starting the test
-
+        
+        # Test if the user can register successfully
         test_data = {
             'username': 'usertesttest',
             'email': 'testtest@example.com',
             'password1': 'passwordtest1',
             'password2': 'passwordtest2',
         }
-
-        # Post data to simulate user registration
-        output = self.client.post(reverse('register'), test_data)
-
-        # Test if it redirects to the login page after registration
-        self.assertEqual(output.status_code, 302)  # Expecting a redirect
-        self.assertRedirects(output, reverse('my-login'))  # Should redirect to login page after successful registration
-
-        # Check if the user was successfully created in the database
-        self.assertTrue(get_user_model().objects.filter(username='usertesttest').exists())
-
-
         
+        output = self.client.post(reverse('register'), test_data)
+        self.assertEqual(output.status_code, 302)  # This test failed 200 != 302 Not sure how to fix
+        self.assertRedirects(output, reverse('my-login'))  
+        self.assertTrue(get_user_model().objects.filter(username='usertesttest').exists())
+        
+    
 class LoginTestCase(TestCase):
-    def setUp(self):
-        # Create a test user for login tests
+    def usertest(self):
+        
+        # Test user for login tests
         self.user = User.objects.create_user(username='testuser', password='password123', email='test@example.com')
-
+        
     def test_login_page(self):
-        # Test that the login page is loading correctly
+        
+        # Test load login page 
         output = self.client.get(reverse('my-login'))
         self.assertEqual(output.status_code, 200)
         self.assertTemplateUsed(output, 'my-login.html')
-
+                                
     def test_login_successful(self):
+        
         # Test successful login with correct login info
         testdata = {
-            'username': 'testuser',
-            'password': 'password123'
+            'username': 'testuseragain',
+            'password': 'passwordtest1again'
         }
         output = self.client.post(reverse('my-login'), testdata)
-        self.assertEqual(output.status_code, 302)  # Should redirect after successful login
-        self.assertRedirects(output, reverse('dashboard'))  # Redirect to dashboard after login
-
-
-class UserProfileTestCase(TestCase):
-    def setUp(self):
-        # Create a test user for the profile page test
-        self.user = User.objects.create_user(username='testuser', password='password123', email='test@example.com')
-
-    def test_user_profile_page(self):
-        # Log in the user before accessing the profile page
-        self.client.login(username='testuser', password='password123')
-
-        # Request the user profile page
-        output = self.client.get(reverse('user-profile'))
-
-        # Check if the response is successful
-        self.assertEqual(output.status_code, 200)  # Should be 200 since the user is logged in
-        self.assertTemplateUsed(output, 'user-profile.html')  # Ensure the correct template is used
-
+        self.assertEqual(output.status_code, 302) # same error occurs as sign-in
+        self.assertRedirects(output, reverse('home'))
         
 class LandingPageTestCase(TestCase):
     
@@ -105,7 +86,16 @@ class PasswordResetTestCase(TestCase):
         output = self.client.get(reverse('password_reset'))
         self.assertEqual(output.status_code, 200)
         self.assertTemplateUsed(output, 'password_reset.html')
-      
+        
+class UserProfileTestCase(TestCase):
+    
+    def test_user_profile_page(self):
+        
+        # Test load user profile page
+        output = self.client.get(reverse('user-profile'))
+        self.assertEqual(output.status_code, 200)
+        self.assertTemplateUsed(output, 'user-profile.html')
+        
 class UserLogoutTestCase(TestCase):
     
     def test_user_logout_page(self):
