@@ -162,25 +162,29 @@ def sns_game(request):
     return render(request, 'sns_game.html')
 
 def sns_end(request):
+    user = request.user
+    game = Minigame.objects.get(name="Sort N Serve")
+
     if request.method == 'POST':
         score = int(request.POST.get('score', 0))
+    else:
+        score = int(request.GET.get('score', 0))
 
-        user = request.user
-        game = Game.objects.get(name="Sort and Serve")
-
-        existing_score = GameScore.objects.filter(user=user, game=game).first()
+    if score:
+        existing_score = GameScore.objects.filter(user=user, minigame=game).first()
 
         if existing_score:
             if score > existing_score.score:
                 existing_score.score = score
                 existing_score.save()
         else:
-            GameScore.objects.create(user=user, game=game, score=score)
+            GameScore.objects.create(user=user, minigame=game, score=score)
 
+    if request.method == 'POST':
         return JsonResponse({'message': 'Score saved successfully'})
 
-    score = int(request.GET.get('score', 0))
     return render(request, 'sns_end.html', {'score': score})
+
 
 ### SAS VIEWS END ###
 
