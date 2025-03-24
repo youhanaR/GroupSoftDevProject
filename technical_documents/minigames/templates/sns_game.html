@@ -1,0 +1,477 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sort and Serve</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      overflow-x: hidden;
+      background: url("{% static 'images/sns_assets/kitchen.jpg' %}") no-repeat center center fixed;
+      background-size: cover;
+    }
+    .game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1px;
+    }
+    .area {
+      position: relative; /* Add this */
+      border: 2px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4vw;
+      padding: 1rem;
+    }
+    #conveyor {
+      position: absolute;
+      left: 45%;
+      top: 0;
+      width: 10%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        #c69c6d,       /* Darker wood tone */
+        #c69c6d 15px,
+        #b5835c 15px,  /* Slightly darker secondary tone */
+        #b5835c 30px
+      );
+      border: 2px solid #7c3e1d; /* Darker wood border */
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
+      z-index: 1;
+      overflow: hidden;
+    }
+    .icon-container {
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(210,180,140,1) 30%, rgba(210,180,140,0) 75%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100px;
+    }
+    
+    
+    .icon-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+      
+    .plate {
+      width: 8vw;
+      height: 8vw;
+      min-width: 40px;
+      min-height: 40px;
+      max-width: 70px;
+      max-height: 70px;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background-size: cover;
+      background-position: center;
+    }
+    #score-display {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
+      color: white;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 4px;
+      z-index: 2;
+    }
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px; /* Horizontal gap between the two columns */
+      z-index: 2;
+    }
+    
+    .left-controls, 
+    .right-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px; /* Vertical gap between buttons in each column */
+    }
+    
+    button {
+      padding: 15px 25px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    button:active {
+      background-color: #45a049;
+    }
+    .vignette {
+      display: block; /* Ensures proper block formatting */
+      width: 100%; /* Adjust as needed */
+      height: auto;
+      border-radius: 100%;
+      -webkit-mask-image: radial-gradient(circle, white 5%, transparent 100%);
+      mask-image: radial-gradient(circle, white 5%, transparent 100%);
+    }
+    .label {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 2px 6px;
+      font-size: 1.2rem;
+      border-radius: 4px;
+      z-index: 3;
+      text-align: center;  /* This centers the text within the label */
+    }
+    
+    @media (max-width: 768px) {
+      .game-container {
+        width: 100vw;
+        height: 100vh;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+      }
+    
+      .area {
+        padding: 0.5rem;
+        font-size: 3vw;
+      }
+    
+      .icon-container {
+        width: 80%;
+        height: 80%;
+      }
+    
+      .controls {
+        flex-direction: column;
+        gap: 1rem;
+        bottom: 10px;
+      }
+    
+      .controls button {
+        font-size: 1rem;
+        padding: 12px 20px;
+      }
+    
+      .plate {
+        width: 10vw;
+        height: 10vw;
+      }
+    
+      #score-display {
+        font-size: 1rem;
+        padding: 6px;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="score-display">Score: 0 </div>
+  <div id="static-url" data-static="{% static 'images/sns_assets/' %}"></div>
+  <div class="game-container">
+    <div class="area" id="top-left">
+      <div class="label">Customers</div>
+      <div class="icon-container">
+        <img class="vignette" src="{% static 'images/sns_assets/customer.gif' %}" alt="Customers">
+      </div>
+    </div>
+    <div class="area" id="top-right">
+      <div class="label">Sink</div>
+      <div class="icon-container">
+        <img src="{% static 'images/sns_assets/sink01a.png' %}" alt="Sink">
+      </div>
+    </div>
+    <div class="area" id="bottom-left">
+      <div class="label">Waste Recycling Bin</div>
+      <div class="icon-container">
+        <img src="{% static 'images/sns_assets/WasteRecyclingBin.png' %}" alt="Waste Recycling Bin">
+      </div>
+    </div>
+    <div class="area" id="bottom-right">
+      <div class="label">Mixed Recycling Bin</div>
+      <div class="icon-container">
+        <img src="{% static 'images/sns_assets/MixedRecyclingBin.png' %}" alt="Mixed Recycling Bin">
+      </div>
+    </div>    
+    <div id="conveyor"></div>
+  </div>
+</body>
+
+
+<div class="controls">
+  <div class="left-controls">
+    <button id="btn-top-left">Customer</button>
+    <button id="btn-bottom-left">Waste Recycling Bin</button>
+  </div>
+  <div class="right-controls">
+    <button id="btn-top-right">Sink</button>
+    <button id="btn-bottom-right">Mixed Recycling Bin</button>
+  </div>
+</div>
+
+  <script>
+    console.log("✅ JavaScript is running.");
+
+    // Get static URL from hidden div
+    const staticURL = document.getElementById("static-url").getAttribute("data-static");
+
+    // Preload images for game assets
+    const assetsImages = {
+      plate: new Image(),
+      fork: new Image(),
+      spoon: new Image(),
+      cancrushed: new Image(),
+      styrofoam: new Image(),
+      pizzabox: new Image(),
+      platefood: new Image(),
+      bowlbroth: new Image(),
+      cuptea: new Image(),
+      fishbones: new Image(),
+      applehalf: new Image(),
+      egghalf: new Image(),
+
+    };
+
+    assetsImages.plate.src = staticURL + "plate.png";
+    assetsImages.fork.src = staticURL + "utensil-fork.png";
+    assetsImages.spoon.src = staticURL + "utensil-spoon.png";
+    assetsImages.cancrushed.src = staticURL + "soda-can-crushed.png";
+    assetsImages.styrofoam.src = staticURL + "styrofoam.png";
+    assetsImages.pizzabox.src = staticURL + "pizza-box.png";
+    assetsImages.platefood.src = staticURL + "plate-dinner.png";
+    assetsImages.bowlbroth.src = staticURL + "bowl-broth.png";
+    assetsImages.cuptea.src = staticURL + "cup-tea.png";
+    assetsImages.fishbones.src = staticURL + "fish-bones.png";
+    assetsImages.applehalf.src = staticURL + "apple-half.png";
+    assetsImages.egghalf.src = staticURL + "egg-half.png";
+
+    // Optional onload logging
+    for (let key in assetsImages) {
+      assetsImages[key].onload = () => {
+        console.log(key + " image loaded!");
+      };
+    }
+
+    const conveyor = document.getElementById("conveyor");
+
+    let plateSpeed = 2;
+    let plates = [];
+    let score = 0;
+    let missedPlates = 0;
+    let gameActive = true;
+
+    function updateScoreDisplay() {
+      document.getElementById("score-display").textContent =
+        "Score: " + score + " | Missed: " + missedPlates;
+    }
+
+    // Create a falling object with its target and associated image
+    function createPlate() {
+      const assets = [
+        { type: "plate", image: assetsImages.plate, target: "top-right" },
+        { type: "fork", image: assetsImages.fork, target: "top-right" },
+        { type: "spoon", image: assetsImages.spoon, target: "top-right" },
+        { type: "cancrushed", image: assetsImages.cancrushed, target: "bottom-right" },
+        { type: "styrofoam", image: assetsImages.styrofoam, target: "bottom-right" },
+        { type: "pizzabox", image: assetsImages.pizzabox, target: "bottom-right" },
+        { type: "platefood", image: assetsImages.platefood, target: "top-left" },
+        { type: "bowlbroth", image: assetsImages.bowlbroth, target: "top-left" },
+        { type: "cuptea", image: assetsImages.cuptea, target: "top-left" },
+        { type: "fishbones", image: assetsImages.fishbones, target: "bottom-left" },
+        { type: "applehalf", image: assetsImages.applehalf, target: "bottom-left" },
+        { type: "egghalf", image: assetsImages.egghalf, target: "bottom-left" },
+      ];
+      const chosen = assets[Math.floor(Math.random() * assets.length)];
+      const obj = document.createElement("div");
+      obj.classList.add("plate");
+      obj.dataset.type = chosen.type;
+      obj.dataset.target = chosen.target;
+      if (chosen.image && chosen.image.complete) {
+        obj.style.backgroundImage = "url(" + chosen.image.src + ")";
+      } else {
+        obj.style.backgroundColor = "#ccc";
+      }
+      obj.style.backgroundSize = "cover";
+      obj.style.backgroundPosition = "center";
+      obj.style.top = "0px";
+      conveyor.appendChild(obj);
+      plates.push(obj);
+      console.log("Created object: " + chosen.type + ", target: " + chosen.target);
+    }
+
+    // Move objects downward using the dynamic plateSpeed
+    function movePlates() {
+      for (let i = plates.length - 1; i >= 0; i--) {
+        const plate = plates[i];
+        let currentTop = parseInt(plate.style.top.replace("px", "")) || 0;
+        const newTop = currentTop + plateSpeed;
+        if (newTop > window.innerHeight) {
+          plate.remove();
+          plates.splice(i, 1);
+          missedPlates++;
+          console.log("Missed a plate. Total missed: " + missedPlates);
+          updateScoreDisplay();
+          if (missedPlates >= 1) {
+            stopGame();
+            return;
+          }
+        } else {
+          plate.style.top = newTop + "px";
+        }
+      }
+    } 
+
+    // Increase the plate speed every 10 seconds
+    setInterval(() => {
+      plateSpeed += 1;
+      console.log("Plate speed increased to: " + plateSpeed);
+    }, 10000);
+
+
+    // Use setInterval IDs so we can clear them when the game stops
+    let moveIntervalId = setInterval(movePlates, 20);
+
+    // Function to spawn a plate (remains the same)
+    function spawnPlate() {
+      console.log("Spawning new object...");
+      createPlate();
+    }
+
+    // Instead of a fixed spawn interval, use recursive setTimeout
+    function spawnPlateRecursively() {
+      if (!gameActive) return;
+      spawnPlate();
+      // Calculate next delay based on plateSpeed.
+      // As plateSpeed increases, delay decreases.
+      // Minimum delay of 500ms is enforced.
+      let delay = Math.max(500, 1500 - (plateSpeed - 2) * 200);
+      setTimeout(spawnPlateRecursively, delay);
+    }
+    spawnPlateRecursively();
+
+    // Example stopGame() function redirecting to end screen:
+    function stopGame() {
+      gameActive = false;
+      clearInterval(moveIntervalId);
+      // Redirect to end screen and pass the score as a parameter
+      window.location.href = '/sns_end/?score=' + encodeURIComponent(score);
+    }
+
+    
+
+    // Button event listeners to send the first plate to the corresponding target
+    document.getElementById("btn-top-left").addEventListener("click", function() {
+      if (plates.length > 0 && gameActive) {
+        const obj = plates.shift();
+        if (obj.dataset.target === "top-left") {
+          score += 10;
+          console.log("Correct! " + obj.dataset.type + " sent to top-left.");
+        } else {
+          score -= 5;
+          console.log("Wrong! " + obj.dataset.type + " sent to top-left.");
+        }
+        obj.remove();
+        updateScoreDisplay();
+      } else {
+        console.log("No object to send to top-left.");
+      }
+    });
+
+    document.getElementById("btn-top-right").addEventListener("click", function() {
+      if (plates.length > 0 && gameActive) {
+        const obj = plates.shift();
+        if (obj.dataset.target === "top-right") {
+          score += 10;
+          console.log("Correct! " + obj.dataset.type + " sent to top-right.");
+        } else {
+          score -= 5;
+          console.log("Wrong! " + obj.dataset.type + " sent to top-right.");
+        }
+        obj.remove();
+        updateScoreDisplay();
+      } else {
+        console.log("No object to send to top-right.");
+      }
+    });
+
+    document.getElementById("btn-bottom-left").addEventListener("click", function() {
+      if (plates.length > 0 && gameActive) {
+        const obj = plates.shift();
+        if (obj.dataset.target === "bottom-left") {
+          score += 10;
+          console.log("Correct! " + obj.dataset.type + " sent to bottom-left.");
+        } else {
+          score -= 5;
+          console.log("Wrong! " + obj.dataset.type + " sent to bottom-left.");
+        }
+        obj.remove();
+        updateScoreDisplay();
+      } else {
+        console.log("No object to send to bottom-left.");
+      }
+    });
+
+    document.getElementById("btn-bottom-right").addEventListener("click", function() {
+      if (plates.length > 0 && gameActive) {
+        const obj = plates.shift();
+        if (obj.dataset.target === "bottom-right") {
+          score += 10;
+          console.log("Correct! " + obj.dataset.type + " sent to bottom-right.");
+        } else {
+          score -= 5;
+          console.log("Wrong! " + obj.dataset.type + " sent to bottom-right.");
+        }
+        obj.remove();
+        updateScoreDisplay();
+      } else {
+        console.log("No object to send to bottom-right.");
+      }
+    });
+
+    // Create an initial object for immediate testing
+    (function testPlate() {
+      createPlate();
+    })();
+
+    // For mobile: trigger click events on touchstart
+    ['btn-top-left', 'btn-top-right', 'btn-bottom-left', 'btn-bottom-right'].forEach(function(id) {
+      let btn = document.getElementById(id);
+      btn.addEventListener('touchstart', function(e) {
+        e.preventDefault(); // Prevents ghost clicks
+        btn.click();
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+ 
