@@ -26,7 +26,7 @@ python -m venv venv
 ### What is requirements.txt?
 The requirements.txt file contains a list of all dependencies needed to run the project. Installing these ensures that all required Python packages are set up correctly.
 
-## Running the Project
+## Running the Project Locally
 After setting up the virtual environment and installing dependencies, navigate to the project root directory (technical_documents) and run:
 ```
 python manage.py runserver
