@@ -1,4 +1,4 @@
-# Author: Surin Chai , Juri Khushayl
+# Author: Surin Chai 
 
 from django.test import TestCase
 from django.urls import reverse
