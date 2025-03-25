@@ -1,0 +1,88 @@
+Whack-A-Waste Bug Tracker
+Bugs I Found
+BugSeverityStatusHow I Found ItGame keeps running when switching tabsHighStill working on itGot a phone call while testingRapid clicking causes visual glitchesMediumFixedWas trying to click as fast as possibleScore sometimes doesn't update right awayMediumFixedNoticed during gameplayParticles stay on screen too longLowFixedVisual testingGame over text overlaps on small screensLowFixedTesting on my phoneSafari doesn't show particle effectsMediumStill investigatingBrowser testingMobile tap areas too smallMediumPlanning to fixFriends testing on phones
+Bug Details and Fixes
+BUG #1: Game keeps running when switching tabs
+Status: Still working on it
+When I switch to another tab or app while playing, the game keeps running in the background. This causes me to miss food items and get mistakes I didn't deserve!
+How to reproduce:
+
+Start a game
+Switch to another browser tab
+Wait a few seconds
+Switch back - you'll have missed items and gotten penalties
+
+What should happen:
+The game should pause when the tab is inactive.
+Fix idea:
+
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    // Pause game
+  } else {
+    // Resume game
+  }
+});
+
+Need to figure out how to implement this correctly.
+
+BUG #2: Rapid clicking causes visual glitches
+Status: Fixed
+If I click really fast on food items, sometimes the animations get weird - items disappear but the particles stay, or the item shows both the "active" and "gone" states at the same time.
+How I fixed it:
+Added a "processing" flag to prevent multiple click events on the same item:
+Added a check to prevent multiple processing
+if (foodItem.dataset.processing === 'true') return;
+foodItem.dataset.processing = 'true';
+
+BUG #3: Score sometimes doesn't update right away
+Status: Fixed
+Sometimes when tapping multiple items quickly, the score doesn't update immediately.
+How I fixed it:
+The problem was that I was updating the score display after checking for level up. Swapped the order:
+First update score
+scoreDisplay.textContent = score;
+
+// Then check level up
+checkLevelUp();
+
+BUG #4: Particles stay on screen too long
+Status: Fixed
+The little particle effects sometimes stay on screen longer than they should.
+How I fixed it:
+Increased the cleanup timeout and made sure to remove the elements:
+Original code had 2000ms timeout
+setTimeout(() => {
+    if (particle.parentNode) {
+        particle.parentNode.removeChild(particle);
+    }
+}, 3000); // Increased to 3 seconds
+
+BUG #5: Game over text overlaps on small screens
+Status: Fixed
+On my phone, the "Game Over" text and score overlap with the restart button.
+How I fixed it:
+Added responsive adjustments for small screens:
+Check screen size and adjust text size
+if (window.innerWidth < 350) {
+    gameOverText.style.fontSize = '24px';
+    finalScore.style.marginBottom = '30px';
+}
+
+BUG #6: Safari doesn't show particle effects
+Status: Still investigating
+The particle effects don't show up in Safari browser.
+Need to test more to figure out why - might be related to Safari's handling of CSS animations.
+
+BUG #7: Mobile tap areas too small
+Status: Planning to fix
+My friends testing on phones said it was hard to tap the food items accurately.
+Fix idea:
+Make the clickable area larger than the visible item:
+Make the tap target bigger than the visual
+foodItem.style.padding = '10px';
+Will implement this in the next version.
+
+Testing Notes
+I've been keeping track of these bugs while testing the game myself and having friends try it. The most annoying one is definitely the tab switching issue - really need to fix that one first.
+The mobile experience needs more work too - game mechanics are fine but the UI needs adjustments for smaller screens.
