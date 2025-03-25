@@ -30,6 +30,7 @@ We have also taken regular snapshots of the kanban board in trello to archive ou
 [Kanban Screenshots - Sprint 2](process-documents/kanban-screenshots/sprint-2-kanban-screenshots/)
 
 Within process documents we have also included the meeting notes and minutes, as well as the sprint reflection document. These will be found in the repository below.
+The meeting notes for sprint 2 start from 'Meeting Note 7'.
 
 [Process Documents](process-documents/)
 
