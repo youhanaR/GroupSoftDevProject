@@ -20,7 +20,7 @@ python -m venv venv
    ```
 ## Install dependencies
    ```
-   pip install -r technical-documents/requirements.txt
+   pip install -r technical_documents/requirements.txt
    ```
 
 ### What is requirements.txt?
