@@ -1,4 +1,6 @@
 {% load static %}
+<!--Author: Surin Chai-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sort and Serve</title>
   <style>
+    /* Global Styles */
     * {
       box-sizing: border-box;
     }
@@ -13,9 +16,11 @@
       margin: 0;
       font-family: sans-serif;
       overflow-x: hidden;
+      /* Set a fixed background image using Django's static file system */
       background: url("{% static 'images/sns_assets/kitchen.jpg' %}") no-repeat center center fixed;
       background-size: cover;
     }
+    /* Game container using CSS Grid for layout */
     .game-container {
       position: relative;
       width: 100vw;
@@ -25,8 +30,9 @@
       grid-template-rows: 1fr 1fr;
       gap: 1px;
     }
+    /* Individual grid areas styling */
     .area {
-      position: relative; /* Add this */
+      position: relative; /* Ensures that child elements are positioned relative to this container */
       border: 2px solid #ccc;
       display: flex;
       align-items: center;
@@ -34,6 +40,7 @@
       font-size: 4vw;
       padding: 1rem;
     }
+    /* Styling for the conveyor belt element */
     #conveyor {
       position: absolute;
       left: 45%;
@@ -52,6 +59,7 @@
       z-index: 1;
       overflow: hidden;
     }
+    /* Container for icons with a radial gradient background */
     .icon-container {
       width: 60%;
       height: 60%;
@@ -62,14 +70,14 @@
       border-radius: 100px;
     }
     
-    
+    /* Ensure images inside icon container fit properly */
     .icon-container img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
     
-      
+    /* Styling for falling objects ("plates") */
     .plate {
       width: 8vw;
       height: 8vw;
@@ -84,6 +92,7 @@
       background-size: cover;
       background-position: center;
     }
+    /* Score display styling */
     #score-display {
       position: fixed;
       top: 10px;
@@ -96,6 +105,7 @@
       border-radius: 4px;
       z-index: 2;
     }
+    /* Controls container for game buttons */
     .controls {
       position: fixed;
       bottom: 20px;
@@ -106,6 +116,7 @@
       z-index: 2;
     }
     
+    /* Layout for left and right control button columns */
     .left-controls, 
     .right-controls {
       display: flex;
@@ -113,6 +124,7 @@
       gap: 10px; /* Vertical gap between buttons in each column */
     }
     
+    /* Button styling */
     button {
       padding: 15px 25px;
       font-size: 1.2rem;
@@ -126,6 +138,7 @@
     button:active {
       background-color: #45a049;
     }
+    /* Vignette effect for images */
     .vignette {
       display: block; /* Ensures proper block formatting */
       width: 100%; /* Adjust as needed */
@@ -134,6 +147,7 @@
       -webkit-mask-image: radial-gradient(circle, white 5%, transparent 100%);
       mask-image: radial-gradient(circle, white 5%, transparent 100%);
     }
+    /* Label styling for game areas */
     .label {
       position: absolute;
       top: 5px;
@@ -145,9 +159,10 @@
       font-size: 1.2rem;
       border-radius: 4px;
       z-index: 3;
-      text-align: center;  /* This centers the text within the label */
+      text-align: center;  /* Centers the text within the label */
     }
     
+    /* Responsive design adjustments for smaller screens */
     @media (max-width: 768px) {
       .game-container {
         width: 100vw;
@@ -196,38 +211,46 @@
   </style>
 </head>
 <body>
+  <!-- Score Display: Shows current score and time remaining -->
   <div id="score-display">Score: 0 </div>
+  <!-- Hidden element to store static URL for JavaScript asset path usage -->
   <div id="static-url" data-static="{% static 'images/sns_assets/' %}"></div>
+  <!-- Main game container using grid layout to organize game areas -->
   <div class="game-container">
+    <!-- Top Left Area: Displays "Customers" -->
     <div class="area" id="top-left">
       <div class="label">Customers</div>
       <div class="icon-container">
         <img class="vignette" src="{% static 'images/sns_assets/customer.gif' %}" alt="Customers">
       </div>
     </div>
+    <!-- Top Right Area: Displays "Sink" -->
     <div class="area" id="top-right">
       <div class="label">Sink</div>
       <div class="icon-container">
         <img src="{% static 'images/sns_assets/sink01a.png' %}" alt="Sink">
       </div>
     </div>
+    <!-- Bottom Left Area: Displays "Waste Recycling Bin" -->
     <div class="area" id="bottom-left">
       <div class="label">Waste Recycling Bin</div>
       <div class="icon-container">
         <img src="{% static 'images/sns_assets/WasteRecyclingBin.png' %}" alt="Waste Recycling Bin">
       </div>
     </div>
+    <!-- Bottom Right Area: Displays "Mixed Recycling Bin" -->
     <div class="area" id="bottom-right">
       <div class="label">Mixed Recycling Bin</div>
       <div class="icon-container">
         <img src="{% static 'images/sns_assets/MixedRecyclingBin.png' %}" alt="Mixed Recycling Bin">
       </div>
-    </div>    
+    </div>
+    <!-- Conveyor Belt: The area where falling objects (plates) appear -->
     <div id="conveyor"></div>
   </div>
 </body>
 
-
+<!-- Game Control Buttons: Allow users to interact with falling objects -->
 <div class="controls">
   <div class="left-controls">
     <button id="btn-top-left">Customer</button>
@@ -239,13 +262,14 @@
   </div>
 </div>
 
-  <script>
+<script>
+    // Log to confirm JavaScript is running
     console.log("✅ JavaScript is running.");
 
-    // Get static URL from hidden div
+    // Retrieve the static URL from the hidden element for asset paths
     const staticURL = document.getElementById("static-url").getAttribute("data-static");
 
-    // Preload images for game assets
+    // Preload images for game assets using the Image() constructor
     const assetsImages = {
       plate: new Image(),
       fork: new Image(),
@@ -259,9 +283,9 @@
       fishbones: new Image(),
       applehalf: new Image(),
       egghalf: new Image(),
-
     };
 
+    // Assign source paths for each game asset using the static URL
     assetsImages.plate.src = staticURL + "plate.png";
     assetsImages.fork.src = staticURL + "utensil-fork.png";
     assetsImages.spoon.src = staticURL + "utensil-spoon.png";
@@ -275,29 +299,31 @@
     assetsImages.applehalf.src = staticURL + "apple-half.png";
     assetsImages.egghalf.src = staticURL + "egg-half.png";
 
-    // Optional onload logging
+    // Log each image's successful load for debugging purposes
     for (let key in assetsImages) {
       assetsImages[key].onload = () => {
         console.log(key + " image loaded!");
       };
     }
 
+    // Reference to the conveyor element where falling objects will appear
     const conveyor = document.getElementById("conveyor");
 
+    // Initialize game variables
     let plateSpeed = 2;
     let plates = [];
     let score = 0;
     let missedPlates = 0;
     let gameActive = true;
-    let timeLeft = 60; // 60 seconds timer
+    let timeLeft = 60; // Game duration in seconds
 
-
+    // Update the score display with current score and time remaining
     function updateScoreDisplay() {
       document.getElementById("score-display").textContent =
         "Score: " + score + " | Time: " + timeLeft;
     }
 
-    // Create a falling object with its target and associated image
+    // Create a falling game object with its associated target and image
     function createPlate() {
       const assets = [
         { type: "plate", image: assetsImages.plate, target: "top-right" },
@@ -313,6 +339,7 @@
         { type: "applehalf", image: assetsImages.applehalf, target: "bottom-left" },
         { type: "egghalf", image: assetsImages.egghalf, target: "bottom-left" },
       ];
+      // Randomly select an asset for the falling object
       const chosen = assets[Math.floor(Math.random() * assets.length)];
       const obj = document.createElement("div");
       obj.classList.add("plate");
@@ -321,28 +348,32 @@
       if (chosen.image && chosen.image.complete) {
         obj.style.backgroundImage = "url(" + chosen.image.src + ")";
       } else {
+        // Fallback background color if image not loaded
         obj.style.backgroundColor = "#ccc";
       }
       obj.style.backgroundSize = "cover";
       obj.style.backgroundPosition = "center";
       obj.style.top = "0px";
+      // Append the new object to the conveyor element
       conveyor.appendChild(obj);
       plates.push(obj);
       console.log("Created object: " + chosen.type + ", target: " + chosen.target);
     }
 
-    // Move objects downward using the dynamic plateSpeed
+    // Move falling objects down the screen
     function movePlates() {
       for (let i = plates.length - 1; i >= 0; i--) {
         const plate = plates[i];
         let currentTop = parseInt(plate.style.top.replace("px", "")) || 0;
         const newTop = currentTop + plateSpeed;
+        // If the object moves off-screen, remove it and update missed counter
         if (newTop > window.innerHeight) {
           plate.remove();
           plates.splice(i, 1);
           missedPlates++;
           console.log("Missed a plate. Total missed: " + missedPlates);
           updateScoreDisplay();
+          // Stop game if a plate is missed
           if (missedPlates >= 1) {
             stopGame();
             return;
@@ -353,45 +384,39 @@
       }
     } 
 
-    // Increase the plate speed every 10 seconds
+    // Increase the speed of falling objects every 10 seconds to raise difficulty
     setInterval(() => {
       plateSpeed += 1;
       console.log("Plate speed increased to: " + plateSpeed);
     }, 10000);
 
-
-    // Use setInterval IDs so we can clear them when the game stops
+    // Regularly update the position of falling objects
     let moveIntervalId = setInterval(movePlates, 20);
 
-    // Function to spawn a plate (remains the same)
+    // Function to spawn a new falling object
     function spawnPlate() {
       console.log("Spawning new object...");
       createPlate();
     }
 
-    // Instead of a fixed spawn interval, use recursive setTimeout
+    // Recursively spawn falling objects with delay based on current plate speed
     function spawnPlateRecursively() {
       if (!gameActive) return;
       spawnPlate();
-      // Calculate next delay based on plateSpeed.
-      // As plateSpeed increases, delay decreases.
-      // Minimum delay of 500ms is enforced.
+      // Calculate delay based on plateSpeed, ensuring a minimum delay of 500ms
       let delay = Math.max(500, 1500 - (plateSpeed - 2) * 200);
       setTimeout(spawnPlateRecursively, delay);
     }
     spawnPlateRecursively();
 
-    // Example stopGame() function redirecting to end screen:
+    // Function to stop the game and redirect to the end screen with the final score
     function stopGame() {
       gameActive = false;
       clearInterval(moveIntervalId);
-      // Redirect to end screen and pass the score as a parameter
       window.location.href = '/sns_end/?score=' + encodeURIComponent(score);
     }
 
-    
-
-    // Button event listeners to send the first plate to the corresponding target
+    // Event listener for the "top-left" button; processes falling object accordingly
     document.getElementById("btn-top-left").addEventListener("click", function() {
       if (plates.length > 0 && gameActive) {
         const obj = plates.shift();
@@ -409,6 +434,7 @@
       }
     });
 
+    // Event listener for the "top-right" button
     document.getElementById("btn-top-right").addEventListener("click", function() {
       if (plates.length > 0 && gameActive) {
         const obj = plates.shift();
@@ -426,6 +452,7 @@
       }
     });
 
+    // Event listener for the "bottom-left" button
     document.getElementById("btn-bottom-left").addEventListener("click", function() {
       if (plates.length > 0 && gameActive) {
         const obj = plates.shift();
@@ -443,6 +470,7 @@
       }
     });
 
+    // Event listener for the "bottom-right" button
     document.getElementById("btn-bottom-right").addEventListener("click", function() {
       if (plates.length > 0 && gameActive) {
         const obj = plates.shift();
@@ -460,20 +488,21 @@
       }
     });
 
-    // Create an initial object for immediate testing
+    // Immediately create an initial falling object for testing purposes
     (function testPlate() {
       createPlate();
     })();
 
-    // For mobile: trigger click events on touchstart
+    // Add touch event listeners for mobile devices to trigger button clicks
     ['btn-top-left', 'btn-top-right', 'btn-bottom-left', 'btn-bottom-right'].forEach(function(id) {
       let btn = document.getElementById(id);
       btn.addEventListener('touchstart', function(e) {
-        e.preventDefault(); // Prevents ghost clicks
+        e.preventDefault(); // Prevents ghost clicks on mobile devices
         btn.click();
       });
     });
-    // Timer: Decrement every second and stop game when time runs out
+
+    // Timer: Decrement the remaining game time every second and update display; end game when time reaches zero
     let timerInterval = setInterval(() => {
       if (timeLeft > 0) {
         timeLeft--;
@@ -485,9 +514,5 @@
   </script>
 </body>
 </html>
-
-
-
-
 
  

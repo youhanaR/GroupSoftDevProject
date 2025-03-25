@@ -1,4 +1,4 @@
-# Author: Jem Challis, Rami Youhana
+# Author: Jem Challis, Rami Youhana, Jood Alrubian, Surin Chai
 
 from django.shortcuts import render
 from .forms import NewGameScore
@@ -108,7 +108,6 @@ def sea_sweepers_end(request):
     # Handling GET request: display the game end page with the score
     score = int(request.GET.get('score', 0))
     return render(request, 'sea_sweepers_end.html', {'score': score})
-
 ### SS VIEWS END ###
 
 
@@ -147,14 +146,9 @@ def whack_a_waste_end(request):
     score = int(request.GET.get('score', 0)) 
 
     return render(request, 'whack_a_waste_end.html', {'score': score})
-
-
 ### WAW VIEWS END
 
-
-
 ### SNS VIEWS
-
 def sns_intro(request):
     return render(request, 'sns_intro.html')
 
@@ -184,8 +178,6 @@ def sns_end(request):
         return JsonResponse({'message': 'Score saved successfully'})
 
     return render(request, 'sns_end.html', {'score': score})
-
-
 ### SAS VIEWS END ###
 
 

@@ -1,4 +1,4 @@
-# Author: Ameera Abdullah
+# Author: Ameera Abdullah, Surin Chai
 
 """
 URL configuration for napoleons_adventure project.

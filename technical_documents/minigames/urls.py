@@ -1,4 +1,4 @@
-# Author: Jem Challis, Rami Youhana, Ameera Abdullah
+# Author: Jem Challis, Rami Youhana, Ameera Abdullah, Surin Chai, Jood Alrubian
 
 from django.contrib.auth import views as auth_views
 from django.urls import path
