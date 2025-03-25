@@ -41,7 +41,7 @@ Our product documents are primarily in the form of a User Document, Technical Do
 [Sprint 2 Technical Document](product-documents/sprint-2-technical-document/)
 [Requirement Analysis](product-documents/requirement-analysis/)
 
-The UI and requirement analysis documents from sprint 1 have also been archived under the link below:
+The UI documents from sprint 1 have also been archived under the link below:
 
 [UI Documentation](product-documents/UI/)
 
