@@ -35,15 +35,16 @@ The meeting notes for sprint 2 start from 'Meeting Note 7'.
 [Process Documents](process-documents/)
 
 ## PRODUCT DOCUMENTS
-Our product documents are primarily in the form of a User Document and a Technical Document. These are held in the repository below.
+Our product documents are primarily in the form of a User Document, Technical Document and Requirement Analysis Document. These are held in the repository below.
 
 [Sprint 2 User Document](product-documents/sprint-2-user-document/)
 [Sprint 2 Technical Document](product-documents/sprint-2-technical-document/)
+[Requirement Analysis](product-documents/requirement-analysis/)
 
 The UI and requirement analysis documents from sprint 1 have also been archived under the link below:
 
 [UI Documentation](product-documents/UI/)
-[Requirement Analysis](product-documents/requirement-analysis/)
+
 
 
 ## TECHNICAL DOCUMENTS
